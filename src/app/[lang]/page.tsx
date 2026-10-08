@@ -88,13 +88,18 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </section>
 
         <div className="mt-[10px] flex justify-center">
-          <iframe
-            src={FACEBOOK_EMBED}
-            title="S.E.A.T.S Inc. Facebook"
-            loading="lazy"
-            className="h-[700px] w-full max-w-[346px] border-0"
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-          />
+          {/* Only the visible variant loads: lazy iframes inside display:none are never fetched */}
+          {(["desktop", "mobile"] as const).map((v) => (
+            <iframe
+              key={v}
+              src={FACEBOOK_EMBED[v].src}
+              title="S.E.A.T.S Inc. Facebook"
+              loading="lazy"
+              style={{ maxWidth: FACEBOOK_EMBED[v].width, height: FACEBOOK_EMBED[v].height }}
+              className={`w-full border-0 ${v === "desktop" ? "hidden tablet:block" : "tablet:hidden"}`}
+              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            />
+          ))}
         </div>
       </div>
     </div>

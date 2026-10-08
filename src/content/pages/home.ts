@@ -71,5 +71,11 @@ export const BRANDS: { src: string; alt: string; width: number; height: number; 
 
 export const BRAND_TITLE = "Our Brand";
 
-export const FACEBOOK_EMBED =
-  "https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fseatsinccambodia&tabs=timeline%2Cevents%2Cmessages&width=340&height=700&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true";
+const FACEBOOK_EMBED_URL = (width: number, height: number) =>
+  `https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fseatsinccambodia&tabs=timeline%2Cevents%2Cmessages&width=${width}&height=${height}&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true`;
+
+/** Facebook page plugin: 500px (plugin maximum) on PC/tablet, unchanged 340px on mobile */
+export const FACEBOOK_EMBED = {
+  desktop: { src: FACEBOOK_EMBED_URL(500, 700), width: 500, height: 700 },
+  mobile: { src: FACEBOOK_EMBED_URL(340, 700), width: 346, height: 700 },
+};
