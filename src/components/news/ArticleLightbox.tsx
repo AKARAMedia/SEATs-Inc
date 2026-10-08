@@ -122,8 +122,10 @@ export default function ArticleLightbox({ children }: { children: ReactNode }) {
   );
 }
 
-/** Best full-size source: a linked original, else the un-optimized src behind next/image. */
+/** Best full-size source: the server-marked uncropped original, a linked original, else the un-optimized src. */
 function fullSrc(img: HTMLImageElement) {
+  const full = img.dataset.full;
+  if (full) return full;
   const link = img.closest("a")?.getAttribute("href");
   if (link && /\.(jpe?g|png|webp|gif)(\?|$)/i.test(link)) return link;
   const optimized = img.currentSrc || img.src;

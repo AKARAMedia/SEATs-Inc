@@ -5,7 +5,8 @@ import { Suspense } from "react";
 import { isLang, LANGS, type Lang } from "@/lib/i18n";
 import { allNewsSlugs, getNews } from "@/lib/news";
 import ArticleLightbox from "@/components/news/ArticleLightbox";
-import { justifyGalleries } from "@/lib/gallery";
+import { prepareArticleHtml } from "@/lib/gallery";
+import { originalImage } from "@/lib/media";
 
 // News/Event post detail. Posts live at the site root (/<slug>/), same as WordPress permalinks.
 
@@ -62,6 +63,7 @@ async function Post({ params }: { params: PageProps<"/[lang]/[slug]">["params"] 
             <Image
               src={item.imageUrl}
               alt={item.title}
+              data-full={originalImage(item.imageUrl)}
               width={1192}
               height={894}
               priority
@@ -80,7 +82,7 @@ async function Post({ params }: { params: PageProps<"/[lang]/[slug]">["params"] 
 
         <div
           className="prose-seats mt-[30px] [&_figure]:mb-5 [&_p]:mb-5 [&_p]:leading-[1.6]"
-          dangerouslySetInnerHTML={{ __html: justifyGalleries(item.body) }}
+          dangerouslySetInnerHTML={{ __html: prepareArticleHtml(item.body) }}
         />
       </ArticleLightbox>
       <hr className="mt-[60px] border-black/10" />

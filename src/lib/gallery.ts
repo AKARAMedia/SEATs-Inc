@@ -1,15 +1,24 @@
 import "server-only";
 import * as cheerio from "cheerio";
+import { originalImage } from "./media";
 
 const PER_ROW = 2;
 
 /**
- * Lay out article galleries as "justified" rows: photos are grouped in rows of two and each
- * gets flex-grow = its aspect ratio, so photos in a row share one height and none are cropped.
+ * Prepare an article body for display:
+ * - every <img> gets data-full = its uncropped original (what the lightbox opens)
+ * - galleries become "justified" rows: two photos per row, each with flex-grow = its aspect
+ *   ratio, so photos in a row share one height and none are cropped.
  */
-export function justifyGalleries(html: string): string {
-  if (!html.includes("wp-block-gallery") && !html.includes('class="gallery')) return html;
+export function prepareArticleHtml(html: string): string {
+  if (!html.includes("<img")) return html;
   const $ = cheerio.load(html, null, false);
+
+  $("img").each((_, el) => {
+    const src = $(el).attr("src");
+    if (src) $(el).attr("data-full", originalImage(src));
+  });
+
   $(".wp-block-gallery, .gallery").each((_, gallery) => {
     const items = $(gallery)
       .children()
