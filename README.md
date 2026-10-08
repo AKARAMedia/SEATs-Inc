@@ -47,7 +47,7 @@ Useful scripts:
 
 ## Deploying (Vercel)
 
-1. Import the repo into Vercel (framework: Next.js, root: `web/`).
+1. Import the GitHub repo `websitecreationakara-debug/SEATs-Inc` into Vercel (framework: Next.js, root directory: repo root).
 2. Storage → connect **Neon Postgres** (sets `DATABASE_URL`) and **Vercel Blob** (sets `BLOB_READ_WRITE_TOKEN`).
 3. Environment variables: `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `SESSION_SECRET` (32+ random bytes), `SITE_URL=https://seats-inc.com`,
    optionally `CONTACT_WEBHOOK_URL`.
