@@ -137,18 +137,28 @@
     color: #666;
     margin: 1.5em 0;
   }
+  /* Article galleries: justified rows (see src/lib/gallery.ts) — every photo keeps its original aspect ratio */
   .prose-seats .wp-block-gallery,
   .prose-seats .gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
   }
-  .prose-seats .wp-block-gallery img,
-  .prose-seats .gallery img {
+  .prose-seats .gallery-row {
+    display: flex;
+    gap: 8px;
+  }
+  .prose-seats .gallery-row > * {
+    min-width: 0;
+    margin: 0;
+  }
+  .prose-seats .gallery-row img {
+    display: block;
     margin: 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    border-radius: 0;
   }
 }
 
