@@ -1,0 +1,2695 @@
+/* =====================================================
+   S.E.A.T.S Inc. Recruitment LP
+   Version: 6.0
+   ===================================================== */
+
+
+/* =====================================================
+   Variables
+   ===================================================== */
+
+:root {
+  --blue: #0b83c7;
+  --blue-dark: #0a71ab;
+
+  --navy: #22384b;
+
+  --text: #44515e;
+  --text-light: #6b7885;
+
+  --bg-lightblue: #e9f3fa;
+  --bg-gray: #f4f6f8;
+
+  --bg-sky: #7cbde4;
+  --bg-sky-deep: #5da5d6;
+
+  --card-tile: #dcebf7;
+  --border: #e3e8ec;
+
+  --white: #ffffff;
+
+  --red: #d43c3c;
+
+  --green: #2e9e5b;
+  --green-dark: #217a45;
+  --green-bg: #f1faf4;
+  --green-border: #cbe7d6;
+
+  --candidate-blue-bg: #eaf3fb;
+  --candidate-blue-border: #2a9bcf;
+
+  --radius: 10px;
+  --radius-lg: 16px;
+
+  --shadow: 0 6px 24px rgba(34, 56, 75, 0.08);
+  --shadow-strong: 0 10px 34px rgba(34, 56, 75, 0.14);
+
+  --container: 1200px;
+}
+
+
+/* =====================================================
+   Reset
+   ===================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 92px;
+}
+
+body {
+  font-family:
+    "Noto Sans JP",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+
+  color: var(--text);
+  background: var(--white);
+
+  font-size: 16px;
+  line-height: 1.9;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+
+/* =====================================================
+   Buttons
+   ===================================================== */
+
+.btn {
+  display: inline-block;
+
+  font-weight: 700;
+  text-align: center;
+
+  border-radius: 999px;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+
+  cursor: pointer;
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: var(--white);
+
+  padding: 15px 34px;
+
+  font-size: 15px;
+
+  border: none;
+}
+
+.btn-dark {
+  background: #14212d;
+  color: var(--white);
+
+  padding: 12px 26px;
+
+  font-size: 14px;
+}
+
+.btn-outline {
+  background: var(--white);
+  color: var(--blue);
+
+  border: 1px solid var(--blue);
+
+  padding: 13px 36px;
+
+  font-size: 15px;
+}
+
+.btn-outline:hover {
+  background: var(--blue);
+  color: var(--white);
+
+  opacity: 1;
+}
+
+.btn-small {
+  padding: 7px 24px;
+  font-size: 13px;
+}
+
+.text-link {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+/* Keeps a Japanese phrase on one line; the line breaks between phrases instead */
+.nobr {
+  display: inline-block;
+}
+
+
+/* =====================================================
+   Header
+   ===================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+
+  z-index: 100;
+
+  background: var(--white);
+
+  box-shadow: 0 1px 0 rgba(34, 56, 75, 0.06);
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 1320px;
+
+  margin: 0 auto;
+
+  padding: 18px 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+.header-logo {
+  flex-shrink: 0;
+}
+
+.header-logo img {
+  height: 42px;
+  width: auto;
+}
+
+.header-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+
+.header-nav a:not(.btn) {
+  color: var(--navy);
+
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.header-nav a:not(.btn):hover {
+  color: var(--blue);
+}
+
+.nav-toggle {
+  display: none;
+
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 5px;
+
+  width: 44px;
+  height: 44px;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
+
+  padding: 10px;
+}
+
+.nav-toggle span {
+  display: block;
+
+  height: 2px;
+  width: 100%;
+
+  background: var(--navy);
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+
+/* =====================================================
+   Hero
+   ===================================================== */
+
+.hero {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  min-height: 620px;
+
+  /* Same shape as hero-bg.jpg (1280x720): the whole collage is visible */
+  aspect-ratio: 16 / 9;
+
+  /* Stop min-height from widening the box through the aspect ratio */
+  min-width: 0;
+  max-width: 100%;
+
+  padding: 64px 0;
+
+  background: var(--white);
+
+  overflow: hidden;
+
+  isolation: isolate;
+}
+
+
+/* ---- Full-bleed background collage ---- */
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+}
+
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+}
+
+/* White veil so the copy stays readable on top of the photos */
+.hero-bg::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      ellipse 82% 70% at 50% 48%,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.25) 60%,
+      rgba(255, 255, 255, 0.05) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.08) 60%,
+      rgba(255, 255, 255, 0.2) 100%
+    );
+}
+
+.hero-inner {
+  position: relative;
+
+  z-index: 1;
+
+  width: 100%;
+}
+
+.hero-text {
+  max-width: 1240px;
+
+  margin: 0 auto;
+
+  text-align: center;
+}
+
+.hero-title {
+  color: var(--navy);
+
+  font-size: clamp(38px, 5vw, 72px);
+  font-weight: 900;
+
+  line-height: 1.4;
+
+  letter-spacing: 0.02em;
+
+  margin-bottom: 36px;
+
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 1),
+    0 0 18px rgba(255, 255, 255, 0.95),
+    0 0 40px rgba(255, 255, 255, 0.9);
+}
+
+.hero-lead {
+  color: var(--navy);
+
+  font-size: clamp(17px, 1.95vw, 28px);
+  font-weight: 700;
+
+  line-height: 1.6;
+
+  margin-bottom: 20px;
+
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 1),
+    0 0 12px rgba(255, 255, 255, 0.95),
+    0 0 28px rgba(255, 255, 255, 0.9);
+}
+
+.hero-lead span {
+  display: block;
+}
+
+.hero-cta {
+  margin-top: 28px;
+
+  box-shadow: var(--shadow-strong);
+}
+
+
+/* =====================================================
+   Bonus Banner
+   ===================================================== */
+
+.banner-section {
+  padding: 40px 0 56px;
+
+  background: var(--white);
+}
+
+.bonus-banner {
+  display: block;
+
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.bonus-banner:hover,
+.bonus-banner:focus-visible {
+  transform: translateY(-3px);
+}
+
+.bonus-banner img {
+  width: 100%;
+  height: auto;
+}
+
+
+/* =====================================================
+   Shared Sections
+   ===================================================== */
+
+.section {
+  padding: 96px 0;
+}
+
+.section-lightblue {
+  background: var(--bg-lightblue);
+}
+
+.section-gray {
+  background: var(--white);
+}
+
+.section-head {
+  text-align: center;
+
+  margin-bottom: 60px;
+}
+
+.section-label {
+  display: block;
+
+  color: var(--blue);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+
+  margin-bottom: 10px;
+}
+
+.section-label-dark {
+  color: var(--navy);
+}
+
+.section-title {
+  color: var(--navy);
+
+  font-size: 32px;
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  position: relative;
+
+  padding-bottom: 24px;
+}
+
+.section-title::after {
+  content: "";
+
+  position: absolute;
+
+  bottom: 0;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 48px;
+  height: 3px;
+
+  border-radius: 2px;
+
+  background: var(--blue);
+}
+
+.section-actions {
+  text-align: center;
+
+  margin-top: 56px;
+}
+
+
+/* =====================================================
+   CEO Message
+   ===================================================== */
+
+.ceo-grid {
+  display: grid;
+
+  grid-template-columns: 360px 1fr;
+
+  gap: 48px;
+
+  align-items: start;
+}
+
+.ceo-photo img {
+  width: 100%;
+
+  border-radius: var(--radius);
+}
+
+.quote-mark {
+  display: block;
+
+  color: var(--blue);
+
+  font-size: 72px;
+  font-weight: 900;
+
+  line-height: 0.6;
+
+  margin-bottom: 22px;
+
+  font-family: Georgia, serif;
+}
+
+.ceo-quote {
+  color: var(--blue);
+
+  font-size: 20px;
+  font-weight: 700;
+
+  margin-bottom: 22px;
+}
+
+.ceo-body p + p {
+  margin-top: 14px;
+}
+
+.ceo-sign {
+  color: var(--text-light);
+
+  margin-top: 22px;
+}
+
+
+/* =====================================================
+   Ideal Candidate
+   ===================================================== */
+
+.candidate-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.candidate-card {
+  min-width: 0;
+
+  background: var(--white);
+
+  border: 1px solid #e8ecef;
+
+  border-radius: 12px;
+
+  padding: 36px 16px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  box-shadow:
+    0 2px 10px rgba(34, 56, 75, 0.04);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.candidate-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 8px 22px rgba(34, 56, 75, 0.08);
+}
+
+.candidate-num {
+  width: 120px;
+  height: 80px;
+
+  margin: 0 0 24px;
+
+  background: #e6f0fa;
+
+  border-radius: 8px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.candidate-num img,
+.candidate-num svg {
+  width: 44px;
+  height: 44px;
+}
+
+.candidate-card p {
+  width: 100%;
+
+  color: #1a2b3c;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  line-height: 1.6;
+
+  text-align: center;
+
+  margin: 0;
+
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+
+/* =====================================================
+   Ideal Candidate - Additional Information
+   ===================================================== */
+
+.candidate-details {
+  width: 100%;
+  max-width: 900px;
+
+  margin: 38px auto 0;
+}
+
+.candidate-details-heading {
+  width: 100%;
+
+  padding: 0 0 14px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.candidate-details-heading h3 {
+  position: relative;
+
+  color: var(--navy);
+
+  font-size: 20px;
+  font-weight: 700;
+
+  line-height: 1.6;
+
+  letter-spacing: 0.02em;
+
+  margin: 0;
+  padding-left: 0;
+}
+
+.candidate-details-heading h3::first-letter {
+  color: var(--blue);
+}
+
+.candidate-benefits {
+  width: 100%;
+
+  padding: 18px 0 0;
+}
+
+.candidate-benefits ul {
+  width: 100%;
+
+  margin: 0;
+  padding: 0;
+}
+
+.candidate-benefits li {
+  position: relative;
+
+  color: var(--text);
+
+  font-size: 15.5px;
+
+  line-height: 2;
+
+  padding-left: 25px;
+
+  margin-bottom: 12px;
+}
+
+.candidate-benefits li::before {
+  content: "•";
+
+  position: absolute;
+
+  left: 5px;
+  top: 0;
+
+  color: var(--navy);
+
+  font-size: 18px;
+  font-weight: 700;
+
+  line-height: 2;
+}
+
+.candidate-benefits li:last-child {
+  margin-bottom: 0;
+}
+
+.candidate-message {
+  position: relative;
+
+  width: 100%;
+
+  margin-top: 28px;
+
+  padding: 18px 22px;
+
+  background: var(--candidate-blue-bg);
+
+  border-left: 3px solid var(--candidate-blue-border);
+
+  border-radius: 0 10px 10px 0;
+
+  color: var(--text);
+
+  font-size: 14.5px;
+
+  line-height: 1.9;
+
+  box-shadow:
+    0 2px 8px rgba(34, 56, 75, 0.03);
+}
+
+.candidate-message p {
+  margin: 0;
+}
+
+.candidate-message p + p {
+  margin-top: 8px;
+}
+
+
+/* =====================================================
+   Open Positions
+   ===================================================== */
+
+.section-positions {
+  width: 100%;
+
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #f4f6f9;
+
+  padding: 120px 0;
+}
+
+.positions-header {
+  width: 100%;
+
+  text-align: center;
+
+  margin-bottom: 64px;
+}
+
+.positions-header .section-label {
+  display: block;
+
+  color: var(--blue);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+
+  margin-bottom: 14px;
+}
+
+.positions-header .section-title {
+  position: relative;
+
+  color: var(--navy);
+
+  font-size: 34px;
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  letter-spacing: 0.04em;
+
+  padding-bottom: 22px;
+
+  margin-bottom: 0;
+}
+
+.positions-header .section-title::after {
+  content: "";
+
+  position: absolute;
+
+  bottom: 0;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 44px;
+  height: 2px;
+
+  border-radius: 2px;
+
+  background: var(--blue);
+}
+
+.positions-container {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+}
+
+.position-card-main {
+  width: calc(100% - 80px);
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  background: var(--white);
+
+  border: 1px solid #e6ebf0;
+
+  border-radius: 14px;
+
+  padding: 56px 64px 64px;
+
+  box-shadow:
+    0 1px 2px rgba(34, 56, 75, 0.04),
+    0 14px 44px rgba(34, 56, 75, 0.06);
+}
+
+
+/* =====================================================
+   Position Gallery
+   ===================================================== */
+
+.positions-gallery {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 20px;
+
+  width: 100%;
+
+  margin-bottom: 56px;
+}
+
+.gallery-image {
+  min-width: 0;
+
+  aspect-ratio: 3 / 2;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background: #eef1f4;
+}
+
+.gallery-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  transition:
+    transform 0.65s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+.gallery-image:hover img {
+  transform: scale(1.05);
+}
+
+
+/* =====================================================
+   Position Content
+   ===================================================== */
+
+.position-content {
+  width: 100%;
+
+  max-width: 820px;
+
+  margin: 0 auto;
+
+  padding: 0;
+}
+
+.position-heading {
+  text-align: center;
+
+  padding-bottom: 34px;
+
+  margin-bottom: 42px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.position-label-text {
+  color: var(--blue);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 0.2em;
+
+  text-transform: uppercase;
+
+  margin-bottom: 14px;
+}
+
+.position-title {
+  color: var(--navy);
+
+  font-size: 28px;
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  letter-spacing: 0.04em;
+
+  margin: 0;
+}
+
+.position-details {
+  text-align: left;
+
+  font-size: 15.5px;
+
+  line-height: 2;
+
+  color: var(--text);
+
+  padding: 0;
+}
+
+.detail-section-title {
+  position: relative;
+
+  color: var(--navy);
+
+  font-size: 18px;
+  font-weight: 700;
+
+  line-height: 1.6;
+
+  letter-spacing: 0.05em;
+
+  margin-top: 52px;
+
+  margin-bottom: 22px;
+
+  padding-bottom: 14px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-section-title::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -1px;
+
+  width: 36px;
+  height: 2px;
+
+  background: var(--blue);
+}
+
+.detail-section-title:first-child {
+  margin-top: 0;
+}
+
+.detail-text {
+  color: var(--text);
+
+  margin-bottom: 18px;
+
+  line-height: 2;
+
+  font-size: 15.5px;
+}
+
+.detail-subsection {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.subsection-title {
+  color: var(--navy);
+
+  font-size: 15.5px;
+  font-weight: 700;
+
+  line-height: 1.6;
+
+  letter-spacing: 0.02em;
+
+  margin: 0 0 12px;
+}
+
+.subsection-title.required-title,
+.subsection-title.welcome-title {
+  color: var(--navy);
+
+  font-weight: 700;
+}
+
+.detail-list {
+  list-style: none;
+
+  margin-bottom: 16px;
+
+  padding-left: 0;
+}
+
+.detail-list li {
+  position: relative;
+
+  color: var(--text);
+
+  padding-left: 22px;
+
+  margin-bottom: 12px;
+
+  line-height: 1.9;
+
+  font-size: 15.5px;
+}
+
+.detail-list li::before {
+  content: "・";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  color: var(--blue);
+
+  font-weight: 700;
+}
+
+.detail-note {
+  color: var(--text-light);
+
+  font-size: 14.5px;
+
+  margin-top: 22px;
+
+  padding: 20px 24px;
+
+  background: #eef4fa;
+
+  border-left: 3px solid var(--blue);
+
+  border-radius: 0 8px 8px 0;
+
+  line-height: 1.9;
+}
+
+
+/* =====================================================
+   Position Accordion (正社員採用について見る▼)
+   Closed by default. If JavaScript is off, the
+   details simply stay open and the buttons are hidden.
+   ===================================================== */
+
+.position-toggle-wrap,
+.position-close-wrap {
+  display: none;
+
+  text-align: center;
+}
+
+.js .position-toggle-wrap,
+.js .position-close-wrap {
+  display: block;
+}
+
+.js .position-heading {
+  margin-bottom: 28px;
+}
+
+.position-toggle {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 13px 32px;
+
+  font-size: 15px;
+
+  letter-spacing: 0.02em;
+
+  box-shadow: 0 6px 16px rgba(11, 131, 199, 0.25);
+}
+
+.position-toggle:hover {
+  opacity: 1;
+
+  background: var(--blue-dark);
+}
+
+.position-toggle:focus-visible,
+.position-close:focus-visible {
+  outline: 3px solid rgba(11, 131, 199, 0.4);
+  outline-offset: 3px;
+}
+
+.position-toggle-icon {
+  display: inline-block;
+
+  font-size: 12px;
+
+  line-height: 1;
+
+  transition: transform 0.3s ease;
+}
+
+.position-toggle[aria-expanded="true"] .position-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Height animation without measuring: 0fr (closed) -> 1fr (open) */
+.position-accordion {
+  display: grid;
+
+  grid-template-rows: 1fr;
+}
+
+.js .position-accordion {
+  grid-template-rows: 0fr;
+
+  visibility: hidden;
+
+  transition:
+    grid-template-rows 0.5s cubic-bezier(0.2, 0.6, 0.2, 1),
+    visibility 0s linear 0.5s;
+}
+
+.js .position-accordion.is-open {
+  grid-template-rows: 1fr;
+
+  visibility: visible;
+
+  transition:
+    grid-template-rows 0.5s cubic-bezier(0.2, 0.6, 0.2, 1),
+    visibility 0s linear 0s;
+}
+
+.position-accordion-inner {
+  min-height: 0;
+
+  overflow: hidden;
+}
+
+/* Space between the button and 【雇用形態】 when open */
+.js .position-accordion-inner::before {
+  content: "";
+
+  display: block;
+
+  height: 44px;
+}
+
+.position-close-wrap {
+  margin-top: 44px;
+}
+
+.btn.position-close {
+  padding: 9px 30px;
+
+  font-size: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .js .position-accordion,
+  .js .position-accordion.is-open,
+  .position-toggle-icon {
+    transition: none;
+  }
+}
+
+
+/* =====================================================
+   Internship
+   ===================================================== */
+
+.internship-box {
+  position: relative;
+
+  margin-top: 40px;
+
+  padding: 30px 34px 32px;
+
+  background: var(--green-bg);
+
+  border: 1px solid var(--green-border);
+
+  border-left: 4px solid var(--green);
+
+  border-radius: 0 10px 10px 0;
+}
+
+.internship-label {
+  color: var(--green);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 0.2em;
+
+  text-transform: uppercase;
+
+  line-height: 1.6;
+
+  margin-bottom: 10px;
+}
+
+.internship-title {
+  color: var(--green-dark);
+
+  font-size: 17px;
+  font-weight: 700;
+
+  line-height: 1.6;
+
+  letter-spacing: 0.04em;
+
+  margin: 0 0 14px;
+}
+
+.internship-text {
+  color: var(--text);
+
+  font-size: 15px;
+
+  line-height: 1.95;
+
+  margin: 0;
+}
+
+.internship-link {
+  color: var(--green-dark);
+
+  font-weight: 700;
+
+  text-decoration: underline;
+
+  text-underline-offset: 3px;
+
+  text-decoration-thickness: 1px;
+}
+
+.internship-link:hover,
+.internship-link:focus-visible {
+  color: var(--green);
+}
+
+
+/* =====================================================
+   Reveal Animation
+   ===================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .reveal-ready .reveal {
+    opacity: 0;
+
+    transform: translateY(26px);
+
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+
+  .reveal-ready .reveal.is-visible {
+    opacity: 1;
+
+    transform: none;
+  }
+
+  .reveal-ready .gallery-image.reveal:nth-child(2) {
+    transition-delay: 0.12s;
+  }
+
+  .reveal-ready .gallery-image.reveal:nth-child(3) {
+    transition-delay: 0.24s;
+  }
+}
+
+
+/* =====================================================
+   Who We Are
+   ===================================================== */
+
+.section-whoweare {
+  background: var(--bg-lightblue);
+}
+
+.section-whoweare .section-label {
+  display: block;
+
+  color: var(--blue);
+}
+
+.whoweare-content {
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 0 auto;
+}
+
+.whoweare-intro,
+.business-details p,
+.team-info {
+  font-size: 16px;
+
+  line-height: 2;
+
+  text-align: left;
+}
+
+.business-details p + p {
+  margin-top: 26px;
+}
+
+.business-details strong {
+  color: var(--navy);
+
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   Who We Are - Brand Logos
+   Order:
+   1. LOKA
+   2. PISA
+   3. S.E.A.T.S Farm
+   4. NOVA MARKETING
+
+   Always a single horizontal row. The *-row.png
+   files are trimmed to similar proportions, so
+   the logos simply share the width equally and
+   shrink together on smaller screens.
+   ===================================================== */
+
+.brand-logos-grid {
+  width: 100%;
+
+  max-width: 900px;
+
+  margin: 75px auto;
+
+  display: flex;
+  flex-wrap: nowrap;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: clamp(14px, 4vw, 56px);
+}
+
+.brand-logo-item {
+  flex: 1 1 0;
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-logo-item img {
+  width: 100%;
+  height: auto;
+
+  max-width: 160px;
+
+  object-fit: contain;
+}
+
+
+/* =====================================================
+   Who We Are - Gallery
+   ===================================================== */
+
+.whoweare-gallery {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin: 56px 0 32px;
+}
+
+.gallery-photo {
+  min-width: 0;
+
+  overflow: hidden;
+
+  border-radius: 8px;
+
+  background: #eef1f4;
+}
+
+.gallery-photo img {
+  width: 100%;
+
+  aspect-ratio: 4 / 3;
+
+  object-fit: cover;
+
+  border-radius: 8px;
+
+  transition:
+    transform 0.5s ease;
+}
+
+.gallery-photo:hover img {
+  transform: scale(1.03);
+}
+
+
+/* =====================================================
+   Who We Are - News
+   ===================================================== */
+
+.whoweare-news {
+  width: 100%;
+
+  text-align: left;
+
+  margin: 0 0 56px;
+}
+
+.btn.whoweare-news-btn {
+  padding: 10px 24px;
+
+  font-size: 13.5px;
+
+  letter-spacing: 0.02em;
+}
+
+
+/* =====================================================
+   Who We Are - Closing
+   ===================================================== */
+
+/*
+   IMPORTANT:
+   Both closing lines now intentionally use the
+   SAME font size.
+*/
+
+.whoweare-closing {
+  text-align: center;
+
+  margin-top: 64px;
+}
+
+.whoweare-closing .closing-lead,
+.whoweare-closing .closing-sub {
+  color: var(--navy);
+
+  /*
+    C FIX:
+    Same font size for both lines.
+  */
+  font-size: 22px;
+
+  font-weight: 700;
+
+  line-height: 1.7;
+}
+
+.whoweare-closing .closing-sub {
+  margin-top: 10px;
+}
+
+
+/* =====================================================
+   Learn More
+   ===================================================== */
+
+.fb-feed {
+  margin-bottom: 56px;
+}
+
+.fb-feed-title {
+  color: var(--navy);
+
+  font-size: 18px;
+  font-weight: 700;
+
+  letter-spacing: 0.04em;
+
+  text-align: center;
+
+  margin-bottom: 22px;
+}
+
+.fb-feed-frame {
+  width: 100%;
+
+  max-width: 524px;
+
+  margin: 0 auto;
+
+  padding: 12px;
+
+  background: var(--white);
+
+  border-radius: 6px;
+
+  box-shadow:
+    0 4px 18px rgba(34, 56, 75, 0.08);
+
+  overflow: hidden;
+}
+
+.fb-feed-iframe {
+  display: block;
+
+  width: 100%;
+
+  max-width: 100%;
+
+  height: 620px;
+
+  border: 0;
+
+  overflow: hidden;
+}
+
+.fb-feed-link {
+  text-align: center;
+
+  margin-top: 16px;
+}
+
+.fb-feed-link a {
+  color: var(--blue);
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+.fb-feed-link a:hover {
+  text-decoration: underline;
+}
+
+.learn-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 24px;
+}
+
+.learn-card {
+  background: var(--white);
+
+  border-radius: 6px;
+
+  box-shadow:
+    0 4px 18px rgba(34, 56, 75, 0.08);
+
+  overflow: hidden;
+}
+
+.learn-photo {
+  height: 150px;
+
+  background: #e1e6ea;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.learn-photo img {
+  max-width: 55%;
+
+  max-height: 55px;
+
+  object-fit: contain;
+}
+
+.learn-body {
+  padding: 22px 24px 34px;
+
+  text-align: center;
+}
+
+.learn-body h3 {
+  color: var(--navy);
+
+  font-size: 16px;
+  font-weight: 700;
+
+  margin-bottom: 16px;
+}
+
+
+/* =====================================================
+   CTA / Contact
+   ===================================================== */
+
+.cta-section {
+  background: var(--bg-sky);
+
+  padding: 130px 0 90px;
+}
+
+.cta-card {
+  background: var(--white);
+
+  border-radius: var(--radius-lg);
+
+  padding: 64px 56px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr) 480px;
+
+  gap: 56px;
+
+  align-items: start;
+}
+
+.cta-title {
+  color: var(--navy);
+
+  font-size: 27px;
+  font-weight: 700;
+
+  line-height: 1.7;
+
+  margin-bottom: 30px;
+}
+
+.cta-text p + p {
+  margin-top: 24px;
+}
+
+.cta-form-card {
+  background: var(--white);
+
+  border-radius: var(--radius);
+
+  box-shadow: var(--shadow-strong);
+
+  padding: 36px 40px 40px;
+
+  margin-top: -110px;
+}
+
+.form-title {
+  color: var(--navy);
+
+  font-size: 19px;
+  font-weight: 700;
+
+  margin-bottom: 26px;
+}
+
+.form-row {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field label {
+  display: block;
+
+  color: var(--navy);
+
+  font-size: 14px;
+  font-weight: 700;
+
+  margin-bottom: 8px;
+}
+
+.required {
+  color: var(--red);
+
+  font-size: 11px;
+  font-weight: 500;
+
+  margin-left: 4px;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+
+  border: 1px solid #d6dde3;
+
+  border-radius: 8px;
+
+  padding: 12px 14px;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  color: var(--navy);
+
+  background: var(--white);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+
+  border-color: var(--blue);
+
+  box-shadow:
+    0 0 0 3px rgba(11, 131, 199, 0.12);
+}
+
+.form-field input.field-error,
+.form-field textarea.field-error {
+  border-color: var(--red);
+}
+
+.form-field textarea {
+  resize: vertical;
+}
+
+.btn-submit {
+  width: 100%;
+
+  margin-top: 4px;
+
+  font-size: 16px;
+}
+
+.form-note {
+  text-align: center;
+
+  color: var(--text-light);
+
+  font-size: 13px;
+
+  margin-top: 16px;
+}
+
+.form-success {
+  text-align: center;
+
+  color: var(--blue);
+
+  font-weight: 700;
+
+  padding: 40px 0;
+}
+
+
+/* =====================================================
+   Footer
+   ===================================================== */
+
+.site-footer {
+  background: var(--bg-sky);
+
+  padding: 40px 0 0;
+}
+
+.footer-logo {
+  display: inline-block;
+
+  padding-bottom: 36px;
+}
+
+.footer-logo img {
+  height: 48px;
+
+  width: auto;
+}
+
+.footer-bottom {
+  background: var(--bg-sky-deep);
+
+  height: 14px;
+}
+
+
+/* =====================================================
+   Floating Action Button (FAB) - Direct Application Bonus
+   Fixed to the bottom-right corner on every screen size.
+   ===================================================== */
+
+.fab-bonus {
+  --fab-size: 160px;
+
+  position: fixed;
+
+  right: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+
+  z-index: 99; /* just below the sticky header (100) */
+
+  display: block;
+
+  width: var(--fab-size);
+  height: var(--fab-size);
+
+  border-radius: 50%;
+
+  filter: drop-shadow(0 8px 18px rgba(20, 33, 45, 0.28));
+
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease,
+    transform 0.3s ease;
+}
+
+.fab-bonus img {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 50%;
+
+  transition: scale 0.25s ease;
+}
+
+/* "scale" (not transform) so it combines with the float animation */
+.fab-bonus:hover img,
+.fab-bonus:focus-visible img {
+  scale: 1.06;
+}
+
+.fab-bonus:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .fab-bonus {
+    animation: fab-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1.2) backwards;
+  }
+
+  .fab-bonus img {
+    animation: fab-float 3.2s ease-in-out 0.8s infinite;
+  }
+
+  .fab-bonus:hover img,
+  .fab-bonus:focus-visible img {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes fab-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fab-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-6px) rotate(-3deg);
+  }
+}
+
+@media (max-width: 1024px) {
+
+  .fab-bonus {
+    --fab-size: 136px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .fab-bonus {
+    --fab-size: 112px;
+
+    right: 14px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 420px) {
+
+  .fab-bonus {
+    --fab-size: 100px;
+
+    right: 10px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+
+/* =====================================================
+   Responsive - Tablet / Small Desktop
+   ===================================================== */
+
+@media (max-width: 1024px) {
+
+  .hero {
+    min-height: 540px;
+  }
+
+  .hero-title {
+    font-size: clamp(30px, 4.6vw, 47px);
+  }
+
+  .candidate-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .candidate-details {
+    max-width: 850px;
+  }
+
+  .section-positions {
+    padding: 96px 0;
+  }
+
+  .positions-gallery {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 16px;
+
+    margin-bottom: 44px;
+  }
+
+  .position-card-main {
+    width: calc(100% - 48px);
+
+    padding: 44px 44px 52px;
+  }
+
+  .internship-box {
+    margin-top: 36px;
+
+    padding: 26px 28px 28px;
+  }
+
+  .whoweare-gallery {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+  }
+
+  .cta-card {
+    grid-template-columns: 1fr;
+
+    gap: 40px;
+  }
+
+  .cta-form-card {
+    margin-top: 0;
+
+    box-shadow: var(--shadow);
+
+    border: 1px solid var(--border);
+
+    padding: 30px 28px 34px;
+  }
+
+  .ceo-grid {
+    grid-template-columns: 280px 1fr;
+
+    gap: 36px;
+  }
+}
+
+
+/* =====================================================
+   Responsive - Mobile
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+  body {
+    font-size: 15px;
+  }
+
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .section {
+    padding: 64px 0;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+
+  .section-head {
+    margin-bottom: 40px;
+  }
+
+
+  /* ---------------------------------------------
+     Mobile Header
+     --------------------------------------------- */
+
+  .header-inner {
+    padding: 14px 20px;
+  }
+
+  .header-logo img {
+    height: 36px;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .header-nav {
+    position: absolute;
+
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    background: var(--white);
+
+    box-shadow: var(--shadow);
+
+    display: none;
+
+    padding: 20px 20px 28px;
+  }
+
+  .header-nav.is-open {
+    display: block;
+  }
+
+  .header-nav ul {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 0;
+  }
+
+  .header-nav li {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-nav li:last-child {
+    border-bottom: none;
+
+    margin-top: 18px;
+  }
+
+  .header-nav a:not(.btn) {
+    display: block;
+
+    padding: 14px 4px;
+  }
+
+  .header-nav .btn {
+    display: block;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform:
+      translateY(7px)
+      rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform:
+      translateY(-7px)
+      rotate(-45deg);
+  }
+
+
+  /* ---------------------------------------------
+     Hero
+     --------------------------------------------- */
+
+  .hero {
+    min-height: 480px;
+
+    aspect-ratio: auto;
+
+    padding: 56px 0 64px;
+  }
+
+  /* Forced line breaks are desktop-only; let the copy reflow on phones */
+  .br-pc {
+    display: none;
+  }
+
+  /* Scales so the two manual title lines always fit on one line each */
+  .hero-title {
+    font-size: clamp(19px, 6.4vw, 28px);
+
+    letter-spacing: 0.01em;
+
+    margin-bottom: 24px;
+  }
+
+  .hero-lead {
+    font-size: 15px;
+
+    margin-bottom: 16px;
+  }
+
+  /* Slightly stronger veil than desktop (smaller text), but photos stay visible */
+  .hero-bg::after {
+    background:
+      radial-gradient(
+        ellipse 110% 60% at 50% 48%,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.4) 62%,
+        rgba(255, 255, 255, 0.15) 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.15) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.3) 100%
+      );
+  }
+
+
+  /* ---------------------------------------------
+     Bonus banner
+     --------------------------------------------- */
+
+  .banner-section {
+    padding: 28px 0 40px;
+  }
+
+
+  /* ---------------------------------------------
+     CEO
+     --------------------------------------------- */
+
+  .ceo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ceo-photo {
+    max-width: 320px;
+
+    margin: 0 auto;
+  }
+
+
+  /* ---------------------------------------------
+     Candidate
+     --------------------------------------------- */
+
+  .candidate-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-card {
+    padding: 32px 20px;
+  }
+
+  .candidate-details {
+    margin-top: 34px;
+
+    max-width: 100%;
+  }
+
+  .candidate-details-heading {
+    padding-bottom: 12px;
+  }
+
+  .candidate-details-heading h3 {
+    font-size: 18px;
+  }
+
+  .candidate-benefits {
+    padding-top: 16px;
+  }
+
+  .candidate-benefits li {
+    font-size: 14.5px;
+
+    line-height: 1.9;
+
+    padding-left: 22px;
+
+    margin-bottom: 12px;
+  }
+
+  .candidate-benefits li::before {
+    left: 3px;
+
+    font-size: 17px;
+  }
+
+  .candidate-message {
+    margin-top: 24px;
+
+    padding: 16px 17px;
+
+    font-size: 13.5px;
+
+    line-height: 1.85;
+  }
+
+
+  /* ---------------------------------------------
+     Open Positions
+     --------------------------------------------- */
+
+  .section-positions {
+    min-height: 0;
+
+    padding: 72px 0;
+  }
+
+  .positions-header {
+    margin-bottom: 36px;
+  }
+
+  .positions-header .section-title {
+    font-size: 25px;
+
+    padding-bottom: 16px;
+  }
+
+  .position-card-main {
+    width: calc(100% - 32px);
+
+    border-radius: 12px;
+
+    padding: 28px 20px 36px;
+  }
+
+  .internship-box {
+    margin-top: 30px;
+
+    padding: 22px 18px 24px;
+
+    border-radius: 0 8px 8px 0;
+  }
+
+  .internship-title {
+    font-size: 15.5px;
+
+    margin-bottom: 12px;
+  }
+
+  .internship-text {
+    font-size: 14.5px;
+
+    line-height: 1.9;
+  }
+
+  .positions-gallery {
+    gap: 12px;
+
+    margin-bottom: 32px;
+  }
+
+  .position-heading {
+    padding-bottom: 24px;
+
+    margin-bottom: 30px;
+  }
+
+  .js .position-heading {
+    margin-bottom: 22px;
+  }
+
+  .position-toggle {
+    padding: 12px 24px;
+
+    font-size: 14px;
+  }
+
+  .js .position-accordion-inner::before {
+    height: 32px;
+  }
+
+  .position-close-wrap {
+    margin-top: 34px;
+  }
+
+  .position-title {
+    font-size: 22px;
+  }
+
+  .position-details {
+    font-size: 14.5px;
+
+    line-height: 1.9;
+  }
+
+  .detail-section-title {
+    font-size: 16px;
+
+    margin-top: 38px;
+
+    margin-bottom: 18px;
+
+    padding-bottom: 12px;
+  }
+
+  .detail-text {
+    font-size: 14.5px;
+
+    margin-bottom: 14px;
+  }
+
+  .detail-list li {
+    font-size: 14.5px;
+
+    padding-left: 20px;
+
+    margin-bottom: 10px;
+  }
+
+  .detail-subsection {
+    margin-top: 20px;
+
+    margin-bottom: 20px;
+  }
+
+  .subsection-title {
+    font-size: 14.5px;
+
+    margin-bottom: 10px;
+  }
+
+  .detail-note {
+    padding: 16px 18px;
+
+    font-size: 13.5px;
+  }
+
+
+  /* ---------------------------------------------
+     Who We Are
+     --------------------------------------------- */
+
+  .whoweare-content {
+    max-width: 100%;
+  }
+
+  .brand-logos-grid {
+    margin: 44px auto;
+  }
+
+  .whoweare-intro,
+  .business-details p,
+  .team-info {
+    font-size: 15px;
+
+    line-height: 1.9;
+  }
+
+  .business-details p + p {
+    margin-top: 20px;
+  }
+
+  .whoweare-gallery {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin: 40px 0 24px;
+  }
+
+  .whoweare-news {
+    margin-bottom: 40px;
+  }
+
+  .btn.whoweare-news-btn {
+    padding: 9px 20px;
+
+    font-size: 13px;
+  }
+
+
+  /* ---------------------------------------------
+     C. Closing
+     Both lines remain the SAME SIZE
+     --------------------------------------------- */
+
+  .whoweare-closing {
+    margin-top: 48px;
+  }
+
+  .whoweare-closing .closing-lead,
+  .whoweare-closing .closing-sub {
+    font-size: 18px;
+
+    line-height: 1.7;
+  }
+
+  .whoweare-closing .closing-sub {
+    margin-top: 10px;
+  }
+
+
+  /* ---------------------------------------------
+     Learn More
+     --------------------------------------------- */
+
+  .fb-feed {
+    margin-bottom: 40px;
+  }
+
+  .fb-feed-title {
+    font-size: 16px;
+
+    margin-bottom: 18px;
+  }
+
+  .fb-feed-frame {
+    padding: 10px;
+  }
+
+  .learn-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  /* ---------------------------------------------
+     CTA
+     --------------------------------------------- */
+
+  .cta-section {
+    padding: 70px 0 60px;
+  }
+
+  .cta-card {
+    padding: 36px 24px;
+  }
+
+  .cta-title {
+    font-size: 22px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+
+}
+
+
+/* =====================================================
+   Phones - Position Gallery Horizontal Swipe
+   ===================================================== */
+
+@media (max-width: 600px) {
+
+  .positions-gallery {
+    display: flex;
+
+    grid-template-columns: none;
+
+    gap: 12px;
+
+    margin:
+      0 -20px 30px;
+
+    padding:
+      0 20px 6px;
+
+    overflow-x: auto;
+
+    scroll-snap-type: x mandatory;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+  }
+
+  .positions-gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gallery-image {
+    flex: 0 0 78%;
+
+    scroll-snap-align: center;
+  }
+
+
+  .whoweare-gallery {
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: 10px;
+  }
+
+}
+
+
+/* =====================================================
+   Very Small Phones
+   ===================================================== */
+
+@media (max-width: 420px) {
+
+  .container {
+    padding-left: 16px;
+
+    padding-right: 16px;
+  }
+
+  .hero {
+    min-height: 430px;
+  }
+
+  .hero-title {
+    font-size: clamp(17px, 5.8vw, 25px);
+  }
+
+  .hero-lead {
+    font-size: 14px;
+  }
+
+  .btn-primary {
+    padding: 13px 24px;
+  }
+
+  .candidate-details-heading h3 {
+    font-size: 17px;
+  }
+
+  .candidate-benefits li {
+    font-size: 14px;
+
+    padding-left: 20px;
+  }
+
+  .candidate-message {
+    font-size: 13px;
+
+    padding: 15px;
+  }
+
+  .position-card-main {
+    width: calc(100% - 20px);
+
+    padding-left: 16px;
+
+    padding-right: 16px;
+  }
+
+  .whoweare-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-card {
+    padding-left: 18px;
+
+    padding-right: 18px;
+  }
+
+  .cta-form-card {
+    padding-left: 20px;
+
+    padding-right: 20px;
+  }
+
+
+  /*
+    Keep C identical on very small phones too.
+  */
+
+  .whoweare-closing .closing-lead,
+  .whoweare-closing .closing-sub {
+    font-size: 17px;
+  }
+
+}

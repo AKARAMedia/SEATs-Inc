@@ -1,0 +1,31 @@
+[section f71126e]
+  <widget> CEO Message​
+[section 6de7fe8b]
+  <widget> ” Bringing wisdom and experiences acquired in Japan and surrounded nations to Cambodia. “ “Creating people, things, and ideas from Cambodia”, this is S.E.A.T.S Inc.’s imperative responsibility.Bringing wisdom and experiences acquired in Japan and surrounded nations to Cambodia. We make full use of Cambodia’s strength, maximize the on-site productivity, and produce “power” from Cambodia that can compete in the world.S.E.A.T.S Inc. believes that doing business on a real-site is everything. We continuously push forward the grounded businesses, and by that, we aspire to meet imperative responsibilities. Director & CEOKosuke Mineshima
+     img: /media/2025/01/ceo-1.jpeg (720x720)
+     bg: /media/2025/01/ceo-1.jpeg
+[section 6c5ebfda]
+  <widget> Profile
+[section 5fde07e7]
+  <widget> Kosuke Mineshima S.E.A.T.S Inc. Director & CEOBorn in Shizuoka Prefecture in 1988. He graduated from Rikkyo University in Tokyo. Experiences of backpackers and internships in Shanghai during his time at the university sparked his interest in Asia’s growing market. Soon after graduating from the university, he joined Mitsubishi Electric Corporation and became in charge of FA (factory automation) machine’s marketer. Here, he mainly engaged in the business expansion in Taiwan, India, and Singapore.In 2014, at the age of 26, he moved to Cambodia and started a business at S.E.A.T.S Inc.In 2018, he returned to and moved the main base to Japan and worked at Recruit Lifestyle Co., Ltd as his second job. Here, he engaged in pioneering a new major client market for payment services in the Business Development Sector. In 2019, he returned to and moved the main base to Cambodia again and is currently serving as the CEO.
+[section 3aa03de3]
+  <widget> 
+     link:  -> https://twitter.com/seatscoo
+  <widget> 
+     img: /media/2025/01/note-2-1.png (400x74)
+     bg: /media/2025/01/note-2-1.png
+     link:  -> https://note.com/mine_blog
+  <widget> 
+[section 4283b454]
+  <widget> Facebook Page https://www.facebook.com/ seatsinccambodia
+     link:  -> https://www.facebook.com/%20seatsinccambodia
+  <widget> Telegram Channel https://t.me/seatsincrecruit
+     link:  -> https://t.me/seatsincrecruit
+[section 7b5fb3e8]
+  <widget> 
+     img: /media/2025/01/ceo-interview-2.jpg (?x?)
+     img: /media/2025/01/ceo-interview-1.jpg (?x?)
+     img: /media/2025/01/ceo-interviews-8.jpg (?x?)
+     link:  -> https://www.youtube.com/@seatsinc5038/videos
+     link:  -> https://www.youtube.com/@seatsinc5038/videos
+     link:  -> https://www.youtube.com/@seatsinc5038/videos

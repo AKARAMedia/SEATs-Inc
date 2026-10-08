@@ -1,0 +1,167 @@
+[container 9383dbf]
+  [container ]
+    <eael-post-list.default> 社内イベント「カンパニーパーティー」を開催しました 10月 2, 2026 S.E.A.T.S Inc. recently held its regular internal event, the “Company Party.”The Company Party is an internal event open to...続きを表示する 大阪・関西万博閉幕1周年記念グルメフェア PASTA+にて「生胡椒の塩漬け」を販売します 10月 2, 2026 From October 8 to 13, 2026, our Japanese sales partner, PASTA+, will be selling S.E.A.T.S Farm’s original product, Salted...続きを表示する 「3rd Cambodia Digital Trade Forum & Online Expo 2026」にS.E.A.T.S Inc.が出展しました 9月 22, 2026 From September 11 to 13, 2026, S.E.A.T.S Inc. exhibited at the 3rd Cambodia Digital Trade Forum & Online Expo...続きを表示する 米国・ダラス「Mitsuwa Marketplace」にて「S.E.A.T.S Farm 生胡椒の塩漬け」の販売を開始しました 7月 11, 2026 We are delighted to announce that S.E.A.T.S Farm’s Green Salted Kampot Pepper is now available at Mitsuwa Marketplace in...続きを表示する 立教大学校友会報「セントポール」に弊社社員のインタビュー記事が掲載されました 5月 27, 2026 We are pleased to announce that an interview featuring our CEO and staff member has been published in St....続きを表示する 2026年5月3日と4日に、東京の代々木公園で開催された「第10回カンボジア・フェスティバル2026」にS.E.A.T.S Farmのオリジナル商品「カンポットペッパー生胡椒の塩漬け」が展示で参加しました。 5月 12, 2026 At the event, multiple Cambodian companies, including S.E.A.T.S Inc., jointly exhibited under the booth organized by the Ministry of...続きを表示する 【イベント出店】あべのハルカス近鉄本店「大阪・関西万博 グルメパレード」にて生胡椒の塩漬けを販売 4月 8, 2026 We sincerely appreciate your continued support of our products.We are pleased to announce that S.E.A.T.S Farm’s Salted Fresh Kampot...続きを表示する 代官山 蔦屋書店にカンボジア産「S.E.A.T.S Farm カンポットペッパー 生胡椒の塩漬け」が初上陸！ 2月 8, 2026 S.E.A.T.S Farm’s original prod
+       img: /media/2026/10/photo_2_2026-10-02_10-36-24.jpg (?x?)
+       img: /media/2026/10/photo_1_2026-10-02_10-25-40.jpg (?x?)
+       img: /media/2026/09/1-e1790061432811.jpg (?x?)
+       img: /media/2026/07/photo_6235581035739551849_y.jpg (?x?)
+       img: /media/2026/05/photo_6102502096843247223_y-e1779849974378.jpg (?x?)
+       img: /media/2026/05/photo_6057869535437590032_y-e1778552593756.jpg (?x?)
+       img: /media/2026/01/photo_2026-04-07_14-04-16-e1775623496519.jpg (?x?)
+       img: /media/2026/01/photo_6282725568897814343_y-e1768371742552.jpg (?x?)
+       img: /media/2025/12/photo_6197254929433431106_y.jpg (?x?)
+       img: /media/2025/12/photo_6233391989693025388_y.jpg (?x?)
+       img: /media/2025/09/photo_1_2025-09-30_09-59-30-e1759992686469.jpg (?x?)
+       img: /media/2025/08/photo_6134303589477238586_y-e1755586548809.jpg (?x?)
+       img: /media/2025/08/photo_6132175132534360600_y.jpg (?x?)
+       img: /media/2025/08/photo_6100687816754316289_y-1-1-e1754630927794.jpg (?x?)
+       img: /media/2025/07/photo_2025-07-25_22-49-22.jpg (?x?)
+       img: /media/2025/07/photo_2025-07-25_22-19-34.jpg (?x?)
+       img: /media/2025/07/photo_6_2025-07-23_10-40-09-e1753958839949.jpg (?x?)
+       img: /media/2025/06/photo_4_2025-07-23_10-40-09-e1753958749249.jpg (?x?)
+       img: /media/2025/06/img-4-e1749696101556.jpg (?x?)
+       img: /media/2025/05/photo_1_2025-05-07_09-50-26.jpg (?x?)
+       img: /media/2025/04/photo-e1749012262280.jpg (?x?)
+       img: /media/2025/07/photo_1_2025-07-24_10-32-31.jpg (?x?)
+       img: /media/2024/04/loka-honored-with-best-display-product-award-at-camfoodcamhotel24-6.jpg (?x?)
+       img: /media/2025/01/s.e.a.t.s-farm-participated-in-thaifex-anuga-asia-2024-in-bangkokthailand-2.jpg (?x?)
+       img: /media/2025/01/loka-participated-in-major-niigata-sake-event-1.jpg (?x?)
+       img: /media/2025/01/s.e.a.t.s-farm-participates-in-valentines-day-celebrations-at-maff.jpg (?x?)
+       img: /media/2025/01/loka-triumphs-at-gashikoukan-kai-in-cambodiashowcasing-premium-japanese-sake-8.jpg (?x?)
+       img: /media/2025/01/s.e.a.t.s-inc-takes-center-stage-at-cjcc-job-fair-showcases-growth-and-opportunity.jpg (?x?)
+       img: /media/2025/01/s.e.a.t.s-inc-celebrates-with-the-elite-at-jacjbac-bonenkai-2023-1.jpg (?x?)
+       img: /media/2025/01/aeon-japan-fair-2023-a-resounding-success-7.jpg (?x?)
+       img: /media/2025/01/loka-foodBeverage-presents-toba-meats-and-japonica-rice-at-the-upcoming-aeon-japan-fair-2023-1.jpg (?x?)
+       img: /media/2025/01/s.e.a.t.s-inc-returns-as-esteemed-judge-in-the-ideathon-contest-season-2-1.jpg (?x?)
+       img: /media/2025/01/loka-japanese-foodBeverage-a-triumph-at-camfood-2023-as-the-most-popular-booth-11.jpg (?x?)
+       img: /media/2025/01/participated-in-the-Jetro-sake-event-a-sake-tasting-event-held-at-vatanak-capital.jpg (?x?)
+       img: /media/2025/01/s.e.a.t.s-inc-takes-center-stage-at-cjcc-job-fair-showcases-growth-and-opportunity-4.jpg (?x?)
+       img: /media/2025/01/attending-asias-largest-food-and-beverage-trade-show-thaifex-4.jpg (?x?)
+       img: /media/2025/01/kampot-pepper-exhibited-at-cambodia-festival-in-yoyogi-2023-4.jpg (?x?)
+       img: /media/2025/01/cambodian-dry-fruit-and-agricultural-products-for-japanese-market-4.jpg (?x?)
+       img: /media/2025/01/participated-in-job-fair-january-2023-1.jpg (?x?)
+       img: /media/2025/01/loka-foodbeverage-as-the-best-booth-winner-at-camfood-and-camhotel22.jpg (?x?)
+       img: /media/2025/01/participated-in-the-engineering-career-fair-2022-2.jpg (?x?)
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-holds-regular-company-party/
+       link: 社内イベント「カンパニーパーティー」を開催しました -> https://seats-inc.com/ja/s-e-a-t-s-inc-holds-regular-company-party/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-holds-regular-company-party/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-farms-salted-kampot-pepper-to-be-sold-by-pasta-at-the-expo2025-1st-anniversary-gourmet-fair/
+       link: 大阪・関西万博閉幕1周年記念グルメフェア PASTA+にて「生胡椒の塩漬け」を販売します -> https://seats-inc.com/ja/s-e-a-t-s-farms-salted-kampot-pepper-to-be-sold-by-pasta-at-the-expo2025-1st-anniversary-gourmet-fair/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-farms-salted-kampot-pepper-to-be-sold-by-pasta-at-the-expo2025-1st-anniversary-gourmet-fair/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-exhibits-at-the-3rd-cambodia-digital-trade-forum-online-expo-2026/
+       link: 「3rd Cambodia Digital Trade Forum & Online Expo 2026」にS.E.A. -> https://seats-inc.com/ja/s-e-a-t-s-inc-exhibits-at-the-3rd-cambodia-digital-trade-forum-online-expo-2026/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-exhibits-at-the-3rd-cambodia-digital-trade-forum-online-expo-2026/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-farms-green-salted-kampot-pepper-now-available-at-mitsuwa-marketplace-in-dallas-texas/
+       link: 米国・ダラス「Mitsuwa Marketplace」にて「S.E.A.T.S Farm 生胡椒の塩漬け」の販売を開始し -> https://seats-inc.com/ja/s-e-a-t-s-farms-green-salted-kampot-pepper-now-available-at-mitsuwa-marketplace-in-dallas-texas/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-farms-green-salted-kampot-pepper-now-available-at-mitsuwa-marketplace-in-dallas-texas/
+       link:  -> https://seats-inc.com/ja/featured-in-rikkyo-university-alumni-magazine-st-paul-interview-with-our-team-members/
+       link: 立教大学校友会報「セントポール」に弊社社員のインタビュー記事が掲載されました -> https://seats-inc.com/ja/featured-in-rikkyo-university-alumni-magazine-st-paul-interview-with-our-team-members/
+       link: 続きを表示する -> https://seats-inc.com/ja/featured-in-rikkyo-university-alumni-magazine-st-paul-interview-with-our-team-members/
+       link:  -> https://seats-inc.com/ja/on-may-3-4-2026-s-e-a-t-s-farm-showcased-and-sold-its-original-product-salted-kampot-pepper-at-the-10th-cambodia-festival-2026-held-at-yoyogi-park-in-tokyo-japan/
+       link: 2026年5月3日と4日に、東京の代々木公園で開催された「第10回カンボジア・フェスティバル2026」にS.E.A.T. -> https://seats-inc.com/ja/on-may-3-4-2026-s-e-a-t-s-farm-showcased-and-sold-its-original-product-salted-kampot-pepper-at-the-10th-cambodia-festival-2026-held-at-yoyogi-park-in-tokyo-japan/
+       link: 続きを表示する -> https://seats-inc.com/ja/on-may-3-4-2026-s-e-a-t-s-farm-showcased-and-sold-its-original-product-salted-kampot-pepper-at-the-10th-cambodia-festival-2026-held-at-yoyogi-park-in-tokyo-japan/
+       link:  -> https://seats-inc.com/ja/cambodian-specialty-s-e-a-t-s-farm-salted-kampot-pepper-makes-its-debut-at-daikanyama-tsutaya-books/
+       link: 【イベント出店】あべのハルカス近鉄本店「大阪・関西万博 グルメパレード」にて生胡椒の塩漬けを販売 -> https://seats-inc.com/ja/cambodian-specialty-s-e-a-t-s-farm-salted-kampot-pepper-makes-its-debut-at-daikanyama-tsutaya-books/
+       link: 続きを表示する -> https://seats-inc.com/ja/cambodian-specialty-s-e-a-t-s-farm-salted-kampot-pepper-makes-its-debut-at-daikanyama-tsutaya-books/
+       link:  -> https://seats-inc.com/ja/cambodian-specialty-s-e-a-t-s-farm-salted-kampot-pepper-makes-its-debut-at-daikanyama-tsutaya-books-2/
+       link: 代官山 蔦屋書店にカンボジア産「S.E.A.T.S Farm カンポットペッパー 生胡椒の塩漬け」が初上陸！ -> https://seats-inc.com/ja/cambodian-specialty-s-e-a-t-s-farm-salted-kampot-pepper-makes-its-debut-at-daikanyama-tsutaya-books-2/
+       link: 続きを表示する -> https://seats-inc.com/ja/cambodian-specialty-s-e-a-t-s-farm-salted-kampot-pepper-makes-its-debut-at-daikanyama-tsutaya-books-2/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-farm-participated-in-cult-christmas-market-2025/
+       link: CULT Christmas Market 2025 に出展しました -> https://seats-inc.com/ja/s-e-a-t-s-farm-participated-in-cult-christmas-market-2025/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-farm-participated-in-cult-christmas-market-2025/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-ceo-speaks-at-jetro-hamamatsu-seminar-on-cambodias-evolving-business-environment/
+       link: ジェトロ浜松主催「ジェトロビジネスセミナー」に弊社代表の峯島が登壇しました -> https://seats-inc.com/ja/s-e-a-t-s-inc-ceo-speaks-at-jetro-hamamatsu-seminar-on-cambodias-evolving-business-environment/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-ceo-speaks-at-jetro-hamamatsu-seminar-on-cambodias-evolving-business-environment/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-farms-original-salted-kampot-pepper-gaining-popularity-following-expo-showcase/
+       link: S.E.A.T.S Farmオリジナル商品「生胡椒の塩漬け」が万博をきっかけに大好評 -> https://seats-inc.com/ja/s-e-a-t-s-farms-original-salted-kampot-pepper-gaining-popularity-following-expo-showcase/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-farms-original-salted-kampot-pepper-gaining-popularity-following-expo-showcase/
+       link:  -> https://seats-inc.com/ja/our-product-featured-on-fuji-tvs-program-nariyuki-kaidou-tabi/
+       link: フジテレビ「なりゆき街道旅」にて弊社商品が紹介されました -> https://seats-inc.com/ja/our-product-featured-on-fuji-tvs-program-nariyuki-kaidou-tabi/
+       link: 続きを表示する -> https://seats-inc.com/ja/our-product-featured-on-fuji-tvs-program-nariyuki-kaidou-tabi/
+       link:  -> https://seats-inc.com/ja/hosted-premium-japanese-sake-tasting-nabeshima-at-tsutaya-cafe-bookstore/
+       link: 「プレミアム日本酒テイスティング -鍋島-」を開催しました -> https://seats-inc.com/ja/hosted-premium-japanese-sake-tasting-nabeshima-at-tsutaya-cafe-bookstore/
+       link: 続きを表示する -> https://seats-inc.com/ja/hosted-premium-japanese-sake-tasting-nabeshima-at-tsutaya-cafe-bookstore/
+       link:  -> https://seats-inc.com/ja/company-kick-off-meeting-held-for-second-half-of-2025/
+       link: 2025年下半期 KICK-OFFミーティングを開催しました -> https://seats-inc.com/ja/company-kick-off-meeting-held-for-second-half-of-2025/
+       link: 続きを表示する -> https://seats-inc.com/ja/company-kick-off-meeting-held-for-second-half-of-2025/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-ceo-speaks-at-jetro-webinar-latest-e-commerce-trends-in-asean-from-local-perspectives/
+       link: JETRO主催ウェビナー「海外現地発！ASEAN各国のECトレンド」にて弊社代表が登壇しました -> https://seats-inc.com/ja/s-e-a-t-s-inc-ceo-speaks-at-jetro-webinar-latest-e-commerce-trends-in-asean-from-local-perspectives/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-ceo-speaks-at-jetro-webinar-latest-e-commerce-trends-in-asean-from-local-perspectives/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-participates-as-cambodian-buyer-at-tochigi-food-export-business-meeting/
+       link: 栃木県主催「とちぎ食品輸出商談会」にカンボジアバイヤーとして参加しました -> https://seats-inc.com/ja/s-e-a-t-s-inc-participates-as-cambodian-buyer-at-tochigi-food-export-business-meeting/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-participates-as-cambodian-buyer-at-tochigi-food-export-business-meeting/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-officially-participates-in-cambodia-national-day-at-expo-2025-osaka-kansai/
+       link: 【大阪・関西万博「カンボジア・ナショナルデー」にて弊社が公式参加】 -> https://seats-inc.com/ja/s-e-a-t-s-inc-officially-participates-in-cambodia-national-day-at-expo-2025-osaka-kansai/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-officially-participates-in-cambodia-national-day-at-expo-2025-osaka-kansai/
+       link:  -> https://seats-inc.com/ja/our-original-product-featured-in-world-onigiri-cambodia-edition-at-expo-2025-osaka-kansai/
+       link: 大阪・関西万博にて販売中の「世界のおにぎり：カンボジア編」に弊社オリジナル商品が使用されています -> https://seats-inc.com/ja/our-original-product-featured-in-world-onigiri-cambodia-edition-at-expo-2025-osaka-kansai/
+       link: 続きを表示する -> https://seats-inc.com/ja/our-original-product-featured-in-world-onigiri-cambodia-edition-at-expo-2025-osaka-kansai/
+       link:  -> https://seats-inc.com/ja/participation-in-thaifex-anuga-asia-2025/
+       link: 「THAIFEX-Anuga Asia 2025」へ参加しました -> https://seats-inc.com/ja/participation-in-thaifex-anuga-asia-2025/
+       link: 続きを表示する -> https://seats-inc.com/ja/participation-in-thaifex-anuga-asia-2025/
+       link:  -> https://seats-inc.com/ja/report-participation-in-the-roundtable-with-former-minister-of-economy-trade-and-industry-mr-yasutoshi-nishimura/
+       link: 西村康稔元経済産業大臣との意見交換会に出席しました -> https://seats-inc.com/ja/report-participation-in-the-roundtable-with-former-minister-of-economy-trade-and-industry-mr-yasutoshi-nishimura/
+       link: 続きを表示する -> https://seats-inc.com/ja/report-participation-in-the-roundtable-with-former-minister-of-economy-trade-and-industry-mr-yasutoshi-nishimura/
+       link:  -> https://seats-inc.com/ja/press-releaseour-original-product-now-exhibited-and-available-for-purchase-at-the-cambodia-pavilion-expo-2025-osaka-kansai/
+       link: 「大阪・関西万博2025」カンボジアパビリオンにて弊社オリジナル商品を展示・販売しています -> https://seats-inc.com/ja/press-releaseour-original-product-now-exhibited-and-available-for-purchase-at-the-cambodia-pavilion-expo-2025-osaka-kansai/
+       link: 続きを表示する -> https://seats-inc.com/ja/press-releaseour-original-product-now-exhibited-and-available-for-purchase-at-the-cambodia-pavilion-expo-2025-osaka-kansai/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-featured-in-global-broadcast-at-foodex-japan-2025/
+       link: FOODEX JAPAN 2025にて弊社の商談風景が世界配信番組に採用されました -> https://seats-inc.com/ja/s-e-a-t-s-inc-featured-in-global-broadcast-at-foodex-japan-2025/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-featured-in-global-broadcast-at-foodex-japan-2025/
+       link:  -> https://seats-inc.com/ja/loka-participated-in-major-niigata-sake-event-niigata-sake-no-jin-2024/
+       link: CAMFOOD & CAMHOTEL 2024にて「ベストブース賞」を受賞いたしました -> https://seats-inc.com/ja/loka-participated-in-major-niigata-sake-event-niigata-sake-no-jin-2024/
+       link: 続きを表示する -> https://seats-inc.com/ja/loka-participated-in-major-niigata-sake-event-niigata-sake-no-jin-2024/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-farm-participated-in-thaifex-anuga-asia-2024-in-bangkok-thailand/
+       link: S.E.A.T.S FarmがTHAIFEX–Anuga Asia 2024に出展しました -> https://seats-inc.com/ja/s-e-a-t-s-farm-participated-in-thaifex-anuga-asia-2024-in-bangkok-thailand/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-farm-participated-in-thaifex-anuga-asia-2024-in-bangkok-thailand/
+       link:  -> https://seats-inc.com/ja/loka-food-beverage-participated-in-major-niigata-sake-event-niigata-sake-no-jin-2024/
+       link: 「にいがた酒の陣2024」へカンボジア・オフィシャルバイヤーとして参加しました -> https://seats-inc.com/ja/loka-food-beverage-participated-in-major-niigata-sake-event-niigata-sake-no-jin-2024/
+       link: 続きを表示する -> https://seats-inc.com/ja/loka-food-beverage-participated-in-major-niigata-sake-event-niigata-sake-no-jin-2024/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-farm-participates-in-valentines-day-celebrations-at-maff/
+       link: S.E.A.T.S Farmが農林水産省主催のバレンタインデーイベントへ参加しました -> https://seats-inc.com/ja/s-e-a-t-s-farm-participates-in-valentines-day-celebrations-at-maff/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-farm-participates-in-valentines-day-celebrations-at-maff/
+       link:  -> https://seats-inc.com/ja/loka-triumphs-at-gashikoukan-kai-in-cambodia-showcasing-premium-japanese-sake/
+       link: 在カンボジア日本国大使館で行われた賀詞交換会にて日本酒を提供しました -> https://seats-inc.com/ja/loka-triumphs-at-gashikoukan-kai-in-cambodia-showcasing-premium-japanese-sake/
+       link: 続きを表示する -> https://seats-inc.com/ja/loka-triumphs-at-gashikoukan-kai-in-cambodia-showcasing-premium-japanese-sake/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-takes-center-stage-at-cjcc-job-fair-showcases-growth-and-opportunity/
+       link: CJCC主催ジョブフェアに参加し、弊社の特色や採用情報を発信しました -> https://seats-inc.com/ja/s-e-a-t-s-inc-takes-center-stage-at-cjcc-job-fair-showcases-growth-and-opportunity/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-takes-center-stage-at-cjcc-job-fair-showcases-growth-and-opportunity/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-celebrates-with-the-elite-at-jac-jbac-bonenkai-2023/
+       link: 「JAC & JBAC 忘年会 2023」にスポンサーとして参加しました -> https://seats-inc.com/ja/s-e-a-t-s-inc-celebrates-with-the-elite-at-jac-jbac-bonenkai-2023/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-celebrates-with-the-elite-at-jac-jbac-bonenkai-2023/
+       link:  -> https://seats-inc.com/ja/aeon-japan-fair-2023-a-resounding-success/
+       link: 「イオンジャパンフェア2023」にてジャポニカ米と和牛をPRしました -> https://seats-inc.com/ja/aeon-japan-fair-2023-a-resounding-success/
+       link: 続きを表示する -> https://seats-inc.com/ja/aeon-japan-fair-2023-a-resounding-success/
+       link:  -> https://seats-inc.com/ja/loka-food-and-beverage-presents-toba-meats-and-japonica-rice-at-the-upcoming-aeon-japan-fair-2023/
+       link: 「Japan Fair 2023」Aeon Mall Mean Cheyにて和牛とジャポニカ米を紹介いたします -> https://seats-inc.com/ja/loka-food-and-beverage-presents-toba-meats-and-japonica-rice-at-the-upcoming-aeon-japan-fair-2023/
+       link: 続きを表示する -> https://seats-inc.com/ja/loka-food-and-beverage-presents-toba-meats-and-japonica-rice-at-the-upcoming-aeon-japan-fair-2023/
+       link:  -> https://seats-inc.com/ja/s-e-a-t-s-inc-returns-as-esteemed-judge-in-the-ideathon-contest-season-2/
+       link: 弊社代表 峯島浩輔が「Ideathon Contest Season 2」に審査員として参加しました -> https://seats-inc.com/ja/s-e-a-t-s-inc-returns-as-esteemed-judge-in-the-ideathon-contest-season-2/
+       link: 続きを表示する -> https://seats-inc.com/ja/s-e-a-t-s-inc-returns-as-esteemed-judge-in-the-ideathon-contest-season-2/
+       link:  -> https://seats-inc.com/ja/loka-food-and-beverage-a-triumph-at-camfood-2023-as-the-most-popular-booth/
+       link: 「CAMFOOD & CAMHOTEL 2023」にてMost Popular Booth賞を受賞しました -> https://seats-inc.com/ja/loka-food-and-beverage-a-triumph-at-camfood-2023-as-the-most-popular-booth/
+       link: 続きを表示する -> https://seats-inc.com/ja/loka-food-and-beverage-a-triumph-at-camfood-2023-as-the-most-popular-booth/
+       link:  -> https://seats-inc.com/ja/%e3%83%b4%e3%82%a1%e3%82%bf%e3%83%8a%e3%83%83%e3%82%af%e3%83%bb%e3%82%ad%e3%83%a3%e3%83%94%e3%82%bf%e3%83%ab%e3%81%a7%e9%96%8b%e5%82%ac%e3%81%95%e3%82%8c%e3%81%9f%e6%97%a5%e6%9c%ac%e9%85%92%e8%a9%a6/
+       link: 「JAPANESE SAKE TASTING FAIR」に参加し、日本酒の魅力をカンボジアへ発信しました -> https://seats-inc.com/ja/%e3%83%b4%e3%82%a1%e3%82%bf%e3%83%8a%e3%83%83%e3%82%af%e3%83%bb%e3%82%ad%e3%83%a3%e3%83%94%e3%82%bf%e3%83%ab%e3%81%a7%e9%96%8b%e5%82%ac%e3%81%95%e3%82%8c%e3%81%9f%e6%97%a5%e6%9c%ac%e9%85%92%e8%a9%a6/
+       link: 続きを表示する -> https://seats-inc.com/ja/%e3%83%b4%e3%82%a1%e3%82%bf%e3%83%8a%e3%83%83%e3%82%af%e3%83%bb%e3%82%ad%e3%83%a3%e3%83%94%e3%82%bf%e3%83%ab%e3%81%a7%e9%96%8b%e5%82%ac%e3%81%95%e3%82%8c%e3%81%9f%e6%97%a5%e6%9c%ac%e9%85%92%e8%a9%a6/
+       link:  -> https://seats-inc.com/ja/for-the-third-time-s-e-a-t-s-inc-partake-in-job-fair-at-cjcc/
+       link: CJCC主催ジョブフェアに三度目の出展をしました -> https://seats-inc.com/ja/for-the-third-time-s-e-a-t-s-inc-partake-in-job-fair-at-cjcc/
+       link: 続きを表示する -> https://seats-inc.com/ja/for-the-third-time-s-e-a-t-s-inc-partake-in-job-fair-at-cjcc/
+       link:  -> https://seats-inc.com/ja/attending-asias-largest-food-and-beverage-trade-show-thaifex/
+       link: アジア最大級の食品・飲料展示会「THAIFEX – Anuga Asia 2023」に出展いたしました -> https://seats-inc.com/ja/attending-asias-largest-food-and-beverage-trade-show-thaifex/
+       link: 続きを表示する -> https://seats-inc.com/ja/attending-asias-largest-food-and-beverage-trade-show-thaifex/
+       link:  -> https://seats-inc.com/ja/kampot-pepper-exhibited-at-cambodia-festival-in-yoyogi-2023/
+       link: 「生胡椒の塩漬け」が代々木公園のカンボジアフェスティバル2023にて紹介されました -> https://seats-inc.com/ja/kampot-pepper-exhibited-at-cambodia-festival-in-yoyogi-2023/
+       link: 続きを表示する -> https://seats-inc.com/ja/kampot-pepper-exhibited-at-cambodia-festival-in-yoyogi-2023/
+       link:  -> https://seats-inc.com/ja/cambodian-dry-fruit-and-agricultural-products-for-japanese-market/
+       link: カンボジア商業省にて講演を実施しました -> https://seats-inc.com/ja/cambodian-dry-fruit-and-agricultural-products-for-japanese-market/
+       link: 続きを表示する -> https://seats-inc.com/ja/cambodian-dry-fruit-and-agricultural-products-for-japanese-market/
+       link:  -> https://seats-inc.com/ja/2023%e5%b9%b41%e6%9c%88%e3%81%ab%e9%96%8b%e3%81%8b%e3%82%8c%e3%81%9f%e3%82%b8%e3%83%a7%e3%83%96%e3%83%95%e3%82%a7%e3%82%a2%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%be%e3%81%97%e3%81%9f%e3%80%82/
+       link: CJCC「ジョブフェア2023」に出展しました -> https://seats-inc.com/ja/2023%e5%b9%b41%e6%9c%88%e3%81%ab%e9%96%8b%e3%81%8b%e3%82%8c%e3%81%9f%e3%82%b8%e3%83%a7%e3%83%96%e3%83%95%e3%82%a7%e3%82%a2%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%be%e3%81%97%e3%81%9f%e3%80%82/
+       link: 続きを表示する -> https://seats-inc.com/ja/2023%e5%b9%b41%e6%9c%88%e3%81%ab%e9%96%8b%e3%81%8b%e3%82%8c%e3%81%9f%e3%82%b8%e3%83%a7%e3%83%96%e3%83%95%e3%82%a7%e3%82%a2%e3%81%ab%e5%8f%82%e5%8a%a0%e3%81%97%e3%81%be%e3%81%97%e3%81%9f%e3%80%82/
+       link:  -> https://seats-inc.com/ja/loka-food-beverage-as-the-best-booth-winner-at-camfood-and-camhotel22/
+       link: CAMFOOD+HOTEL '22に出展、ベストブース賞を受賞しました -> https://seats-inc.com/ja/loka-food-beverage-as-the-best-booth-winner-at-camfood-and-camhotel22/
+       link: 続きを表示する -> https://seats-inc.com/ja/loka-food-beverage-as-the-best-booth-winner-at-camfood-and-camhotel22/
+       link:  -> https://seats-inc.com/ja/participated-in-the-engineering-career-fair-2022/
+       link: カンボジア工科大学「エンジニアキャリアフェア2022」に出展いたしました -> https://seats-inc.com/ja/participated-in-the-engineering-career-fair-2022/
+       link: 続きを表示する -> https://seats-inc.com/ja/participated-in-the-engineering-career-fair-2022/

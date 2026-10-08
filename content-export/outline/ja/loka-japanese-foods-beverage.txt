@@ -1,0 +1,108 @@
+[section 45470fd6]
+  <widget> Japanese Foods Distributor In Cambodia LOKA Japanese Food&Beverage
+     link: LOKA Japanese Food&Beverage -> https://lokajapanesefoodsbeverage.com/
+[section 3a3e98d]
+  <widget> 概要 2014年4月事業開始。2021年現在では総顧客数約450社、400品目以上を取り扱っており、日系の食品輸入卸商社としては有数の規模になっています。特に当社の強みは生鮮品です。日本から航空貨物で直送する鮮魚を始めとする水産品の他、バンコク支社や各国のパートナーとも連携し、独自のルートで近隣諸国からの物流網を構築しています。
+  <widget> 
+     img: /media/2025/01/banner-distribution.jpg (1200x800)
+     bg: /media/2025/01/banner-distribution.jpg
+[section 2c169776]
+  <widget> 製品紹介 PRODUCTS 日系食材を中心に、水産物・農産物・畜産物及び調味料・飲料・酒類その他常温品全般という幅広いカテゴリーをお取り扱いしております。 水産品 畜産品 調味料 Vegetable 酒類
+     img: /media/2025/01/tuna.jpg (800x800)
+     img: /media/2025/01/wagyu.jpg (800x800)
+     img: /media/2025/01/japanese-seasoning-1.jpg (800x800)
+     img: /media/2025/01/agricultural-loka-food-and-beverage.jpg (300x300)
+     img: /media/2025/01/Alcohol.jpg (800x800)
+     bg: /media/2025/01/tuna.jpg
+     bg: /media/2025/01/wagyu.jpg
+     bg: /media/2025/01/japanese-seasoning-1.jpg
+     bg: /media/2025/01/agricultural-loka-food-and-beverage.jpg
+     bg: /media/2025/01/Alcohol.jpg
+[section a9e7d58]
+  <widget> 私たちの強み １．独自の仕入れネットワーク 創業以来、現地のニーズにマッチする商品をお届けするために最適な仕入れ・物流ルートを構築してきました。日本からの生鮮水産品については、東京・大阪・福岡の3大都市より、週2~3便の安定的な仕入れを確保しています。また、パートナー企業との連携により、産地からの直接購入（いわゆる“浜買い“）により、安価で鮮度の高い品物を調達すべく工夫しています。 また、バンコクに調達支店を持ち、タイ国内の食品生産工場やサプライチェーンの開拓にも注力しています。ベトナムではニャチャンをはじめとする現地水産品の活用を積極的にすすめております。メコン領域でもカンボジアの現地ニーズに適した商品の提案力を強化する独自のネットワークを有しています。バンコク、ホーチミンからは陸送で毎週、安定的に物流ルートを確保しています。
+  <widget> 
+     img: /media/2025/01/global_network.jpg (794x463)
+     bg: /media/2025/01/global_network.jpg
+[section 4f33d098]
+  <widget> ２．当社にしかない品揃え＆サービス 当社は生鮮品以外にも複数の代表的な商品を保有しています。
+[section 1bd796e8]
+  <widget> 
+     img: /media/2025/01/Osushiya-Nishin.jpg (550x550)
+     img: /media/2025/01/Osushiya-Nishin5.jpg (550x550)
+     bg: /media/2025/01/Osushiya-Nishin.jpg
+     bg: /media/2025/01/Osushiya-Nishin5.jpg
+  <widget> お寿司屋にしん 製造メーカーである、三重県あづまフーズ社のディストリビューターとして、代表商品である「お寿司屋にしん」をはじめ、あずまフーズ社の製品をカンボジア市場で展開しています。
+[section 78b5a7f8]
+  <widget> 酒類（ジャパニーズウィスキー） 近年、世界中で人気のあるジャパニーズウィスキーを独自のルートで日本から直接仕入れています。カンボジアでも外資系のホテルや専門的なリカーショップを中心に販売しており、年々人気が加速しています。
+  <widget> 
+     img: /media/2025/01/japanese-whiskey-yamazaki.jpg (550x550)
+     img: /media/2025/01/japanese-whiskey-yamazaki3.jpg (550x550)
+     bg: /media/2025/01/japanese-whiskey-yamazaki.jpg
+     bg: /media/2025/01/japanese-whiskey-yamazaki3.jpg
+[section 45480945]
+  <widget> 
+     img: /media/2025/01/oba3.jpg (550x550)
+     img: /media/2025/01/oba1.jpg (550x550)
+     bg: /media/2025/01/oba3.jpg
+     bg: /media/2025/01/oba1.jpg
+  <widget> 大葉 自社の農業生産開発事業との提携により、大葉やレタスなどの新鮮な農産物を併せて販売しています。お寿司や刺し身の彩りには欠かせない「大葉」を、現地で完全自社生産しているため、トレーサビリティを確立した安心・安全な品物の提供を実現しています。
+[section 53b1ca3a]
+  <widget> 機動力のあるコールドチェーン 当社は英語対応可能な日本人・カンボジア人担当者が常時複数名在籍しています。主に日本語・英語・クメール語・中国語でのお取り合わせに対応できる体制があります。当社の営業は単なる「モノ売り」ではなく、お客様の「コンサルタント」です。
+  <widget> 
+     img: /media/2025/01/freepik_br_c62f2f4c-92ec-4ba4-b8d2-878f1fc9ef0c.png (550x550)
+     img: /media/2025/01/2.jpg (550x550)
+     bg: /media/2025/01/freepik_br_c62f2f4c-92ec-4ba4-b8d2-878f1fc9ef0c.png
+     bg: /media/2025/01/2.jpg
+[section 55d967d1]
+  <widget> 3. Best Solution Provider 食材のお問い合わせの根本にあるお客様の本質的な問題・課題を見極め、当社のネットワークや経験を通じて、どのように解決するのかを親身に考える。お客様にとってなにが良いのかを提案し、模索していくスタンスを大切にしております。
+     img: /media/2025/01/Best-Solution-1.jpg (1200x800)
+     img: /media/2025/01/Best-Solution-2.jpg (1200x800)
+     img: /media/2025/01/Best-Solution-3.jpg (1200x800)
+     bg: /media/2025/01/Best-Solution-1.jpg
+     bg: /media/2025/01/Best-Solution-2.jpg
+     bg: /media/2025/01/Best-Solution-3.jpg
+[section 2a90a00a]
+  <widget> お問い合わせ
+  <widget> お問い合わせ
+     link: お問い合わせ -> https://lokafoodbeverage.com/contact/
+[section 15e20935]
+  <widget> お取引先例 AEONカンボジア ジャパンフェア出展（2018年9月）
+     img: /media/2025/01/aeon-japan-fair-2023-6.jpg (1200x800)
+     img: /media/2025/01/aeon-japan-fair-2023-4.jpg (1200x800)
+     img: /media/2025/01/aeon-japan-fair-2023-7.jpg (1200x800)
+     img: /media/2025/01/aeon-japan-fair-2023-5.jpg (1200x800)
+     bg: /media/2025/01/aeon-japan-fair-2023-6.jpg
+     bg: /media/2025/01/aeon-japan-fair-2023-4.jpg
+     bg: /media/2025/01/aeon-japan-fair-2023-7.jpg
+     bg: /media/2025/01/aeon-japan-fair-2023-5.jpg
+[section 4b5465e8]
+  <widget> Business meeting for Cambodia sponsored By JETRO Kumamoto as a Japanese food supplier (January 2020)
+[section 3e7895ae]
+  <widget> JETRO採択案件 デジタルマーケティング事業の取り組み "JETRO（日本貿易振興機構）の採択事業として、山口県・埼玉県の企業様の製品のプロモーションを実施。 カンボジア人のインフルエンサーを活用し、現地でのソーシャルメディアを活用して初の試みを行いました。"
+     img: /media/2025/01/digital-marketing-7.jpg (800x800)
+     img: /media/2025/01/digital-marketing-5.jpg (800x800)
+     img: /media/2025/01/digital-marketing-4.jpg (800x800)
+     img: /media/2025/01/digital-marketing-3.jpg (1024x1024)
+     bg: /media/2025/01/digital-marketing-7.jpg
+     bg: /media/2025/01/digital-marketing-5.jpg
+     bg: /media/2025/01/digital-marketing-4.jpg
+     bg: /media/2025/01/digital-marketing-3.jpg
+[section 775c4fa0]
+  <widget> ウマミル社 カンボジアパートナー We are collaborating with Umamil, a startup company wholly owned by SoftBank Corp. We will collaborate in all aspects to develop sales channels for Japanese companies in Cambodia.
+     img: /media/2025/01/umamil-food-export-4.jpg (800x800)
+     img: /media/2025/01/umamil-food-export-2.jpg (800x800)
+     img: /media/2025/01/umamil-food-export-1.jpg (800x800)
+     img: /media/2025/01/umamil-food-export-3.jpg (1024x1024)
+     bg: /media/2025/01/umamil-food-export-4.jpg
+     bg: /media/2025/01/umamil-food-export-2.jpg
+     bg: /media/2025/01/umamil-food-export-1.jpg
+     bg: /media/2025/01/umamil-food-export-3.jpg
+[section 5ccc4c29]
+  <widget> これから注力していく取組み 今後の取り組みとして、以下の方向性で事業を拡大させていきます。 続きを表示する 仕入元ネットワークの強化 より鮮度が高く、現地にあった形で、より安価にカンボジアで流通させるため、各生産者様とより密にコミュニケーションを図っていきます。 LOKAブランド商品の企画、提案 タイやベトナムをはじめとした近隣東南アジア諸国の生産者との連携により、調達力を一層強化していきます。クメール語対応のパッケージデザイン製作やLOKAオリジナルブランド商品の企画、カンボジアの市場のニーズに合った製品の開発にも着手します。常にお客様への最適な提案ができるよう尽力していきます。 飲食企業様のカンボジア進出支援 成長の加速するカンボジア市場へ進出される飲食店様へ、進出段階からのサポートも強化していきます。とはいえ、当事業は進出支援が生業ではありません。これまでの知見を活かし、食品卸事業者としての飲食店様目線での情報のご提供を主軸に幅広いお手伝いをさせて頂きます。お客様の繁栄こそが当社の繁栄です。進出段階から、同じ船のパートナーとしての歩みをはじめられるよう、サポート体制を強化して参ります。
+     img: /media/2025/01/digital-marketing-seo-google-1725340.jpg (1280x853)
+     img: /media/2025/01/events-makro-1.jpg (1200x800)
+     img: /media/2025/01/g.jpg (800x600)
+     bg: /media/2025/01/digital-marketing-seo-google-1725340.jpg
+     bg: /media/2025/01/events-makro-1.jpg
+     bg: /media/2025/01/g.jpg
+     link: 続きを表示する -> #down

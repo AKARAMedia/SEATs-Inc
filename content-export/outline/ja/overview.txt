@@ -1,0 +1,53 @@
+[section 2170958]
+  <widget> 会社概要
+[section bc09eba]
+  <widget> S.E.A.T.S Inc. 社名 November, 2013 設立 峯島 浩輔 Director & CEO US $100,000 資本金 Kh: (+855)023-966-313 本社電話番号 Total 100 従業員数 オフィス カンボジア本社 No.54 & 56, Street 388, Sangkat Toul Svay Prey 1, Khan Boeng Keng Kang, Phnom Penh, Cambodia.日本オフィス〒542-0073 大阪市中央区日本橋1丁目2-6 日本橋河辺ビル8F 事業内容 1.食品輸入卸事業 > LOKA Japanese Foods&Beverage日本、タイをはじめとする周辺各国から新鮮な食品や飲料を輸入し、カンボジア国内の飲食店や小売店に提案、販売および配送をしています。特に鮮魚の提供に強みを持ち、現地では手に入らない製品や現地ならではの課題に応えています。2.農業生産開発事業 >S.E.A.T.S Farmカンボジア国内に保有する自社農園で、高品質ブランド野菜、高級胡椒など、安心・安全を重視した高付加価値農産物を栽培しています。野菜や葉物類は国内の主要小売店へ販売し、胡椒については主に国外への輸出向けに製品化しています。3. デジタルマーケティング事業 >NOVA Marketing当社は、カンボジアのSNS向けデジタルマーケティングおよびプロモーションサービスを提供しています。 ページメンテナンス、ポスターデザイン、コンテンツマーケティング、カンボジアで広く利用されているFacebook向け広告、ウェブサイト制作など、幅広いサービスを提供しています。 フロントエンドとバックエンドデザインのフルパッケージを提供し、当社の専門チームがお客様と密にコミュニケーションを取りながら、デジタルの部分からお客様のビジネスの成長に貢献いたします4. 食品小売事業 >PISA FOOD RETAILお客様と対面で接することを重視し、自社直営店舗 「SELECT STORE SORA」 を運営しています。店舗では近頃カンボジアでも注目されている日本酒を中心に、日本から輸入した食材や、当社のオリジナル商品などを販売しています。独自の加工食品や、お弁当やお惣菜といったReady-To-Eat商品の開発にも取り組み、より幅広い層へ日本食を届ける挑戦をしています。
+     link: > LOKA Japanese Foods&Beverage -> https://lokajapanesefoodsbeverage.com/
+     link: >S.E.A.T.S Farm -> https://seatsfarm.com/
+     link: >NOVA Marketing -> https://seats-inc.com/ja/nova-marketing/
+     link: >PISA FOOD RETAIL -> https://seats-inc.com/ja/pisa-food-retail/
+     iframe: https://maps.google.com/maps?q=11.548654066286069%2C%20104.90703330490835&t=m&z=15&output=embed&iwloc=near
+[container 97f0429]
+  [container ]
+    <eael-info-box.default> 受賞・表彰歴
+[container 1ea443b]
+  <image-gallery.default> 
+     img: /media/2025/01/seatsinc-awards-3.jpg (1200x800)
+     img: /media/2025/01/seatsinc-awards-1-1.jpg (1200x800)
+     img: /media/2025/01/seatsinc-awards-2.jpg (1200x800)
+     img: /media/2025/01/seatsinc-awards-4.jpg (1200x800)
+     bg: /media/2025/01/seatsinc-awards-3.jpg
+     bg: /media/2025/01/seatsinc-awards-1-1.jpg
+     bg: /media/2025/01/seatsinc-awards-2.jpg
+     bg: /media/2025/01/seatsinc-awards-4.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/01/seatsinc-awards-3.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/01/seatsinc-awards-1-1.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/01/seatsinc-awards-2.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/01/seatsinc-awards-4.jpg
+  <spacer.default> 
+[container 478fd07]
+  [container ]
+    <eael-info-box.default> 業務風景
+[container 9f50cfd]
+  <image-gallery.default> 
+     img: /media/2025/03/photo_1_2025-03-19_10-32-19.jpg (768x433)
+     img: /media/2025/03/photo_2_2025-03-19_10-32-19.jpg (768x433)
+     img: /media/2025/07/Container-e1751446909896.jpg (768x428)
+     img: /media/2025/03/photo_3_2025-03-19_10-32-19.jpg (768x431)
+     img: /media/2025/06/photo_2025-06-19_09-19-36-e1750824530498.jpg (768x432)
+     img: /media/2025/06/photo_2025-06-19_09-19-32-e1750824385905.jpg (768x432)
+     img: /media/2025/06/photo_2025-06-19_09-19-27-e1750824586482.jpg (768x432)
+     bg: /media/2025/03/photo_1_2025-03-19_10-32-19.jpg
+     bg: /media/2025/03/photo_2_2025-03-19_10-32-19.jpg
+     bg: /media/2025/07/Container-e1751446909896.jpg
+     bg: /media/2025/03/photo_3_2025-03-19_10-32-19.jpg
+     bg: /media/2025/06/photo_2025-06-19_09-19-36-e1750824530498.jpg
+     bg: /media/2025/06/photo_2025-06-19_09-19-32-e1750824385905.jpg
+     bg: /media/2025/06/photo_2025-06-19_09-19-27-e1750824586482.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/03/photo_1_2025-03-19_10-32-19.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/03/photo_2_2025-03-19_10-32-19.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/07/Container-e1751446909896.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/03/photo_3_2025-03-19_10-32-19.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/06/photo_2025-06-19_09-19-36-e1750824530498.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/06/photo_2025-06-19_09-19-32-e1750824385905.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/06/photo_2025-06-19_09-19-27-e1750824586482.jpg

@@ -1,0 +1,80 @@
+[section 8cab136]
+  <widget> NOVA MARKETING
+[section 510bec0d]
+  <widget> 概要 NOVA Marketingは、2022年5月にデジタルマーケティング事業を軸にS.E.A.T.S Inc.の新事業としてスタートしました。現在は以下の3つのサービスを主に展開しています。・日本から輸入した食品・飲料を一般消費者向けに販売するEC事業・日本製ベビー用品を取り扱うEC事業・メディア制作とマーケティング戦略の企画・実行支援事業デジタルマーケティング、プロモーション、メディア制作、Web開発など、幅広いサービスを通じてブランドのオンライン展開を総合的にサポートしています。豊富な実績と専門チームにより、成果につながる戦略を提供することを使命としています。
+  <widget> 
+     img: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg (1200x800)
+     bg: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg
+[section 4f4e8ee5]
+  <widget> 提供サービス 食品マーケティングの専門性 NOVA Marketingは、食品分野に特化した2つのブランドをオンラインをメインに展開しています。日本から高品質な製品を輸入し、現地市場に適したマーケティング手法で展開。信頼できる仕入先との強固な関係性と、消費者ニーズを深く理解した戦略設計により、ブランド価値の向上と売上拡大を実現しています。 クリエイティブ制作と戦略立案 Akara Mediaでは、動画やグラフィック、SNS投稿などの魅力的なデジタルコンテンツ制作を手がけています。ブランドのメッセージと目標に基づいたメディア戦略を通じて、継続的なブランド成長を支援します。 専門性の高いチームワーク 当社の最大の強みは、多彩な分野の専門家が連携するチーム体制にあります。デジタルマーケティング、コンテンツ制作、メディアプロダクション、Web開発などの専門知識を活かし、クライアントごとに最適化された包括的なマーケティングソリューションを提供しています。
+     img: /media/2026/09/Expertise-in-Food-Marketing.jpg (1024x1024)
+     img: /media/2025/07/Creative-Production-Strategic-Planning.jpg (768x768)
+     img: /media/2025/07/20943566.jpg (1280x1280)
+     bg: /media/2026/09/Expertise-in-Food-Marketing.jpg
+     bg: /media/2025/07/Creative-Production-Strategic-Planning.jpg
+     bg: /media/2025/07/20943566.jpg
+[section 5184942 elementor-hidden-desktop elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> 私たちの強み 1. 食品マーケティングの専門性 NOVA Marketingは、食品分野に特化した2つのブランドをオンラインをメインに展開しています。日本から高品質な製品を輸入し、現地市場に適したマーケティング手法で展開。信頼できる仕入先との強固な関係性と、消費者ニーズを深く理解した戦略設計により、ブランド価値の向上と売上拡大を実現しています。
+  <widget> 
+     img: /media/2025/01/IMG_0286.jpg (1280x1280)
+     img: /media/2025/01/IMG_0290.jpg (788x788)
+     bg: /media/2025/01/IMG_0286.jpg
+     bg: /media/2025/01/IMG_0290.jpg
+[section 13624a63 elementor-hidden-desktop elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> 
+     img: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg (1380x920)
+     bg: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg
+  <widget> 2. Creative Production & Strategic Planning Akara Mediaでは、動画やグラフィック、SNS投稿などの魅力的なデジタルコンテンツ制作を手がけています。ブランドのメッセージと目標に基づいたメディア戦略を通じて、継続的なブランド成長を支援します。
+[section c61f9eb elementor-hidden-desktop elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> 3. 専門性の高いチームワーク 当社の最大の強みは、多彩な分野の専門家が連携するチーム体制にあります。デジタルマーケティング、コンテンツ制作、メディアプロダクション、Web開発などの専門知識を活かし、クライアントごとに最適化された包括的なマーケティングソリューションを提供しています。
+  <widget> 
+     img: /media/2025/03/A-Talented-Teamwork.webp (624x357)
+     bg: /media/2025/03/A-Talented-Teamwork.webp
+[section 8a3f6e0]
+  <widget> 事業内容 ビジネスの成長とデジタル分野での成功を支援するユニークなサービスを提供しています。 デジタルマーケティングとプロモーション データに基づいた計画設計により、適切なターゲット層へ効果的にアプローチ。Facebook、Instagram、Googleなどを活用し、SEO対策、SNS運用、PPC広告、パーソナライズドメール配信など、多岐にわたるサービスを展開しています。 メディア制作 ブランドイメージに合った高品質な動画、写真、グラフィックを制作。最新ツールを用いたデザイン、動画撮影、アニメーションにより、視覚的に印象的なブランド表現を実現します。 Web制作 モバイルフレンドリーかつ安全で拡張性のあるWebサイトを制作。カスタムデザイン、ECサイト開発、WordPress構築、サポートまで一貫して対応します。 ビジネス管理支援 プロジェクト管理、スケジュール管理、ドキュメント整理、クライアント対応など、業務の効率化をサポートする管理サービスも提供しています。
+     img: /media/2025/01/marketing-ideas-scaled-1.jpg (2560x2560)
+     img: /media/2025/01/media_creation-scaled-1.jpg (2560x2560)
+     img: /media/2025/01/web_creation-scaled-1.jpg (2560x2560)
+     img: /media/2025/01/administrative_support-scaled-1.jpg (2560x2560)
+     bg: /media/2025/01/marketing-ideas-scaled-1.jpg
+     bg: /media/2025/01/media_creation-scaled-1.jpg
+     bg: /media/2025/01/web_creation-scaled-1.jpg
+     bg: /media/2025/01/administrative_support-scaled-1.jpg
+[section 46a3530]
+  <widget> お気軽にお問い合わせください CONTACT US
+     link: お気軽にお問い合わせください -> https://seats-inc.com/ja/contact/
+     link: CONTACT US -> #
+[section 68cd123e]
+  <widget> 最適なソリューションを提供 ビジネスのオンラインでの成長を支援するために、ベストなソリューションを提供します。デジタルマーケティング、メディア制作、ウェブ開発、ビジネス管理支援など、ニーズに合わせてパーソナライズした戦略を提供。ビジネスを強化し最先端のツールを使用して確実に結果を出すことを目標に、経験豊富なチームがデジタルの世界での成功をお手伝いします。
+  <widget> 
+     img: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg (1380x920)
+     img: /media/2025/01/desktop-table-office_53876-42947.jpg (1380x953)
+     img: /media/2025/01/graph1.jpg (1380x920)
+     bg: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg
+     bg: /media/2025/01/desktop-table-office_53876-42947.jpg
+     bg: /media/2025/01/graph1.jpg
+[section b81cc22]
+  <widget> 私たちの目標と展望 NOVA Marketingは、革新的な手法でお客様のビジネス成功をサポートし続けます。 新技術の活用 AI、自動化、データ分析などの先進技術を活用し、より精度の高いマーケティング戦略を構築。最適なタイミングと方法でターゲットにアプローチします。 サービスの拡充 市場のトレンドを常に把握し、サービス領域を拡大。常に進化し続けることで、より質の高いソリューションを提供していきます。 お客様の成功へコミット お客様の成果を最優先に考え、オンラインでの認知拡大や売上向上に直結する、実践的で成果重視の戦略を提供します。 グローバルリーダーを目指して 私たちは、デジタルマーケティング分野におけるグローバルなリーダーとして、革新的で信頼性の高いソリューションを提供し続けます。 最新のツールや戦略を活用し、お客様の目標達成とイノベーションの推進を支援するとともに、継続的な成長を通じて卓越したビジネスの成果をもたらすことに尽力します。カンボジアのS.E.A.T.S グループが、お客様のマーケティング活動をサポートいたします。
+     img: /media/elementor/thumbs/graphic-investment-stock-market-data-analysis-business_53876-167114-r2hzvmpnv3zwogwtmgsevwed1sv3n89z836nk4qo9k.jpg (?x?)
+     img: /media/elementor/thumbs/workplace-business-modern-male-accessories-laptop-white_155003-1722-r2hzxbt67cbjn4g2pp75vyzbnuhyjk0j4hl7r48314.jpg (?x?)
+     img: /media/elementor/thumbs/close-up-workers-analyzing-statistical-data_1098-2075-r2hzvi0gwxth2f3ndwra1fl22vi9kqrbjfx85qxn4o.jpg (?x?)
+     img: /media/2025/01/global-leader.jpg (1380x828)
+     bg: /media/elementor/thumbs/graphic-investment-stock-market-data-analysis-business_53876-167114-r2hzvmpnv3zwogwtmgsevwed1sv3n89z836nk4qo9k.jpg
+     bg: /media/elementor/thumbs/workplace-business-modern-male-accessories-laptop-white_155003-1722-r2hzxbt67cbjn4g2pp75vyzbnuhyjk0j4hl7r48314.jpg
+     bg: /media/elementor/thumbs/close-up-workers-analyzing-statistical-data_1098-2075-r2hzvi0gwxth2f3ndwra1fl22vi9kqrbjfx85qxn4o.jpg
+     bg: /media/2025/01/global-leader.jpg
+[container cecf136]
+  [container ]
+    <wd_image_or_svg.default> 
+       img: /media/2025/08/Your-paragraph-text.jpg (930x180)
+       bg: /media/2025/08/Your-paragraph-text.jpg
+[section 167e0b19 elementor-hidden-desktop elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> We drive your marketing activity by S.E.A.T.S Group in Cambodia. Please click here! 私たちの目標と展望 NOVA Marketingは、革新的な手法でお客様のビジネス成功をサポートし続けます。 新技術の活用 AI、自動化、データ分析などの先進技術を活用し、より精度の高いマーケティング戦略を構築。最適なタイミングと方法でターゲットにアプローチします。 サービスの拡充 市場のトレンドを常に把握し、サービス領域を拡大。常に進化し続けることで、より質の高いソリューションを提供していきます。 お客様の成功へコミット お客様の成果を最優先に考え、オンラインでの認知拡大や売上向上に直結する、実践的で成果重視の戦略を提供します。 グローバルリーダーを目指して 私たちは、デジタルマーケティング分野におけるグローバルなリーダーとして、革新的で信頼性の高いソリューションを提供し続けます。 最新のツールや戦略を活用し、お客様の目標達成とイノベーションの推進を支援するとともに、継続的な成長を通じて卓越したビジネスの成果をもたらすことに尽力します。
+     img: /media/2025/01/graphic-investment-stock-market-data-analysis-business_53876-167114.jpg (1380x921)
+     img: /media/2025/01/workplace-business-modern-male-accessories-laptop-white_155003-1722.jpg (1380x920)
+     img: /media/2025/01/close-up-workers-analyzing-statistical-data_1098-2075.jpg (1380x920)
+     img: /media/2025/01/global-leader.jpg (1380x828)
+     bg: /media/2025/01/graphic-investment-stock-market-data-analysis-business_53876-167114.jpg
+     bg: /media/2025/01/workplace-business-modern-male-accessories-laptop-white_155003-1722.jpg
+     bg: /media/2025/01/close-up-workers-analyzing-statistical-data_1098-2075.jpg
+     bg: /media/2025/01/global-leader.jpg

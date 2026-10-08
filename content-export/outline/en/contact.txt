@@ -1,0 +1,7 @@
+[container 7b47c1b]
+  [container ]
+    <html.default> CONTACT Business days Monday to Saturday, excluding public holidays Phone (+855) 023-966-313 (English / Khmer / Japanese) Email Inquiry general@seats-inc.com / Recruit hr-recruiting@seats-inc.com Address No.54 & 56, Street 388, Sangkat Toul Svay Prey 1, Khan Boeng Keng Kang, Phnom Penh, Cambodia. Google Maps Contact Us Message Submit
+       link: (+855) 023-966-313 -> tel:+85523966313
+       link: general@seats-inc.com -> mailto:general@seats-inc.com
+       link: hr-recruiting@seats-inc.com -> mailto:hr-recruiting@seats-inc.com
+       link: Google Maps -> https://www.google.com/maps/search/?api=1&query=No.54%20%26%2056%2C%20Street%20388%2C%20Sangkat%20Toul%20Svay%20Prey%201%2C%20Khan%20Boeng%20Keng%20Kang%2C%20Phnom%20Penh%2C%20Cambodia

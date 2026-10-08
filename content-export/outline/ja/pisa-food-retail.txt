@@ -1,0 +1,61 @@
+[container 8780adf]
+  [container ]
+    <image.default> 
+       img: /media/2026/09/PISA-Logo.jpg (400x280)
+       bg: /media/2026/09/PISA-Logo.jpg
+[container a160c07]
+  [container ]
+    [container 36a1662]
+      <wd_text_block.default> PISA FOOD RETAIL (食品小売事業)
+    [container d1f3333]
+      <wd_text_block.default> 食品小売事業 「PISA Food Retail」 では、お客様と対面で接することを重視し、自社直営店舗 「SELECT STORE SORA」 を運営しています。店舗では近頃カンボジアでも注目されている日本酒をメインに取り扱っています。その他にも、日本から輸入した食材の販売はもちろん、独自の加工食品や、お弁当やお惣菜といったReady-To-Eat商品の開発にも取り組み、より幅広い層へ日本食を届ける挑戦をしています。
+[container a6d67f3]
+  [container ]
+    <image.default> 
+       img: /media/2026/09/SELECT-STORE-SORA-Logo-1.jpg (768x110)
+       bg: /media/2026/09/SELECT-STORE-SORA-Logo-1.jpg
+[container 625c7ab]
+  [container ]
+    [container 2b40ffc]
+      <image.default> 
+         img: /media/2026/09/PISA1.jpg (1280x720)
+         bg: /media/2026/09/PISA1.jpg
+    [container 80ad824]
+      <image.default> 
+         img: /media/2026/09/PISA2.jpg (1280x720)
+         bg: /media/2026/09/PISA2.jpg
+    [container 7eb0cb3]
+      <image.default> 
+         img: /media/2026/09/PISA3.jpg (1280x720)
+         bg: /media/2026/09/PISA3.jpg
+    [container 1f5f8cc]
+    [container 3d5e578]
+    [container d4e568a]
+[container 2707ae8]
+  [container ]
+    [container f390fa4]
+      <image.default> 
+         img: /media/2026/09/PISA4.jpg (1280x720)
+         bg: /media/2026/09/PISA4.jpg
+    [container b66d4f3]
+      <image.default> 
+         img: /media/2026/09/PISA5.jpg (1280x720)
+         bg: /media/2026/09/PISA5.jpg
+    [container 710d4ac]
+      <image.default> 
+         img: /media/2026/09/PISA6.jpg (1280x720)
+         bg: /media/2026/09/PISA6.jpg
+    [container 9d90ea3]
+    [container 574bea6]
+    [container 6a59531]
+[container 630813c]
+  [container ]
+    <heading.default> Store Location
+       link: Store Location -> https://maps.app.goo.gl/QxMKw81RAdpQFnsk8
+[container b09f87b]
+  <html.default> 
+     iframe: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d977.2608490794089!2d104.9069336!3d11.548744800000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109518984c44df1%3A0x4699ec9adb6e7953!2sSELECT%20STORE%20SORA!5e0!3m2!1sen!2skh!4v1789637439765!5m2!1sen!2skh
+[container c08b911]
+  [container ]
+    <heading.default> Job Opportunities
+       link: Job Opportunities -> https://seatsinchr.github.io/store-manager-recruitment/

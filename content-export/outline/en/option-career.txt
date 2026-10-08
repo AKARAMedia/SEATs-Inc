@@ -1,0 +1,19 @@
+[section 4ff8c771 elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> 
+     img: /media/2025/01/bg-career-2.png (323x244)
+     img: /media/2025/01/bg-career-1.png (526x367)
+     bg: /media/2025/01/bg-career-2.png
+     bg: /media/2025/01/bg-career-1.png
+[section 4d4b7d26 elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> Join Our Team Seeking an opportunity to earn, learn and push yourself to new limits? Discover more about the recruitment process with S.E.A.T.S Inc., for both Cambodian and Japanese by clicking the button below. CAMBODIAN JAPANESE
+     link: CAMBODIAN -> https://seatsinc-career.com
+     link: JAPANESE -> https://seats-inc.com/jp/
+  <widget> 
+     img: /media/2025/01/career.png (1673x1830)
+     bg: /media/2025/01/career.png
+[section 710926c9 elementor-hidden-desktop]
+  <widget> Join Our Team Seeking an opportunity to earn, learn and push yourself to new limits? Discover more about the recruitment process with S.E.A.T.S Inc., for both Cambodian and Japanese by clicking the button below CAMBODIAN JAPANESE
+     img: /media/2025/01/career.png (1673x1830)
+     bg: /media/2025/01/career.png
+     link: CAMBODIAN -> https://seatsinc-career.com/jobs/
+     link: JAPANESE -> https://seatsinc-career.com/jp/

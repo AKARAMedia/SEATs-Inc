@@ -1,0 +1,482 @@
+[
+  {
+    "id": 75,
+    "count": 9,
+    "description": "",
+    "link": "https://seats-inc.com/category/loka-japanese-foods-beverage/",
+    "name": "LOKA Japanese Foods&amp;Beverage",
+    "slug": "loka-japanese-foods-beverage",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO Premium plugin v27.1 (Yoast SEO v28.6) - https://yoast.com/product/yoast-seo-premium-wordpress/ -->\n<title>LOKA Japanese Foods&amp;Beverage Archives - S.E.A.T.S Inc. (シーツインク)</title>\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://seats-inc.com/category/loka-japanese-foods-beverage/\" />\n<meta property=\"og:locale\" content=\"en_US\" />\n<meta property=\"og:type\" content=\"article\" />\n<meta property=\"og:title\" content=\"LOKA Japanese Foods&amp;Beverage Archives\" />\n<meta property=\"og:url\" content=\"https://seats-inc.com/category/loka-japanese-foods-beverage/\" />\n<meta property=\"og:site_name\" content=\"S.E.A.T.S Inc. (シーツインク)\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https:\\/\\/schema.org\",\"@graph\":[{\"@type\":\"CollectionPage\",\"@id\":\"https:\\/\\/seats-inc.com\\/ja\\/category\\/loka-japanese-foods-beverage\\/\",\"url\":\"https:\\/\\/seats-inc.com\\/ja\\/category\\/loka-japanese-foods-beverage\\/\",\"name\":\"LOKA Japanese Foods&amp;Beverage Archives - S.E.A.T.S Inc. (シーツインク)\",\"isPartOf\":{\"@id\":\"https:\\/\\/seats-inc.com\\/#website\"},\"breadcrumb\":{\"@id\":\"https:\\/\\/seats-inc.com\\/ja\\/category\\/loka-japanese-foods-beverage\\/#breadcrumb\"},\"inLanguage\":\"en-US\"},{\"@type\":\"BreadcrumbList\",\"@id\":\"https:\\/\\/seats-inc.com\\/ja\\/category\\/loka-japanese-foods-beverage\\/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https:\\/\\/seats-inc.com\\/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"LOKA Japanese Foods&amp;Beverage\"}]},{\"@type\":\"WebSite\",\"@id\":\"https:\\/\\/seats-inc.com\\/#website\",\"url\":\"https:\\/\\/seats-inc.com\\/\",\"name\":\"S.E.A.T.S Inc. (シーツインク)\",\"description\":\"2013年創業、カンボジア拠点とする日系商社。Established in 2013. Japanese Trading and Production company, located in Phnom Penh, Cambodia.\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https:\\/\\/seats-inc.com\\/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO Premium plugin. -->",
+    "yoast_head_json": {
+      "title": "LOKA Japanese Foods&amp;Beverage Archives - S.E.A.T.S Inc. (シーツインク)",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://seats-inc.com/category/loka-japanese-foods-beverage/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "LOKA Japanese Foods&amp;Beverage Archives",
+      "og_url": "https://seats-inc.com/category/loka-japanese-foods-beverage/",
+      "og_site_name": "S.E.A.T.S Inc. (シーツインク)",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": "https://seats-inc.com/ja/category/loka-japanese-foods-beverage/",
+            "url": "https://seats-inc.com/ja/category/loka-japanese-foods-beverage/",
+            "name": "LOKA Japanese Foods&amp;Beverage Archives - S.E.A.T.S Inc. (シーツインク)",
+            "isPartOf": {
+              "@id": "https://seats-inc.com/#website"
+            },
+            "breadcrumb": {
+              "@id": "https://seats-inc.com/ja/category/loka-japanese-foods-beverage/#breadcrumb"
+            },
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seats-inc.com/ja/category/loka-japanese-foods-beverage/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seats-inc.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "LOKA Japanese Foods&amp;Beverage"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://seats-inc.com/#website",
+            "url": "https://seats-inc.com/",
+            "name": "S.E.A.T.S Inc. (シーツインク)",
+            "description": "2013年創業、カンボジア拠点とする日系商社。Established in 2013. Japanese Trading and Production company, located in Phnom Penh, Cambodia.",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://seats-inc.com/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "_links": {
+      "self": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/categories/75",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/posts?categories=75"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 76,
+    "count": 18,
+    "description": "",
+    "link": "https://seats-inc.com/category/s-e-a-t-s-farm/",
+    "name": "S.E.A.T.S Farm",
+    "slug": "s-e-a-t-s-farm",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO Premium plugin v27.1 (Yoast SEO v28.6) - https://yoast.com/product/yoast-seo-premium-wordpress/ -->\n<title>S.E.A.T.S Farm Archives - S.E.A.T.S Inc. (シーツインク)</title>\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://seats-inc.com/category/s-e-a-t-s-farm/\" />\n<meta property=\"og:locale\" content=\"en_US\" />\n<meta property=\"og:type\" content=\"article\" />\n<meta property=\"og:title\" content=\"S.E.A.T.S Farm Archives\" />\n<meta property=\"og:url\" content=\"https://seats-inc.com/category/s-e-a-t-s-farm/\" />\n<meta property=\"og:site_name\" content=\"S.E.A.T.S Inc. (シーツインク)\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https:\\/\\/schema.org\",\"@graph\":[{\"@type\":\"CollectionPage\",\"@id\":\"https:\\/\\/seats-inc.com\\/category\\/s-e-a-t-s-farm\\/\",\"url\":\"https:\\/\\/seats-inc.com\\/category\\/s-e-a-t-s-farm\\/\",\"name\":\"S.E.A.T.S Farm Archives - S.E.A.T.S Inc. (シーツインク)\",\"isPartOf\":{\"@id\":\"https:\\/\\/seats-inc.com\\/#website\"},\"breadcrumb\":{\"@id\":\"https:\\/\\/seats-inc.com\\/category\\/s-e-a-t-s-farm\\/#breadcrumb\"},\"inLanguage\":\"en-US\"},{\"@type\":\"BreadcrumbList\",\"@id\":\"https:\\/\\/seats-inc.com\\/category\\/s-e-a-t-s-farm\\/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https:\\/\\/seats-inc.com\\/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"S.E.A.T.S Farm\"}]},{\"@type\":\"WebSite\",\"@id\":\"https:\\/\\/seats-inc.com\\/#website\",\"url\":\"https:\\/\\/seats-inc.com\\/\",\"name\":\"S.E.A.T.S Inc. (シーツインク)\",\"description\":\"2013年創業、カンボジア拠点とする日系商社。Established in 2013. Japanese Trading and Production company, located in Phnom Penh, Cambodia.\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https:\\/\\/seats-inc.com\\/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO Premium plugin. -->",
+    "yoast_head_json": {
+      "title": "S.E.A.T.S Farm Archives - S.E.A.T.S Inc. (シーツインク)",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://seats-inc.com/category/s-e-a-t-s-farm/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "S.E.A.T.S Farm Archives",
+      "og_url": "https://seats-inc.com/category/s-e-a-t-s-farm/",
+      "og_site_name": "S.E.A.T.S Inc. (シーツインク)",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": "https://seats-inc.com/category/s-e-a-t-s-farm/",
+            "url": "https://seats-inc.com/category/s-e-a-t-s-farm/",
+            "name": "S.E.A.T.S Farm Archives - S.E.A.T.S Inc. (シーツインク)",
+            "isPartOf": {
+              "@id": "https://seats-inc.com/#website"
+            },
+            "breadcrumb": {
+              "@id": "https://seats-inc.com/category/s-e-a-t-s-farm/#breadcrumb"
+            },
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seats-inc.com/category/s-e-a-t-s-farm/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seats-inc.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "S.E.A.T.S Farm"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://seats-inc.com/#website",
+            "url": "https://seats-inc.com/",
+            "name": "S.E.A.T.S Inc. (シーツインク)",
+            "description": "2013年創業、カンボジア拠点とする日系商社。Established in 2013. Japanese Trading and Production company, located in Phnom Penh, Cambodia.",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://seats-inc.com/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "_links": {
+      "self": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/categories/76",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/posts?categories=76"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 77,
+    "count": 14,
+    "description": "",
+    "link": "https://seats-inc.com/category/s-e-a-t-s-inc/",
+    "name": "S.E.A.T.S Inc",
+    "slug": "s-e-a-t-s-inc",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO Premium plugin v27.1 (Yoast SEO v28.6) - https://yoast.com/product/yoast-seo-premium-wordpress/ -->\n<title>S.E.A.T.S Inc Archives - S.E.A.T.S Inc. (シーツインク)</title>\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://seats-inc.com/category/s-e-a-t-s-inc/\" />\n<meta property=\"og:locale\" content=\"en_US\" />\n<meta property=\"og:type\" content=\"article\" />\n<meta property=\"og:title\" content=\"S.E.A.T.S Inc Archives\" />\n<meta property=\"og:url\" content=\"https://seats-inc.com/category/s-e-a-t-s-inc/\" />\n<meta property=\"og:site_name\" content=\"S.E.A.T.S Inc. (シーツインク)\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https:\\/\\/schema.org\",\"@graph\":[{\"@type\":\"CollectionPage\",\"@id\":\"https:\\/\\/seats-inc.com\\/category\\/s-e-a-t-s-inc\\/\",\"url\":\"https:\\/\\/seats-inc.com\\/category\\/s-e-a-t-s-inc\\/\",\"name\":\"S.E.A.T.S Inc Archives - S.E.A.T.S Inc. (シーツインク)\",\"isPartOf\":{\"@id\":\"https:\\/\\/seats-inc.com\\/#website\"},\"breadcrumb\":{\"@id\":\"https:\\/\\/seats-inc.com\\/category\\/s-e-a-t-s-inc\\/#breadcrumb\"},\"inLanguage\":\"en-US\"},{\"@type\":\"BreadcrumbList\",\"@id\":\"https:\\/\\/seats-inc.com\\/category\\/s-e-a-t-s-inc\\/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https:\\/\\/seats-inc.com\\/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"S.E.A.T.S Inc\"}]},{\"@type\":\"WebSite\",\"@id\":\"https:\\/\\/seats-inc.com\\/#website\",\"url\":\"https:\\/\\/seats-inc.com\\/\",\"name\":\"S.E.A.T.S Inc. (シーツインク)\",\"description\":\"2013年創業、カンボジア拠点とする日系商社。Established in 2013. Japanese Trading and Production company, located in Phnom Penh, Cambodia.\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https:\\/\\/seats-inc.com\\/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO Premium plugin. -->",
+    "yoast_head_json": {
+      "title": "S.E.A.T.S Inc Archives - S.E.A.T.S Inc. (シーツインク)",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://seats-inc.com/category/s-e-a-t-s-inc/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "S.E.A.T.S Inc Archives",
+      "og_url": "https://seats-inc.com/category/s-e-a-t-s-inc/",
+      "og_site_name": "S.E.A.T.S Inc. (シーツインク)",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": "https://seats-inc.com/category/s-e-a-t-s-inc/",
+            "url": "https://seats-inc.com/category/s-e-a-t-s-inc/",
+            "name": "S.E.A.T.S Inc Archives - S.E.A.T.S Inc. (シーツインク)",
+            "isPartOf": {
+              "@id": "https://seats-inc.com/#website"
+            },
+            "breadcrumb": {
+              "@id": "https://seats-inc.com/category/s-e-a-t-s-inc/#breadcrumb"
+            },
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seats-inc.com/category/s-e-a-t-s-inc/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seats-inc.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "S.E.A.T.S Inc"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://seats-inc.com/#website",
+            "url": "https://seats-inc.com/",
+            "name": "S.E.A.T.S Inc. (シーツインク)",
+            "description": "2013年創業、カンボジア拠点とする日系商社。Established in 2013. Japanese Trading and Production company, located in Phnom Penh, Cambodia.",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://seats-inc.com/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "_links": {
+      "self": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/categories/77",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/posts?categories=77"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  },
+  {
+    "id": 1,
+    "count": 0,
+    "description": "",
+    "link": "https://seats-inc.com/category/uncategorized/",
+    "name": "Uncategorized",
+    "slug": "uncategorized",
+    "taxonomy": "category",
+    "parent": 0,
+    "meta": [],
+    "yoast_head": "<!-- This site is optimized with the Yoast SEO Premium plugin v27.1 (Yoast SEO v28.6) - https://yoast.com/product/yoast-seo-premium-wordpress/ -->\n<title>Uncategorized Archives - S.E.A.T.S Inc. (シーツインク)</title>\n<meta name=\"robots\" content=\"index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1\" />\n<link rel=\"canonical\" href=\"https://seats-inc.com/category/uncategorized/\" />\n<meta property=\"og:locale\" content=\"en_US\" />\n<meta property=\"og:type\" content=\"article\" />\n<meta property=\"og:title\" content=\"Uncategorized Archives\" />\n<meta property=\"og:url\" content=\"https://seats-inc.com/category/uncategorized/\" />\n<meta property=\"og:site_name\" content=\"S.E.A.T.S Inc. (シーツインク)\" />\n<meta name=\"twitter:card\" content=\"summary_large_image\" />\n<script type=\"application/ld+json\" class=\"yoast-schema-graph\">{\"@context\":\"https:\\/\\/schema.org\",\"@graph\":[{\"@type\":\"CollectionPage\",\"@id\":\"https:\\/\\/seats-inc.com\\/ja\\/category\\/uncategorized\\/\",\"url\":\"https:\\/\\/seats-inc.com\\/ja\\/category\\/uncategorized\\/\",\"name\":\"Uncategorized Archives - S.E.A.T.S Inc. (シーツインク)\",\"isPartOf\":{\"@id\":\"https:\\/\\/seats-inc.com\\/#website\"},\"breadcrumb\":{\"@id\":\"https:\\/\\/seats-inc.com\\/ja\\/category\\/uncategorized\\/#breadcrumb\"},\"inLanguage\":\"en-US\"},{\"@type\":\"BreadcrumbList\",\"@id\":\"https:\\/\\/seats-inc.com\\/ja\\/category\\/uncategorized\\/#breadcrumb\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https:\\/\\/seats-inc.com\\/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"Uncategorized\"}]},{\"@type\":\"WebSite\",\"@id\":\"https:\\/\\/seats-inc.com\\/#website\",\"url\":\"https:\\/\\/seats-inc.com\\/\",\"name\":\"S.E.A.T.S Inc. (シーツインク)\",\"description\":\"2013年創業、カンボジア拠点とする日系商社。Established in 2013. Japanese Trading and Production company, located in Phnom Penh, Cambodia.\",\"potentialAction\":[{\"@type\":\"SearchAction\",\"target\":{\"@type\":\"EntryPoint\",\"urlTemplate\":\"https:\\/\\/seats-inc.com\\/?s={search_term_string}\"},\"query-input\":{\"@type\":\"PropertyValueSpecification\",\"valueRequired\":true,\"valueName\":\"search_term_string\"}}],\"inLanguage\":\"en-US\"}]}</script>\n<!-- / Yoast SEO Premium plugin. -->",
+    "yoast_head_json": {
+      "title": "Uncategorized Archives - S.E.A.T.S Inc. (シーツインク)",
+      "robots": {
+        "index": "index",
+        "follow": "follow",
+        "max-snippet": "max-snippet:-1",
+        "max-image-preview": "max-image-preview:large",
+        "max-video-preview": "max-video-preview:-1"
+      },
+      "canonical": "https://seats-inc.com/category/uncategorized/",
+      "og_locale": "en_US",
+      "og_type": "article",
+      "og_title": "Uncategorized Archives",
+      "og_url": "https://seats-inc.com/category/uncategorized/",
+      "og_site_name": "S.E.A.T.S Inc. (シーツインク)",
+      "twitter_card": "summary_large_image",
+      "schema": {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": "https://seats-inc.com/ja/category/uncategorized/",
+            "url": "https://seats-inc.com/ja/category/uncategorized/",
+            "name": "Uncategorized Archives - S.E.A.T.S Inc. (シーツインク)",
+            "isPartOf": {
+              "@id": "https://seats-inc.com/#website"
+            },
+            "breadcrumb": {
+              "@id": "https://seats-inc.com/ja/category/uncategorized/#breadcrumb"
+            },
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://seats-inc.com/ja/category/uncategorized/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://seats-inc.com/"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Uncategorized"
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://seats-inc.com/#website",
+            "url": "https://seats-inc.com/",
+            "name": "S.E.A.T.S Inc. (シーツインク)",
+            "description": "2013年創業、カンボジア拠点とする日系商社。Established in 2013. Japanese Trading and Production company, located in Phnom Penh, Cambodia.",
+            "potentialAction": [
+              {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://seats-inc.com/?s={search_term_string}"
+                },
+                "query-input": {
+                  "@type": "PropertyValueSpecification",
+                  "valueRequired": true,
+                  "valueName": "search_term_string"
+                }
+              }
+            ],
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    },
+    "_links": {
+      "self": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/categories/1",
+          "targetHints": {
+            "allow": [
+              "GET"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/categories"
+        }
+      ],
+      "about": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/taxonomies/category"
+        }
+      ],
+      "wp:post_type": [
+        {
+          "href": "https://seats-inc.com/wp-json/wp/v2/posts?categories=1"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https://api.w.org/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,108 @@
+[section 45470fd6]
+  <widget> Japanese Foods Distributor In Cambodia LOKA Japanese Food&Beverage
+     link: LOKA Japanese Food&Beverage -> https://lokajapanesefoodsbeverage.com/
+[section 3a3e98d]
+  <widget> Business Overview We started the business in April 2014. As of 2021, we have a total of about 450 customers and are dealing with more than 400 items, making it one of the major Japanese food import and wholesale trading companies in Cambodia. In particular, our strength In addition to fresh fish and other marine products that are shipped directly from Japan by air freight, we are building a distribution network from neighboring countries through our own routes in collaboration with our Bangkok branch office and partners in more than 10 countries. As for agricultural products, we mainly deliver branded vegetables produced at our own farms to supermarkets and restaurants in Phnom Penh. Our business partners are focusing on restaurants, hotels, supermarkets and convenience stores in Cambodia, as well as direct sales to consumers. Recently, we have started to promote Japanese products in Cambodian market as the projects in collaboration with the local governments and producers in Japan and Cambodia.
+  <widget> 
+     img: /media/2025/01/banner-distribution.jpg (1200x800)
+     bg: /media/2025/01/banner-distribution.jpg
+[section 2c169776]
+  <widget> Product introduction We handle a wide range of categories such as marine products, agricultural products, livestock products, seasonings, beverages, alcoholic beverages, and concerning goods mainly necessary for the restaurant business. Fishery Livestock Dried Ingredients Vegetable Alcohol Beverages
+     img: /media/2025/01/tuna.jpg (800x800)
+     img: /media/2025/01/wagyu.jpg (800x800)
+     img: /media/2025/01/japanese-seasoning-1.jpg (800x800)
+     img: /media/2025/01/agricultural-loka-food-and-beverage.jpg (300x300)
+     img: /media/2025/01/Alcohol.jpg (800x800)
+     bg: /media/2025/01/tuna.jpg
+     bg: /media/2025/01/wagyu.jpg
+     bg: /media/2025/01/japanese-seasoning-1.jpg
+     bg: /media/2025/01/agricultural-loka-food-and-beverage.jpg
+     bg: /media/2025/01/Alcohol.jpg
+[section a9e7d58]
+  <widget> Our strength 1. Original Procurement Network Since the beginning of our business, we have been building and optimizing the purchasing and distribution routes to deliver the proper products that match domestic needs from customers. Regarding fresh marine products from Japan, we secure stable purchases of 2-3 flights a week from the In addition, in collaboration with partner companies, we have been making efforts to procure reasonable and fresher products by purchasing directly from the producers. We also have a branch office in Bangkok and are focusing on developing food production factories and supply chains in Thailand. Vietnam , we are actively discovering the potential utilization of local marine products such as Nha Trang. Even in the Mekong area, we have our We secure a stable distribution route every week by land transportation from Bangkok and Ho Chi Minh.
+  <widget> 
+     img: /media/2025/01/global_network.jpg (794x463)
+     bg: /media/2025/01/global_network.jpg
+[section 4f33d098]
+  <widget> 2. Products Uniqueness and Services We have several representative products in addition to fresh products.
+[section 1bd796e8]
+  <widget> 
+     img: /media/2025/01/Osushiya-Nishin.jpg (550x550)
+     img: /media/2025/01/Osushiya-Nishin5.jpg (550x550)
+     bg: /media/2025/01/Osushiya-Nishin.jpg
+     bg: /media/2025/01/Osushiya-Nishin5.jpg
+  <widget> Azuma-Nishin As the sole-authorized distributor of Azuma Foods Co., Ltd. in Cambodia, we are developing Azuma Foods products such as Azuma-Nishin.
+[section 78b5a7f8]
+  <widget> Japanese Whiskey We have been purchasing Japanese whiskey, which is popular all over the world, through our own procurement route. No exceptions of the recent high demand in all over world, it is sold mainly at foreign-affiliated hotels and specialized liquor shops here in Cambodia also . The demand is getting bigger and bigger year by year.
+  <widget> 
+     img: /media/2025/01/japanese-whiskey-yamazaki.jpg (550x550)
+     img: /media/2025/01/japanese-whiskey-yamazaki3.jpg (550x550)
+     bg: /media/2025/01/japanese-whiskey-yamazaki.jpg
+     bg: /media/2025/01/japanese-whiskey-yamazaki3.jpg
+[section 45480945]
+  <widget> 
+     img: /media/2025/01/oba3.jpg (550x550)
+     img: /media/2025/01/oba1.jpg (550x550)
+     bg: /media/2025/01/oba3.jpg
+     bg: /media/2025/01/oba1.jpg
+  <widget> Oba-Leaf (Sushi-leaf) In partnership with our agri-business S.E.A.T.S Farm, we also sell fresh agricultural products such as Oba-leaf and several kinds of lettuce. Since we manufacture “Oba”, which is indispensable for fresh fishery products by our own farm, we deliver safe and secure vegetables with 100% established traceability.
+[section 53b1ca3a]
+  <widget> Cold Chain with Agility In order to flexibly respond to the needs of restaurants, we support small-lot piston delivery in the city, and among them, we are the only company in Cambodia that uses IceBattery® for delivery. IceBattery® is a technology from Japan that can maintain a -18°C environment without using electricity.
+  <widget> 
+     img: /media/2025/01/freepik_br_c62f2f4c-92ec-4ba4-b8d2-878f1fc9ef0c.png (550x550)
+     img: /media/2025/01/2.jpg (550x550)
+     bg: /media/2025/01/freepik_br_c62f2f4c-92ec-4ba4-b8d2-878f1fc9ef0c.png
+     bg: /media/2025/01/2.jpg
+[section 55d967d1]
+  <widget> 3. Best Solution Provider We have multiple Japanese and Cambodian staff who can speak English all the time. We have a system that can handle inquiries not only from Khmer customers but also from people of all nationalities. Our business is not just a “selling products”, but a ” We value the stance to think together and exploring what is the best for our customers. We think carefully about how to solve them through our network and experience. We value the stance to think together and exploring what is the best for our customers. Beyond being a business that imports and sells food & Cambodias, our first priority is to become the best partner to prosper together in the future.
+     img: /media/2025/01/Best-Solution-1.jpg (1200x800)
+     img: /media/2025/01/Best-Solution-2.jpg (1200x800)
+     img: /media/2025/01/Best-Solution-3.jpg (1200x800)
+     bg: /media/2025/01/Best-Solution-1.jpg
+     bg: /media/2025/01/Best-Solution-2.jpg
+     bg: /media/2025/01/Best-Solution-3.jpg
+[section 2a90a00a]
+  <widget> Get in touch with Us
+  <widget> Contact Us
+     link: Contact Us -> https://lokafoodbeverage.com/contact/
+[section 15e20935]
+  <widget> Major clients Event / PR AEON Cambodia Japan Fair (September 2018)
+     img: /media/2025/01/aeon-japan-fair-2023-6.jpg (1200x800)
+     img: /media/2025/01/aeon-japan-fair-2023-4.jpg (1200x800)
+     img: /media/2025/01/aeon-japan-fair-2023-7.jpg (1200x800)
+     img: /media/2025/01/aeon-japan-fair-2023-5.jpg (1200x800)
+     bg: /media/2025/01/aeon-japan-fair-2023-6.jpg
+     bg: /media/2025/01/aeon-japan-fair-2023-4.jpg
+     bg: /media/2025/01/aeon-japan-fair-2023-7.jpg
+     bg: /media/2025/01/aeon-japan-fair-2023-5.jpg
+[section 4b5465e8]
+  <widget> Business meeting for Cambodia sponsored By JETRO Kumamoto as a Japanese food supplier (January 2020)
+[section 3e7895ae]
+  <widget> Digital marketing business initiatives (JETRO adopted) As a project adopted by JETRO (Japan External Trade Organization), we promote products of companies in Yamaguchi and Saitama prefectures. We made our first attempt using local social media using Cambodian influencers.
+     img: /media/2025/01/digital-marketing-7.jpg (800x800)
+     img: /media/2025/01/digital-marketing-5.jpg (800x800)
+     img: /media/2025/01/digital-marketing-4.jpg (800x800)
+     img: /media/2025/01/digital-marketing-3.jpg (1024x1024)
+     bg: /media/2025/01/digital-marketing-7.jpg
+     bg: /media/2025/01/digital-marketing-5.jpg
+     bg: /media/2025/01/digital-marketing-4.jpg
+     bg: /media/2025/01/digital-marketing-3.jpg
+[section 775c4fa0]
+  <widget> Umamil Food Export Platform in Japan We are collaborating with Umamil, a startup company wholly owned by SoftBank Corp. We will collaborate in all aspects to develop sales channels for Japanese companies in Cambodia.
+     img: /media/2025/01/umamil-food-export-4.jpg (800x800)
+     img: /media/2025/01/umamil-food-export-2.jpg (800x800)
+     img: /media/2025/01/umamil-food-export-1.jpg (800x800)
+     img: /media/2025/01/umamil-food-export-3.jpg (1024x1024)
+     bg: /media/2025/01/umamil-food-export-4.jpg
+     bg: /media/2025/01/umamil-food-export-2.jpg
+     bg: /media/2025/01/umamil-food-export-1.jpg
+     bg: /media/2025/01/umamil-food-export-3.jpg
+[section 5ccc4c29]
+  <widget> FUTURE PERSPECTIVE As a future initiative, we will expand our business in the following directions . Read More Strengthening Of The Supplier Network We will communicate more closely with each producer in each origin country. In order to realize the optimized distribution in Cambodia at a lower cost at the fresher and more suitable for the clients. LOKA Brand Products We will also start producing package designs for Khmer, planning LOKA original brand products, and developing products that meet the needs of the Cambodian market.We will always do our best to make the best proposals to our customers from the direct marketing in Cambodia Supporting For Japanese Food Business To Expand Into Cambodia We will support and encourage the food business players in Japan to enter the Cambodian market, where growth is accelerating. Utilizing our knowledge so far, we will provide a wide range of support to provide the information from the perspective of restaurants as a food wholesaler.The prosperity of our customers is the prosperity of our company. So that we can start our journey as a partner of the same ship from the beginning. We would like to form partnerships with restaurants both domestically and internationally. If you have any interest, please feel free to contact us for any inquiries.
+     img: /media/2025/01/digital-marketing-seo-google-1725340.jpg (1280x853)
+     img: /media/2025/01/events-makro-1.jpg (1200x800)
+     img: /media/2025/01/g.jpg (800x600)
+     bg: /media/2025/01/digital-marketing-seo-google-1725340.jpg
+     bg: /media/2025/01/events-makro-1.jpg
+     bg: /media/2025/01/g.jpg
+     link: Read More -> #down

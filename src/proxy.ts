@@ -1,0 +1,64 @@
+import { NextResponse, type NextRequest } from "next/server";
+import { jwtVerify } from "jose";
+import { SESSION_COOKIE, sessionKey } from "@/lib/session-key";
+import LEGACY_SLUGS from "@/content/legacy-redirects.json";
+
+const legacy: Record<string, string> = LEGACY_SLUGS;
+
+// URL scheme mirrors the old WordPress/TranslatePress site:
+//   /overview/      -> English (internally /en/overview)
+//   /ja/overview/   -> Japanese
+export async function proxy(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  if (pathname.startsWith("/admin")) {
+    if (pathname.replace(/\/$/, "") === "/admin/login") return NextResponse.next();
+    // Optimistic check only; every admin page/action re-verifies the session.
+    const token = req.cookies.get(SESSION_COOKIE)?.value;
+    const ok = token && (await jwtVerify(token, sessionKey()).then(() => true, () => false));
+    if (!ok) return NextResponse.redirect(new URL("/admin/login/", req.url));
+    return NextResponse.next();
+  }
+
+  if (pathname === "/en" || pathname.startsWith("/en/")) {
+    const url = req.nextUrl.clone();
+    url.pathname = pathname.slice(3) || "/";
+    return NextResponse.redirect(url, 308);
+  }
+
+  // Old WordPress permalinks that used Japanese slugs -> new ASCII slugs
+  const m = safeDecode(pathname).match(/^(\/ja)?\/([^/]+)\/?$/);
+  if (m && legacy[m[2]]) {
+    const url = req.nextUrl.clone();
+    url.pathname = `${m[1] ?? ""}/${legacy[m[2]]}/`;
+    return NextResponse.redirect(url, 301);
+  }
+
+  // Standalone static JP recruiting site (mirrored as-is from the old server into public/jp/)
+  if (pathname === "/ja/jp" || pathname === "/ja/jp/") {
+    return NextResponse.redirect(new URL("/jp/", req.url), 301); // same as live
+  }
+  if (pathname === "/jp" || pathname === "/jp/") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/jp/index.html";
+    return NextResponse.rewrite(url);
+  }
+
+  if (pathname === "/ja" || pathname.startsWith("/ja/")) return NextResponse.next();
+
+  const url = req.nextUrl.clone();
+  url.pathname = `/en${pathname}`;
+  return NextResponse.rewrite(url);
+}
+
+function safeDecode(s: string) {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
+
+export const config = {
+  matcher: ["/((?!api|_next|media|uploads|favicon.ico|icon.png|robots.txt|sitemap.xml|.*\\.[a-z0-9]+$).*)"],
+};

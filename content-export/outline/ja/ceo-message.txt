@@ -1,0 +1,31 @@
+[section f71126e]
+  <widget> CEO Message​
+[section 6de7fe8b]
+  <widget> “日本や周辺国が積み上げてきた知識と経験をカンボジアの現場に。” 「カンボジアから世界で勝負できるヒト・モノ・コトを創り出す」、これがS.E.A.T.S Inc.の果たすべき役割です。日本や先進国が積み上げてきた知識と経験をカンボジアの現場に。カンボジアの強みを最大限に活かして、生産性を高め続ける。そしてカンボジアから、世界で戦える”力”を生み出していく。事業は、リアルな現場で実現できることが全てだと考えています。S.E.A.T.S Inc.は地に足のついたリアルビジネスを愚直に推し進めることで、果たすべき役割の実現に全力で取り組んで参ります。 Director & CEO峯島 浩輔
+     img: /media/2025/01/ceo-1.jpeg (720x720)
+     bg: /media/2025/01/ceo-1.jpeg
+[section 6c5ebfda]
+  <widget> プロフィール
+[section 5fde07e7]
+  <widget> 峯島 浩輔 S.E.A.T.S Inc. Director & CEO1988年、静岡県沼津市生まれ。立教大学卒。学生時代は十数カ国へのバックパッカー旅行の経験や、上海での長期インターンなどを通じて、成長市場のアジアでのビジネスを志向する。また、キャリア支援の学生団体を設立し、個々人の価値観を尊重するキャリア形成に興味を持つ。 2011年、三菱電機(株)に新卒入社。FA（ファクトリーオートメーション）機器のアジアエリアマーケティングを担当。1年目にタイでの長期出張を経験し事業部表彰を受ける。主に、台湾、インド、シンガポールエリアを担当し、拡販活動に従事。2014年、26歳でカンボジアへ移住し、現S.E.A.T.S Inc.にてDirector & COO就任。食品輸入卸事業、農業生産開発事業、等を立ち上げる。2018年、拠点を日本へ移し、複業で(株)リクルートライフスタイルに入社。ビジネス開発組織にてペイメントサービスの大手クライアント開拓に従事。 2019年、再度拠点をカンボジアへ移し、現職に就任。
+[section 3aa03de3]
+  <widget> 
+     link:  -> https://twitter.com/seatscoo
+  <widget> 
+     img: /media/2025/01/note-2-1.png (400x74)
+     bg: /media/2025/01/note-2-1.png
+     link:  -> https://note.com/mine_blog
+  <widget> 
+[section 4283b454]
+  <widget> Facebook Page https://www.facebook.com/ seatsinccambodia
+     link:  -> https://www.facebook.com/%20seatsinccambodia
+  <widget> Telegram Channel https://t.me/seatsincrecruit
+     link:  -> https://t.me/seatsincrecruit
+[section 7b5fb3e8]
+  <widget> 
+     img: /media/2025/01/ceo-interview-2.jpg (?x?)
+     img: /media/2025/01/ceo-interview-1.jpg (?x?)
+     img: /media/2025/01/ceo-interviews-8.jpg (?x?)
+     link:  -> https://www.youtube.com/@seatsinc5038/videos
+     link:  -> https://www.youtube.com/@seatsinc5038/videos
+     link:  -> https://www.youtube.com/@seatsinc5038/videos

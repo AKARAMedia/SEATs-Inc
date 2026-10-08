@@ -1,26 +1,354 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Design tokens ported from the live Woodmart + Elementor kit settings */
+@theme {
+  --font-sans: var(--font-open-sans), Arial, Helvetica, sans-serif;
+  --font-roboto: var(--font-roboto), sans-serif;
+  --font-serif: var(--font-roboto-slab), serif;
+
+  --color-primary: #0081cc; /* --wd-primary-color / elementor primary */
+  --color-accent: #00b0ec; /* link hover / elementor accent */
+  --color-secondary: #aacd06; /* --wd-alternative-color */
+  --color-text: #595757; /* body text */
+  --color-heading: #333333; /* links / nav */
+  --color-footer: #1e73be;
+  --color-sky: #ddf7ff; /* "Our Brand" band */
+  --color-loka: #2e3192;
+  --color-farm: #8dc63f;
+  --color-nova: #29abe2;
+  --color-pisa: #f15a24;
+
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1025px;
+
+  --container-site: 1222px; /* Woodmart container width (1192 + 30 gutter) */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: #fff;
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  a {
+    color: var(--color-heading);
+    transition: color 0.25s ease;
+  }
+  a:hover {
+    color: var(--color-accent);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--color-text);
+    font-weight: 700;
+    line-height: 1.4;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: var(--container-site);
+    margin-inline: auto;
+    padding-inline: 15px;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 12px 24px;
+    border-radius: 20px;
+    transition: background 0.25s ease;
+  }
+  .btn-primary:hover {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  /* Rich text from the CMS (news bodies) and long-form static copy */
+  .prose-seats {
+    color: var(--color-text);
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .prose-seats p {
+    margin-bottom: 1.25em;
+  }
+  .prose-seats h2 {
+    font-size: 24px;
+    margin: 1.4em 0 0.6em;
+  }
+  .prose-seats h3 {
+    font-size: 20px;
+    margin: 1.3em 0 0.5em;
+  }
+  .prose-seats h4 {
+    font-size: 18px;
+    margin: 1.2em 0 0.5em;
+  }
+  .prose-seats a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+  .prose-seats ul {
+    list-style: disc;
+    padding-left: 1.5em;
+    margin-bottom: 1.25em;
+  }
+  .prose-seats ol {
+    list-style: decimal;
+    padding-left: 1.5em;
+    margin-bottom: 1.25em;
+  }
+  .prose-seats img {
+    max-width: 100%;
+    height: auto;
+    margin: 1em auto;
+    border-radius: 4px;
+  }
+  .prose-seats figure {
+    margin: 1.5em 0;
+  }
+  .prose-seats figcaption {
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+  }
+  .prose-seats iframe {
+    max-width: 100%;
+  }
+  .prose-seats blockquote {
+    border-left: 4px solid var(--color-primary);
+    padding-left: 1em;
+    color: #666;
+    margin: 1.5em 0;
+  }
+  .prose-seats .wp-block-gallery,
+  .prose-seats .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+  .prose-seats .wp-block-gallery img,
+  .prose-seats .gallery img {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* === Agent A: home/company pages === */
+/* Fancy-text cursor + Home "Company / Business" sitemap (ported 1:1 from the live Elementor HTML widget). */
+
+/* Fancy-text typing cursor */
+.seats-typed-cursor {
+  animation: seats-blink 0.7s infinite;
+}
+@keyframes seats-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ===== Company / Business sitemap — ported 1:1 from the live Elementor HTML widget ===== */
+.seats-sitemap {
+  width: 100%;
+  margin: 0;
+  padding: 10px 5%;
+  color: #263746;
   font-family: Arial, Helvetica, sans-serif;
 }
+.seats-sitemap__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr 1fr;
+}
+.seats-sitemap__col {
+  min-width: 0;
+  min-height: 220px;
+  padding: 0 clamp(25px, 4vw, 70px);
+}
+.seats-sitemap__col + .seats-sitemap__col {
+  border-left: 1px solid #e5e5e5;
+}
+.seats-sitemap__title {
+  position: relative;
+  margin: 0 0 28px;
+  padding: 14px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(20px, 1.6vw, 27px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: #263746;
+}
+.seats-sitemap__title::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 2px;
+  background: #9acd32;
+}
+.seats-sitemap__title--business::before {
+  background: #4ba9dc;
+}
+.seats-sitemap__list li {
+  margin: 0 0 22px;
+}
+.seats-sitemap__list a {
+  display: block;
+  color: #344858;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(13px, 1vw, 16px);
+  line-height: 1.5;
+  transition: color 0.2s ease;
+}
+.seats-sitemap__list a:hover {
+  color: #111;
+}
+.seats-sitemap__list--business li {
+  position: relative;
+  margin-bottom: 19px;
+  padding-left: 20px;
+}
+.seats-sitemap__list--business li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 4px;
+  height: 22px;
+  background: #252c92;
+}
+.seats-sitemap__list--business li:nth-child(2)::before {
+  background: #8bc53f;
+}
+.seats-sitemap__list--business li:nth-child(3)::before {
+  background: #3ca6c9;
+}
+.seats-sitemap__list--business li:nth-child(4)::before {
+  background: #e9572b;
+}
+.seats-sitemap__col--right {
+  padding-top: 30px;
+}
+.seats-sitemap__col--right .seats-sitemap__list li {
+  margin-bottom: 25px;
+}
+
+@media (min-width: 1200px) {
+  .seats-sitemap {
+    padding-left: 7%;
+    padding-right: 7%;
+  }
+  .seats-sitemap__col {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+  .seats-sitemap__grid {
+    min-height: 260px;
+  }
+  .seats-sitemap__title {
+    font-size: 25px;
+  }
+  .seats-sitemap__list a {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 900px) and (min-width: 601px) {
+  .seats-sitemap {
+    padding: 30px 4%;
+  }
+  .seats-sitemap__grid {
+    grid-template-columns: 1fr 1.3fr 1fr;
+  }
+  .seats-sitemap__col {
+    padding: 0 25px;
+    min-height: 230px;
+  }
+  .seats-sitemap__title {
+    font-size: 21px;
+    margin-bottom: 25px;
+  }
+  .seats-sitemap__list a {
+    font-size: 13px;
+  }
+  .seats-sitemap__list li {
+    margin-bottom: 18px;
+  }
+  .seats-sitemap__list--business li {
+    padding-left: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .seats-sitemap {
+    padding: 20px;
+  }
+  .seats-sitemap__grid {
+    display: block;
+  }
+  .seats-sitemap__col {
+    min-height: auto;
+    padding: 25px 10px;
+    border-left: none !important;
+    border-top: 1px solid #e5e5e5;
+  }
+  .seats-sitemap__col:first-child {
+    border-top: none;
+    padding-top: 5px;
+  }
+  .seats-sitemap__title {
+    font-size: 22px;
+    margin-bottom: 25px;
+  }
+  .seats-sitemap__list a {
+    font-size: 14px;
+  }
+  .seats-sitemap__list li {
+    margin-bottom: 18px;
+  }
+  .seats-sitemap__list--business li {
+    padding-left: 18px;
+  }
+  .seats-sitemap__col--right {
+    padding-top: 25px;
+  }
+}
+
+@media (max-width: 380px) {
+  .seats-sitemap {
+    padding: 15px;
+  }
+  .seats-sitemap__col {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .seats-sitemap__title {
+    font-size: 20px;
+  }
+  .seats-sitemap__list a {
+    font-size: 13px;
+  }
+}
+

@@ -1,0 +1,80 @@
+[section 8cab136]
+  <widget> NOVA MARKETING
+[section 510bec0d]
+  <widget> Business Overview NOVA Marketing was launched in May 2022 as a new business initiative under S.E.A.T.S Inc., focusing on digital marketing. We currently operate three main services:・The E-commerce business selling food and beverages imported from Japan to general consumers・The E-commerce business offering Japanese-made baby products・Media production and support for planning and executing marketing strategiesThrough a wide range of services such as digital marketing, promotions, media production, and web development, we provide comprehensive support for brands to grow their online presence. With a wealth of experience and a team of experts, we are committed to delivering strategies that drive tangible results.
+  <widget> 
+     img: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg (1200x800)
+     bg: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg
+[section 4f4e8ee5]
+  <widget> Our Strength Expertise in Food Marketing NOVA Marketing operates two food-focused brands, primarily through online channels. We import high-quality products from Japan and promote them using marketing methods tailored to the local market. By maintaining strong relationships with trusted suppliers and designing strategies that deeply understand consumer needs, we enhance brand value and drive sales growth. Creative Production & Strategic Planning At Akara Media, we produce engaging digital content such as videos, graphics, and social media posts. Through media strategies based on each brand’s message and goals, we support sustainable brand growth. Specialized Teamwork Our greatest strength lies in our collaborative team structure, bringing together experts from various fields. By combining specialized knowledge in digital marketing, content creation, media production, and web development, we offer comprehensive marketing solutions tailored to each client’s needs.
+     img: /media/2026/09/Expertise-in-Food-Marketing.jpg (1024x1024)
+     img: /media/2025/07/Creative-Production-Strategic-Planning.jpg (768x768)
+     img: /media/2025/07/20943566.jpg (1280x1280)
+     bg: /media/2026/09/Expertise-in-Food-Marketing.jpg
+     bg: /media/2025/07/Creative-Production-Strategic-Planning.jpg
+     bg: /media/2025/07/20943566.jpg
+[section 5184942 elementor-hidden-desktop elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> Our strength 1. Expertise in Food Marketing NOVA Marketing operates two food-focused brands, primarily through online channels. We import high-quality products from Japan and promote them using marketing methods tailored to the local market. By maintaining strong relationships with trusted suppliers and designing strategies that deeply understand consumer needs, we enhance brand value and drive sales growth.
+  <widget> 
+     img: /media/2025/01/IMG_0286.jpg (1280x1280)
+     img: /media/2025/01/IMG_0290.jpg (788x788)
+     bg: /media/2025/01/IMG_0286.jpg
+     bg: /media/2025/01/IMG_0290.jpg
+[section 13624a63 elementor-hidden-desktop elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> 
+     img: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg (1380x920)
+     bg: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg
+  <widget> 2. Creative Production & Strategic Planning At Akara Media, we produce engaging digital content such as videos, graphics, and social media posts. Through media strategies based on each brand’s message and goals, we support sustainable brand growth.
+[section c61f9eb elementor-hidden-desktop elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> 3. Specialized Teamwork Our greatest strength lies in our collaborative team structure, bringing together experts from various fields. By combining specialized knowledge in digital marketing, content creation, media production, and web development, we offer comprehensive marketing solutions tailored to each client’s needs.
+  <widget> 
+     img: /media/2025/03/A-Talented-Teamwork.webp (624x357)
+     bg: /media/2025/03/A-Talented-Teamwork.webp
+[section 8a3f6e0]
+  <widget> Our Services At Nova Marketing, we offer unique products and services that help your business grow and succeed in the digital world. Digital Marketing and Promotion We design data-driven strategies to effectively reach the right target audience. Our services span a variety of channels, including Facebook, Instagram, and Google, covering SEO, social media management, PPC advertising, personalized email campaigns, and more. Media Creation We produce high-quality videos, photos, and graphics that align with each brand’s image. Utilizing the latest tools for design, video production, and animation, we create visually compelling brand expressions. Web Creation We develop mobile-friendly, secure, and scalable websites. From custom design and e-commerce site development to WordPress builds and ongoing support, we offer end-to-end solutions. Business Management Support We also provide management services that support workflow optimization, including project management, scheduling, document organization, and client communications.
+     img: /media/2025/01/marketing-ideas-scaled-1.jpg (2560x2560)
+     img: /media/2025/01/media_creation-scaled-1.jpg (2560x2560)
+     img: /media/2025/01/web_creation-scaled-1.jpg (2560x2560)
+     img: /media/2025/01/administrative_support-scaled-1.jpg (2560x2560)
+     bg: /media/2025/01/marketing-ideas-scaled-1.jpg
+     bg: /media/2025/01/media_creation-scaled-1.jpg
+     bg: /media/2025/01/web_creation-scaled-1.jpg
+     bg: /media/2025/01/administrative_support-scaled-1.jpg
+[section 46a3530]
+  <widget> GET IN TOUCH WITH US CONTACT US
+     link: GET IN TOUCH WITH US -> https://seats-inc.com/contact/
+     link: CONTACT US -> #
+[section 68cd123e]
+  <widget> Best Solution Provider We deliver optimal solutions to help businesses grow online. From digital marketing and media production to web development and business management support, we tailor strategies to each client’s unique needs.With a goal of strengthening businesses and achieving measurable results using cutting-edge tools, our experienced team is here to support your success in the digital space.
+  <widget> 
+     img: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg (1380x920)
+     img: /media/2025/01/desktop-table-office_53876-42947.jpg (1380x953)
+     img: /media/2025/01/graph1.jpg (1380x920)
+     bg: /media/2025/01/startup-business-teamwork-meeting-concept_1421-194.jpg
+     bg: /media/2025/01/desktop-table-office_53876-42947.jpg
+     bg: /media/2025/01/graph1.jpg
+[section b81cc22]
+  <widget> Our Vision and Goals​ NOVA Marketing is committed to supporting our clients’ success through innovative approaches. Utilizing New Technologies We leverage advanced technologies such as AI, automation, and data analytics to build more precise marketing strategies, enabling us to reach the target audience at the right time and in the right way. Service Expansion We stay ahead of market trends and continuously expand our service offerings. By evolving constantly, we provide increasingly high-quality solutions.z Commitment to Client Success We prioritize client success above all, offering practical, results-driven strategies that lead to increased online visibility and improved sales. Towards Global Leadership We strive to become a global leader in digital marketing by continuously providing innovative and reliable solutions. By utilizing the latest tools and strategies, we help clients achieve their goals, drive innovation, and remain committed to delivering outstanding business results through continued growth.We drive your marketing activity by S.E.A.T.S Group in Cambodia.
+     img: /media/elementor/thumbs/graphic-investment-stock-market-data-analysis-business_53876-167114-r2hzvmpnv3zwogwtmgsevwed1sv3n89z836nk4qo9k.jpg (?x?)
+     img: /media/elementor/thumbs/workplace-business-modern-male-accessories-laptop-white_155003-1722-r2hzxbt67cbjn4g2pp75vyzbnuhyjk0j4hl7r48314.jpg (?x?)
+     img: /media/elementor/thumbs/close-up-workers-analyzing-statistical-data_1098-2075-r2hzvi0gwxth2f3ndwra1fl22vi9kqrbjfx85qxn4o.jpg (?x?)
+     img: /media/2025/01/global-leader.jpg (1380x828)
+     bg: /media/elementor/thumbs/graphic-investment-stock-market-data-analysis-business_53876-167114-r2hzvmpnv3zwogwtmgsevwed1sv3n89z836nk4qo9k.jpg
+     bg: /media/elementor/thumbs/workplace-business-modern-male-accessories-laptop-white_155003-1722-r2hzxbt67cbjn4g2pp75vyzbnuhyjk0j4hl7r48314.jpg
+     bg: /media/elementor/thumbs/close-up-workers-analyzing-statistical-data_1098-2075-r2hzvi0gwxth2f3ndwra1fl22vi9kqrbjfx85qxn4o.jpg
+     bg: /media/2025/01/global-leader.jpg
+[container cecf136]
+  [container ]
+    <wd_image_or_svg.default> 
+       img: /media/2025/08/Your-paragraph-text.jpg (930x180)
+       bg: /media/2025/08/Your-paragraph-text.jpg
+[section 167e0b19 elementor-hidden-desktop elementor-hidden-tablet elementor-hidden-mobile]
+  <widget> We drive your marketing activity by S.E.A.T.S Group in Cambodia. Please click here! Our Vision and Goals NOVA Marketing is committed to supporting our clients’ success through innovative approaches. Utilizing New Technologies We leverage advanced technologies such as AI, automation, and data analytics to build more precise marketing strategies, enabling us to reach the target audience at the right time and in the right way. Service Expansion We stay ahead of market trends and continuously expand our service offerings. By evolving constantly, we provide increasingly high-quality solutions.z Commitment to Client Success We prioritize client success above all, offering practical, results-driven strategies that lead to increased online visibility and improved sales. Towards Global Leadership We strive to become a global leader in digital marketing by continuously providing innovative and reliable solutions. By utilizing the latest tools and strategies, we help clients achieve their goals, drive innovation, and remain committed to delivering outstanding business results through continued growth.
+     img: /media/2025/01/graphic-investment-stock-market-data-analysis-business_53876-167114.jpg (1380x921)
+     img: /media/2025/01/workplace-business-modern-male-accessories-laptop-white_155003-1722.jpg (1380x920)
+     img: /media/2025/01/close-up-workers-analyzing-statistical-data_1098-2075.jpg (1380x920)
+     img: /media/2025/01/global-leader.jpg (1380x828)
+     bg: /media/2025/01/graphic-investment-stock-market-data-analysis-business_53876-167114.jpg
+     bg: /media/2025/01/workplace-business-modern-male-accessories-laptop-white_155003-1722.jpg
+     bg: /media/2025/01/close-up-workers-analyzing-statistical-data_1098-2075.jpg
+     bg: /media/2025/01/global-leader.jpg

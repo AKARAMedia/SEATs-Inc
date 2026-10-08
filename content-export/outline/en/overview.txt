@@ -1,0 +1,53 @@
+[section 2170958]
+  <widget> OVERVIEW
+[section bc09eba]
+  <widget> S.E.A.T.S Inc. Company Name November, 2013 Date Established Kosuke Mineshima Director & CEO US $100,000 Capital Kh: (+855)023-966-313 Phone Total 100 Number of Employees Offices Cambodia head office: No.54 & 56, Street 388, Sangkat Toul Svay Prey 1, Khan Boeng Keng Kang, Phnom Penh, Cambodia.Japan office:8F Nipponbashi Kawabe Building, 1-2-6 Nipponbashi, Chuo-ku, Osaka City, Osaka 542-0073, Japan Our Services 1. Food wholesale importing business > LOKA Japanese Foods&BeverageWe purchase fresh food and beverages from Japan, Thailand, and Cambodia, and offer them to Cambodian domestic restaurants and hotels with proposals of new services. In particular, we have strengths in providing fresh fish, and we are offering products that are not available locally and responding to the issues that are unique to the region.2. Agricultural production business >S.E.A.T.S FarmWe cultivate high-value-added commodities such as high-quality branded vegetables and high-grade pepper that are safe, at our own farm. We have also started rearing local cows and ducks, and we are in the process of coming up with new business services.3. Digital Marketing and Web Creation service >NOVA MarketingWe offer digital marketing and promotion services on social media platforms in Cambodia. Our services include a wide range of solutions such as page maintenance, poster design, content marketing, Facebook advertising, and website creation. We offer a full package front-end and back-end design, and our profession
+     link: > LOKA Japanese Foods&Beverage -> https://lokajapanesefoodsbeverage.com/
+     link: >S.E.A.T.S Farm -> https://seatsfarm.com/
+     link: >NOVA Marketing -> https://seats-inc.com/nova-marketing/
+     link: >PISA FOOD RETAIL -> https://seats-inc.com/pisa-food-retail/
+     iframe: https://maps.google.com/maps?q=11.548654066286069%2C%20104.90703330490835&t=m&z=15&output=embed&iwloc=near
+[container 97f0429]
+  [container ]
+    <eael-info-box.default> Awards and Honors
+[container 1ea443b]
+  <image-gallery.default> 
+     img: /media/2025/01/seatsinc-awards-3.jpg (1200x800)
+     img: /media/2025/01/seatsinc-awards-1-1.jpg (1200x800)
+     img: /media/2025/01/seatsinc-awards-2.jpg (1200x800)
+     img: /media/2025/01/seatsinc-awards-4.jpg (1200x800)
+     bg: /media/2025/01/seatsinc-awards-3.jpg
+     bg: /media/2025/01/seatsinc-awards-1-1.jpg
+     bg: /media/2025/01/seatsinc-awards-2.jpg
+     bg: /media/2025/01/seatsinc-awards-4.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/01/seatsinc-awards-3.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/01/seatsinc-awards-1-1.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/01/seatsinc-awards-2.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/01/seatsinc-awards-4.jpg
+  <spacer.default> 
+[container 478fd07]
+  [container ]
+    <eael-info-box.default> Our Business In Action
+[container 9f50cfd]
+  <image-gallery.default> 
+     img: /media/2025/03/photo_1_2025-03-19_10-32-19.jpg (768x433)
+     img: /media/2025/03/photo_2_2025-03-19_10-32-19.jpg (768x433)
+     img: /media/2025/07/Container-e1751446909896.jpg (768x428)
+     img: /media/2025/03/photo_3_2025-03-19_10-32-19.jpg (768x431)
+     img: /media/2025/06/photo_2025-06-19_09-19-36-e1750824530498.jpg (768x432)
+     img: /media/2025/06/photo_2025-06-19_09-19-32-e1750824385905.jpg (768x432)
+     img: /media/2025/06/photo_2025-06-19_09-19-27-e1750824586482.jpg (768x432)
+     bg: /media/2025/03/photo_1_2025-03-19_10-32-19.jpg
+     bg: /media/2025/03/photo_2_2025-03-19_10-32-19.jpg
+     bg: /media/2025/07/Container-e1751446909896.jpg
+     bg: /media/2025/03/photo_3_2025-03-19_10-32-19.jpg
+     bg: /media/2025/06/photo_2025-06-19_09-19-36-e1750824530498.jpg
+     bg: /media/2025/06/photo_2025-06-19_09-19-32-e1750824385905.jpg
+     bg: /media/2025/06/photo_2025-06-19_09-19-27-e1750824586482.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/03/photo_1_2025-03-19_10-32-19.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/03/photo_2_2025-03-19_10-32-19.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/07/Container-e1751446909896.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/03/photo_3_2025-03-19_10-32-19.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/06/photo_2025-06-19_09-19-36-e1750824530498.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/06/photo_2025-06-19_09-19-32-e1750824385905.jpg
+     link:  -> https://seats-inc.com/wp-content/uploads/2025/06/photo_2025-06-19_09-19-27-e1750824586482.jpg
