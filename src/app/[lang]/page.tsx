@@ -59,11 +59,11 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         {/* Our Brand */}
         <section className="mt-[90px] bg-[#dff7ff] p-[50px]">
           <h2 className="text-center text-[28px] font-bold capitalize leading-[28px] text-primary">{BRAND_TITLE}</h2>
-          <div className="mt-[50px] flex flex-col items-center gap-[20px] tablet:flex-row tablet:justify-center">
+          <div className="mt-[50px] flex flex-col items-center gap-[20px] tablet:flex-row tablet:flex-wrap tablet:justify-center">
             {BRANDS.map((b) => (
               <div
                 key={b.src}
-                className="flex h-[var(--mh)] w-[260px] items-center justify-center tablet:h-[105px] tablet:w-auto tablet:flex-1"
+                className="flex h-[var(--mh)] w-[260px] items-center justify-center tablet:h-[105px] tablet:w-auto tablet:min-w-max tablet:flex-1"
                 style={{ "--mh": `${b.mh}px` } as React.CSSProperties}
               >
                 <Image

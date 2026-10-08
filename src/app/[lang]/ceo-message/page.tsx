@@ -25,7 +25,7 @@ function LinkBox({ path, viewBox, label, text, href, className }: { path: string
       <svg viewBox={viewBox} aria-hidden className="mr-[32px] size-[50px] shrink-0 fill-[#0080cc] tablet:mr-[30px]">
         <path d={path} />
       </svg>
-      <span className="text-[20px] leading-[32px]">
+      <span className="min-w-0 break-words text-[20px] leading-[32px]">
         {label}
         <br />
         {text}
@@ -43,7 +43,7 @@ export default async function Page({ params }: PageProps<"/[lang]/ceo-message">)
     <div className="pb-[160px]">
       <CenteredPageTitle>{c.title[lang]}</CenteredPageTitle>
 
-      <section className="container-site grid gap-10 desktop:grid-cols-[536px_590px] desktop:justify-between desktop:gap-0 desktop:pb-[64px]">
+      <section className="container-site grid gap-10 desktop:grid-cols-[minmax(0,536px)_minmax(0,590px)] desktop:justify-between desktop:gap-x-8 desktop:gap-y-0 desktop:pb-[64px]">
         <div className="text-[18px] leading-[1.6]">
           <p className="mb-5 text-[19px] font-semibold italic capitalize leading-[35px] text-[#0080cc] tablet:text-[22px]">
             {c.quote[lang]}
@@ -97,7 +97,7 @@ export default async function Page({ params }: PageProps<"/[lang]/ceo-message">)
           </a>
         </div>
 
-        <div className="mt-[60px] grid tablet:mt-[67px] tablet:grid-cols-2">
+        <div className="mt-[60px] grid tablet:mt-[67px] tablet:grid-cols-2 [&>*]:min-w-0">
           <LinkBox
             path={FB_PATH}
             viewBox="0 0 512 512"
@@ -112,7 +112,7 @@ export default async function Page({ params }: PageProps<"/[lang]/ceo-message">)
             label={c.links.telegram.label}
             text={c.links.telegram.text}
             href={c.links.telegram.href}
-            className="bg-[#e4f1f7] tablet:pl-[112px]"
+            className="bg-[#e4f1f7] desktop:pl-[112px]"
           />
         </div>
       </section>

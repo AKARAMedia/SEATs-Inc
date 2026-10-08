@@ -129,7 +129,7 @@ export default function Header({ lang }: { lang: Lang }) {
         className={`fixed inset-x-0 top-0 z-40 bg-white transition-shadow ${stuck ? "shadow-[0_1px_2px_rgba(0,0,0,0.08)]" : ""}`}
       >
         <div
-          className="mx-auto flex h-[70px] max-w-[1440px] items-center px-[51px] max-[1024px]:px-[15px]"
+          className="mx-auto flex h-[70px] max-w-[1440px] items-center px-[15px] min-[1366px]:px-[51px]"
         >
           <Link href={localHref(lang, "/")} aria-label="Site logo" className="mr-auto shrink-0 desktop:mr-0">
             <Image
@@ -138,12 +138,12 @@ export default function Header({ lang }: { lang: Lang }) {
               width={1701}
               height={412}
               priority
-              className="h-[42px] w-auto desktop:h-auto desktop:w-[248px]"
+              className="h-[42px] w-auto desktop:h-auto desktop:w-[190px] min-[1200px]:w-[248px]"
             />
           </Link>
 
           <nav aria-label="Main navigation" className="hidden flex-1 justify-center desktop:flex">
-            <ul className="flex h-[40px] items-center gap-x-[30px]">
+            <ul className="flex h-[40px] items-center gap-x-[14px] min-[1200px]:gap-x-5 min-[1366px]:gap-x-[30px]">
               {MAIN_NAV.map((item) => (
                 <li key={item.label.en} className="group relative">
                   {item.highlight && item.href ? (
@@ -158,7 +158,7 @@ export default function Header({ lang }: { lang: Lang }) {
                   ) : item.href ? (
                     <ActiveNavLink
                       href={localHref(lang, item.href)}
-                      className="flex h-10 items-center text-[15px] font-semibold uppercase leading-[18px] text-heading hover:text-heading/60"
+                      className="flex h-10 items-center whitespace-nowrap text-[14px] font-semibold uppercase leading-[18px] text-heading hover:text-heading/60 min-[1200px]:text-[15px]"
                       activeClassName="!text-primary"
                     >
                       {item.label[lang]}
@@ -166,7 +166,7 @@ export default function Header({ lang }: { lang: Lang }) {
                   ) : (
                     <span
                       tabIndex={0}
-                      className="flex h-10 cursor-default items-center gap-1 text-[15px] font-semibold uppercase leading-[18px] text-heading group-hover:text-heading/60"
+                      className="flex h-10 cursor-default items-center gap-1 whitespace-nowrap text-[14px] font-semibold uppercase leading-[18px] text-heading group-hover:text-heading/60 min-[1200px]:text-[15px]"
                     >
                       {item.label[lang]}
                       <ChevronDown className="size-[7px] opacity-50" />
@@ -178,17 +178,18 @@ export default function Header({ lang }: { lang: Lang }) {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-[30px] max-[1024px]:gap-2">
+          <div className="flex items-center gap-2 desktop:gap-4 min-[1366px]:gap-[30px]">
             <a
               href={MAP_URL}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Map"
-              className="hidden h-10 items-center text-black desktop:flex"
+              className="hidden h-10 items-center text-black min-[1280px]:flex"
             >
               <PinIcon className="size-[12px]" />
             </a>
-            <Socials className="hidden pl-[20px] desktop:flex" />
+            {/* Hidden at 1025–1279px so the menu stays on one row */}
+            <Socials className="hidden min-[1280px]:flex min-[1366px]:pl-[20px]" />
             {/* Mobile shows socials in two rows next to the logo */}
             <Socials className="flex max-w-[80px] flex-wrap justify-center desktop:hidden" />
             <Suspense fallback={<LangSwitcherFallback lang={lang} />}>

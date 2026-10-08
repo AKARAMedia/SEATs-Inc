@@ -30,7 +30,7 @@ export default async function Page({ params }: PageProps<"/[lang]/overview">) {
       <div className="mx-auto w-full max-w-[1192px] px-[15px] desktop:px-0">
         {/* Text column: 1032px on desktop (offset like the live Elementor section), 280px on mobile */}
         <div className="px-[40px] desktop:pl-[70px] desktop:pr-[90px]">
-          <div className="mt-[69px] grid grid-cols-1 gap-y-[63.4px] tablet:grid-cols-3 desktop:mt-[165px] desktop:grid-cols-[repeat(3,351px)] desktop:justify-center">
+          <div className="mt-[69px] grid grid-cols-1 gap-y-[63.4px] tablet:grid-cols-3 desktop:mt-[165px] desktop:grid-cols-[repeat(3,minmax(0,351px))] desktop:justify-center">
             {FACTS.map((f) => (
               <div key={f.label.en} className="flex flex-col items-center text-center">
                 <InfoHead icon={f.icon} title={f.value[lang]} />
