@@ -1,30 +1,15 @@
 // Contact page copy — mirrors the live custom HTML widget (EN + TranslatePress JA).
 export const CONTACT = {
   title: { en: "CONTACT", ja: "CONTACT" },
-  businessDays: {
-    label: { en: "Business days", ja: "営業日" },
-    text: { en: "Monday to Saturday, excluding public holidays", ja: "月曜日から土曜日(祝日を除く)" },
-  },
-  phone: {
-    label: { en: "Phone", ja: "本社電話番号" },
-    number: "(+855) 023-966-313",
-    tel: "tel:+85523966313",
-    note: { en: "(English / Khmer / Japanese)", ja: "(日本語/英語/クメール語)" },
-  },
+  // Values (phone, emails, address, hours, map) come from admin Settings → Company
+  businessDays: { label: { en: "Business days", ja: "営業日" } },
+  phone: { label: { en: "Phone", ja: "本社電話番号" } },
   email: {
     label: { en: "Email", ja: "Email" },
     inquiry: { en: "Inquiry", ja: "お問合せ全般" },
-    inquiryAddress: "general@seats-inc.com",
     recruit: { en: "Recruit", ja: "Recruit" },
-    recruitAddress: "hr-recruiting@seats-inc.com",
   },
-  address: {
-    label: { en: "Address", ja: "本社住所" },
-    lines: ["No.54 & 56, Street 388, Sangkat Toul Svay Prey 1,", "Khan Boeng Keng Kang, Phnom Penh, Cambodia."],
-    mapLabel: "Google Maps",
-    mapUrl:
-      "https://www.google.com/maps/search/?api=1&query=No.54%20%26%2056%2C%20Street%20388%2C%20Sangkat%20Toul%20Svay%20Prey%201%2C%20Khan%20Boeng%20Keng%20Kang%2C%20Phnom%20Penh%2C%20Cambodia",
-  },
+  address: { label: { en: "Address", ja: "本社住所" }, mapLabel: "Google Maps" },
   form: {
     title: { en: "Contact Us", ja: "お問い合わせ" },
     name: { en: "Name *", ja: "名前" },

@@ -8,6 +8,41 @@
       "when": 1791439672574,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791529430420,
+      "tag": "0001_admin_foundation",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791530656541,
+      "tag": "0002_phase1_dashboard_messages_settings",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791533190360,
+      "tag": "0003_phase2_translation_activity_versions",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791536549518,
+      "tag": "0004_phase3_media_brands_home",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791537513237,
+      "tag": "0005_phase4_pages_careers",
+      "breakpoints": true
     }
   ]
 }

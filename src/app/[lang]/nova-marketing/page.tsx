@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import SmartLink from "@/components/SmartLink";
 import { BlueHeading, DivisionPage, ImageCard, mont, ShadowBox } from "@/components/sections/division/primitives";
-import { NOVA } from "@/content/pages/nova-marketing";
+import { getPage } from "@/lib/pages/store";
 import { isLang } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "NOVA Marketing" };
@@ -11,6 +11,8 @@ export const metadata: Metadata = { title: "NOVA Marketing" };
 export default async function Page({ params }: PageProps<"/[lang]/nova-marketing">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
+  // Editable in admin → Pages
+  const { NOVA } = await getPage("nova-marketing");
   const n = NOVA;
 
   return (

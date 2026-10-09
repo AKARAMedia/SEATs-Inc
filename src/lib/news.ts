@@ -1,6 +1,6 @@
 import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
-import { and, count, desc, eq, ilike, or } from "drizzle-orm";
+import { and, count, desc, eq, gt, ilike, lte, min, or } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { categories, posts, type Category, type Post } from "@/db/schema";
 import type { Lang } from "@/lib/i18n";
@@ -18,7 +18,7 @@ export type NewsItem = {
   category: { slug: string; name: string } | null;
 };
 
-function localize(p: Post, c: Category | null, lang: Lang): NewsItem {
+export function localize(p: Post, c: Category | null, lang: Lang): NewsItem {
   const ja = lang === "ja";
   return {
     slug: p.slug,
@@ -32,15 +32,32 @@ function localize(p: Post, c: Category | null, lang: Lang): NewsItem {
   };
 }
 
+/** Published and not scheduled for later. */
+const live = () => and(eq(posts.published, true), lte(posts.publishedAt, new Date()));
+
+/**
+ * Cache lifetime for news data: normally "hours", but when a scheduled post goes live within the
+ * hour, refresh just after that moment so it appears on time without anyone clicking anything.
+ */
+async function newsLife() {
+  const [next] = await db
+    .select({ at: min(posts.publishedAt) })
+    .from(posts)
+    .where(and(eq(posts.published, true), gt(posts.publishedAt, new Date())));
+  const secs = next?.at ? Math.ceil((new Date(next.at).getTime() - Date.now()) / 1000) + 5 : Infinity;
+  if (secs < 3600) cacheLife({ stale: 60, revalidate: Math.max(60, secs), expire: 86400 });
+  else cacheLife("hours");
+}
+
 export async function listNews(lang: Lang, opts: { page?: number; category?: string; q?: string; limit?: number } = {}) {
   "use cache";
-  cacheLife("hours");
   cacheTag(NEWS_TAG);
   await ready();
+  await newsLife();
   const limit = opts.limit ?? PAGE_SIZE;
   const page = Math.max(1, opts.page ?? 1);
   const where = and(
-    eq(posts.published, true),
+    live(),
     opts.category ? eq(categories.slug, opts.category) : undefined,
     opts.q
       ? or(
@@ -72,14 +89,14 @@ export async function listNews(lang: Lang, opts: { page?: number; category?: str
 
 export async function getNews(lang: Lang, slug: string) {
   "use cache";
-  cacheLife("hours");
   cacheTag(NEWS_TAG);
   await ready();
+  await newsLife();
   const [row] = await db
     .select()
     .from(posts)
     .leftJoin(categories, eq(posts.categoryId, categories.id))
-    .where(and(eq(posts.slug, slug), eq(posts.published, true)));
+    .where(and(eq(posts.slug, slug), live()));
   if (!row) return null;
   return localize(row.posts, row.categories, lang);
 }
@@ -95,8 +112,8 @@ export async function listCategories(lang: Lang) {
 
 export async function allNewsSlugs() {
   "use cache";
-  cacheLife("hours");
   cacheTag(NEWS_TAG);
   await ready();
-  return db.select({ slug: posts.slug }).from(posts).where(eq(posts.published, true));
+  await newsLife();
+  return db.select({ slug: posts.slug }).from(posts).where(live());
 }

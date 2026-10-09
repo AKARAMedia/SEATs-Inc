@@ -18,11 +18,24 @@ async function downscale(file: File): Promise<File> {
   return new File([blob], file.name.replace(/\.\w+$/, type === "image/png" ? ".png" : ".jpg"), { type });
 }
 
-export async function uploadImage(file: File): Promise<string> {
+export type Uploaded = { url: string; width: number; height: number };
+
+/** Upload an image (adds it to the Media library). */
+export async function uploadImageWithSize(file: File): Promise<Uploaded> {
+  const small = await downscale(file);
   const body = new FormData();
-  body.append("file", await downscale(file));
+  body.append("file", small);
+  const bitmap = await createImageBitmap(small).catch(() => null);
+  if (bitmap) {
+    body.append("width", String(bitmap.width));
+    body.append("height", String(bitmap.height));
+  }
   const res = await fetch("/api/admin/upload/", { method: "POST", body });
   const json = await res.json().catch(() => ({ error: "Upload failed" }));
   if (!res.ok) throw new Error(json.error ?? "Upload failed");
-  return json.url as string;
+  return json as Uploaded;
+}
+
+export async function uploadImage(file: File): Promise<string> {
+  return (await uploadImageWithSize(file)).url;
 }

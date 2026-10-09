@@ -11,6 +11,19 @@ const ALLOWED = new Map([
 ]);
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024; // Vercel Functions accept request bodies up to 4.5 MB
 
+/** Remove an uploaded image (Vercel Blob or public/uploads). Site images in public/media are never touched. */
+export async function deleteImage(url: string) {
+  if (/^https:\/\/[^/]+\.public\.blob\.vercel-storage\.com\//.test(url)) {
+    const { del } = await import("@vercel/blob");
+    await del(url);
+    return;
+  }
+  if (url.startsWith("/uploads/")) {
+    const file = path.join(process.cwd(), "public", ...url.split("/").filter(Boolean));
+    await fs.rm(file, { force: true });
+  }
+}
+
 /**
  * Store an uploaded image and return its public URL.
  * Production: Vercel Blob (requires BLOB_READ_WRITE_TOKEN). Local dev: public/uploads/.

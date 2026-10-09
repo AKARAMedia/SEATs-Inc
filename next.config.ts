@@ -1,11 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Lets a test server run beside `npm run dev` without sharing build output (pair with PGLITE_DIR)
+  ...(process.env.NEXT_DIST_DIR && { distDir: process.env.NEXT_DIST_DIR }),
   cacheComponents: true,
   partialPrefetching: true,
   // Keep WordPress-style URLs (/overview/) so existing links and SEO carry over
   trailingSlash: true,
   serverExternalPackages: ["@electric-sql/pglite"],
+  experimental: {
+    // Job applications upload a CV (max 4 MB) through a server action; the default limit is 1 MB
+    serverActions: { bodySizeLimit: "4.5mb" },
+    // Local builds use the embedded PGlite DB, which only one process may open at a time
+    ...(!process.env.DATABASE_URL && { cpus: 1 }),
+  },
   images: {
     remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
   },

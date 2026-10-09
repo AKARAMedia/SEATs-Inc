@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { MAIN_NAV, MAP_URL, SOCIALS, type NavItem } from "@/content/site";
+import { MAIN_NAV, type NavItem } from "@/content/site";
+import { SOCIAL_LABELS, type Settings } from "@/lib/settings-schema";
 import { href as localHref, type Lang } from "@/lib/i18n";
 import { Suspense } from "react";
 import LangSwitcher, { LangSwitcherFallback } from "./LangSwitcher";
@@ -43,19 +44,21 @@ function Dropdown({ items, lang, nested = false }: { items: NavItem[]; lang: Lan
   );
 }
 
-function Socials({ className = "" }: { className?: string }) {
+type SocialLinks = Settings["social"]["links"];
+
+function Socials({ links, className = "" }: { links: SocialLinks; className?: string }) {
   return (
     <div className={`flex items-center ${className}`}>
-      {SOCIALS.map((s) => (
+      {links.map((s) => (
         <a
-          key={s.icon}
-          href={s.href}
+          key={s.url}
+          href={s.url}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={s.name}
+          aria-label={SOCIAL_LABELS[s.network]}
           className="flex size-[26px] items-center justify-center text-black/60 hover:text-black"
         >
-          <SocialIcon name={s.icon} />
+          <SocialIcon name={s.network} />
         </a>
       ))}
     </div>
@@ -111,7 +114,7 @@ function MobileItem({ item, lang, depth = 0 }: { item: NavItem; lang: Lang; dept
   );
 }
 
-export default function Header({ lang }: { lang: Lang }) {
+export default function Header({ lang, socials, mapUrl }: { lang: Lang; socials: SocialLinks; mapUrl: string }) {
   const [open, setOpen] = useState(false);
   const [stuck, setStuck] = useState(false);
   useEffect(() => {
@@ -180,7 +183,7 @@ export default function Header({ lang }: { lang: Lang }) {
 
           <div className="flex items-center gap-2 desktop:gap-4 min-[1366px]:gap-[30px]">
             <a
-              href={MAP_URL}
+              href={mapUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Map"
@@ -189,9 +192,9 @@ export default function Header({ lang }: { lang: Lang }) {
               <PinIcon className="size-[12px]" />
             </a>
             {/* Hidden at 1025–1279px so the menu stays on one row */}
-            <Socials className="hidden min-[1280px]:flex min-[1366px]:pl-[20px]" />
+            <Socials links={socials} className="hidden min-[1280px]:flex min-[1366px]:pl-[20px]" />
             {/* Mobile shows socials in two rows next to the logo */}
-            <Socials className="flex max-w-[80px] flex-wrap justify-center desktop:hidden" />
+            <Socials links={socials} className="flex max-w-[80px] flex-wrap justify-center desktop:hidden" />
             <Suspense fallback={<LangSwitcherFallback lang={lang} />}>
               <LangSwitcher lang={lang} />
             </Suspense>

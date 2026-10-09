@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { PISA } from "@/content/pages/pisa-food-retail";
+import { getPage } from "@/lib/pages/store";
 import { isLang } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "PISA FOOD RETAIL" };
@@ -25,6 +25,8 @@ function GlowHeading({ href, children }: { href: string; children: string }) {
 export default async function Page({ params }: PageProps<"/[lang]/pisa-food-retail">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
+  // Editable in admin → Pages
+  const { PISA } = await getPage("pisa-food-retail");
   const p = PISA;
   const [row1, row2] = p.gallery;
   const img = "aspect-[334/220] h-auto w-full object-cover tablet:h-[220px]";

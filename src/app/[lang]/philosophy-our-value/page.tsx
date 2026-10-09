@@ -3,16 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import CompanyTitle from "@/components/sections/CompanyTitle";
 import ValuesAccordion from "@/components/sections/ValuesAccordion";
-import {
-  DOMAINS,
-  PHILOSOPHY_CLOSING,
-  PHILOSOPHY_HEADING,
-  PHILOSOPHY_TEXT,
-  PHILOSOPHY_TITLE,
-  VALUES,
-  VALUES_INTRO,
-  VALUES_TITLE,
-} from "@/content/pages/philosophy-our-value";
+import { getPage } from "@/lib/pages/store";
 import { isLang } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Philosophy & Our Value" };
@@ -20,6 +11,8 @@ export const metadata: Metadata = { title: "Philosophy & Our Value" };
 export default async function Page({ params }: PageProps<"/[lang]/philosophy-our-value">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
+  // Editable in admin → Pages
+  const { DOMAINS, PHILOSOPHY_CLOSING, PHILOSOPHY_HEADING, PHILOSOPHY_TEXT, PHILOSOPHY_TITLE, VALUES, VALUES_INTRO, VALUES_TITLE } = await getPage("philosophy-our-value");
 
   return (
     <div className="pb-[100px] text-[16px] leading-[25.6px] text-text desktop:pb-[129px]">

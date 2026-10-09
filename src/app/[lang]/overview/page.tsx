@@ -4,7 +4,7 @@ import CompanyTitle from "@/components/sections/CompanyTitle";
 import InfoIcon, { type InfoIconName } from "@/components/sections/InfoIcon";
 import PhotoGallery from "@/components/sections/PhotoGallery";
 import SmartLink from "@/components/SmartLink";
-import { AWARDS, FACTS, IN_ACTION, OFFICES, OVERVIEW_TITLE, SERVICES } from "@/content/pages/overview";
+import { getPage } from "@/lib/pages/store";
 import { isLang } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Overview" };
@@ -22,6 +22,8 @@ function InfoHead({ icon, title }: { icon: InfoIconName; title: string }) {
 export default async function Page({ params }: PageProps<"/[lang]/overview">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
+  // Editable in admin → Pages
+  const { AWARDS, FACTS, IN_ACTION, OFFICES, OVERVIEW_TITLE, SERVICES } = await getPage("overview");
 
   return (
     <div className="pb-[80px] text-[#4d4d4d]">

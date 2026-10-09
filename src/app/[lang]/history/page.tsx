@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CompanyTitle from "@/components/sections/CompanyTitle";
-import { HISTORY, HISTORY_TITLE } from "@/content/pages/history";
+import { getPage } from "@/lib/pages/store";
 import { isLang } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "History" };
@@ -9,6 +9,8 @@ export const metadata: Metadata = { title: "History" };
 export default async function Page({ params }: PageProps<"/[lang]/history">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
+  // Editable in admin → Pages
+  const { HISTORY, HISTORY_TITLE } = await getPage("history");
 
   return (
     <div className="pb-[120px]">

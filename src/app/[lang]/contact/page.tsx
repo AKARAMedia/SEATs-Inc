@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import ContactForm from "@/components/sections/ContactForm";
 import { CONTACT } from "@/content/pages/contact";
 import { isLang } from "@/lib/i18n";
+import { getSettings } from "@/lib/settings";
 
 export const metadata: Metadata = { title: "Contact" };
 
@@ -38,6 +39,7 @@ export default async function Page({ params }: PageProps<"/[lang]/contact">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const c = CONTACT;
+  const { company } = await getSettings();
   const text = "block text-[15px] leading-[1.45] text-[#222] tablet:text-[17px]";
 
   return (
@@ -49,32 +51,32 @@ export default async function Page({ params }: PageProps<"/[lang]/contact">) {
 
         <div className="mx-auto mb-[35px] w-full max-w-[675px] tablet:mb-12">
           <InfoRow icon="calendar" label={c.businessDays.label[lang]}>
-            <span className={text}>{c.businessDays.text[lang]}</span>
+            <span className={text}>{company.businessDays[lang]}</span>
           </InfoRow>
           <InfoRow icon="phone" label={c.phone.label[lang]}>
             <span className={text}>
-              <a href={c.phone.tel} className={linkCls}>
-                {c.phone.number}{" "}
+              <a href={`tel:${company.phone.replace(/[^\d+]/g, "")}`} className={linkCls}>
+                {company.phone}{" "}
               </a>
-              {c.phone.note[lang]}
+              {company.phoneNote[lang]}
             </span>
           </InfoRow>
           <InfoRow icon="mail" label={c.email.label[lang]}>
             <span className={text}>
               {c.email.inquiry[lang]}{" "}
-              <a href={`mailto:${c.email.inquiryAddress}`} className={linkCls}>
-                {c.email.inquiryAddress}{" "}
+              <a href={`mailto:${company.inquiryEmail}`} className={linkCls}>
+                {company.inquiryEmail}{" "}
               </a>
               / {c.email.recruit[lang]}{" "}
-              <a href={`mailto:${c.email.recruitAddress}`} className={linkCls}>
-                {c.email.recruitAddress}
+              <a href={`mailto:${company.recruitEmail}`} className={linkCls}>
+                {company.recruitEmail}
               </a>
             </span>
           </InfoRow>
           <InfoRow icon="pin" label={c.address.label[lang]}>
-            <span className={text}>{c.address.lines.join(" ")}</span>
+            <span className={text}>{company.address[lang]}</span>
             <span className={`${text} mt-[3px]`}>
-              <a href={c.address.mapUrl} target="_blank" rel="noopener noreferrer" className={linkCls}>
+              <a href={company.mapUrl} target="_blank" rel="noopener noreferrer" className={linkCls}>
                 {c.address.mapLabel}
               </a>
             </span>

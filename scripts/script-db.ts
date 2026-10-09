@@ -14,7 +14,7 @@ export async function scriptDb() {
   const { PGlite } = await import("@electric-sql/pglite");
   const { drizzle } = await import("drizzle-orm/pglite");
   const { migrate } = await import("drizzle-orm/pglite/migrator");
-  const dir = path.join(process.cwd(), ".data", "pglite");
+  const dir = process.env.PGLITE_DIR ?? path.join(process.cwd(), ".data", "pglite");
   (await import("node:fs")).mkdirSync(dir, { recursive: true });
   const client = new PGlite(dir);
   const db = drizzle(client, { schema });
