@@ -59,11 +59,11 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         {/* Our Brand */}
         <section className="mt-[90px] bg-[#dff7ff] p-[50px]">
           <h2 className="text-center text-[28px] font-bold capitalize leading-[28px] text-primary">{BRAND_TITLE}</h2>
-          <div className="mt-[50px] flex flex-col items-center gap-[20px] tablet:flex-row tablet:flex-wrap tablet:justify-center">
+          <div className="mt-[50px] flex flex-col items-center gap-[20px] tablet:flex-row tablet:flex-nowrap tablet:justify-center tablet:gap-[10px] desktop:gap-[20px]">
             {BRANDS.map((b) => (
               <div
                 key={b.src}
-                className="flex h-[var(--mh)] w-[260px] items-center justify-center tablet:h-[105px] tablet:w-auto tablet:min-w-max tablet:flex-1"
+                className="flex h-[var(--mh)] w-[260px] items-center justify-center tablet:h-[105px] tablet:w-auto tablet:min-w-0 tablet:flex-1"
                 style={{ "--mh": `${b.mh}px` } as React.CSSProperties}
               >
                 <Image
@@ -72,7 +72,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                   width={b.width}
                   height={b.height}
                   sizes="300px"
-                  className="h-[var(--h)] w-[var(--w)] max-w-none shrink-0 tablet:h-[var(--dh)] tablet:w-[var(--dw)]"
+                  className="h-[var(--h)] w-[var(--w)] max-w-none shrink-0 tablet:h-auto tablet:w-[var(--dw)] tablet:max-w-full"
                   style={
                     {
                       "--w": `${b.m[0]}px`,
