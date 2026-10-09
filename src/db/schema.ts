@@ -180,3 +180,60 @@ export const versions = pgTable(
   },
   (t) => [index("versions_entity_idx").on(t.entity, t.createdAt)],
 );
+
+// ---------- Media library & home page ----------
+
+/** Images uploaded through the admin (site images shipped in public/media are listed from a manifest). */
+export const media = pgTable("media", {
+  id: serial("id").primaryKey(),
+  url: text("url").notNull().unique(),
+  filename: text("filename").notNull().default(""),
+  contentType: text("content_type").notNull().default(""),
+  width: integer("width").notNull().default(0),
+  height: integer("height").notNull().default(0),
+  size: integer("size").notNull().default(0),
+  alt: text("alt").notNull().default(""),
+  uploadedBy: text("uploaded_by").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/** "Our Brand" logos on the home page. Heights are the rendered logo heights in px. */
+export const brands = pgTable("brands", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  logoUrl: text("logo_url").notNull(),
+  logoWidth: integer("logo_width").notNull(),
+  logoHeight: integer("logo_height").notNull(),
+  href: text("href").notNull().default(""),
+  visible: boolean("visible").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+  desktopHeight: integer("desktop_height").notNull().default(100),
+  mobileHeight: integer("mobile_height").notNull().default(150),
+  // Height of the logo's row on phones (lets tall logos overlap their padding, as on the original site)
+  mobileRow: integer("mobile_row").notNull().default(150),
+});
+
+/** Background images of the home page hero slider. */
+export const homeSlides = pgTable("home_slides", {
+  id: serial("id").primaryKey(),
+  imageUrl: text("image_url").notNull(),
+  alt: text("alt").notNull().default(""),
+  visible: boolean("visible").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+  startsAt: timestamp("starts_at", { withTimezone: true }),
+  endsAt: timestamp("ends_at", { withTimezone: true }),
+});
+
+/** Image banners below the home page news (recruiting banners today). */
+export const homeBanners = pgTable("home_banners", {
+  id: serial("id").primaryKey(),
+  imageUrl: text("image_url").notNull(),
+  width: integer("width").notNull(),
+  height: integer("height").notNull(),
+  href: text("href").notNull().default(""),
+  alt: text("alt").notNull().default(""),
+  visible: boolean("visible").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+  startsAt: timestamp("starts_at", { withTimezone: true }),
+  endsAt: timestamp("ends_at", { withTimezone: true }),
+});

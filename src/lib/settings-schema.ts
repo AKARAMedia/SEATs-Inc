@@ -65,6 +65,17 @@ export const SETTINGS_SCHEMA = {
       "{name} 様\n\nお問い合わせいただきありがとうございます。内容を確認のうえ、担当者より折り返しご連絡いたします。\n\nS.E.A.T.S Inc.",
     ),
   }),
+  home: z.object({
+    heroTitle: z.string().trim().max(80).default("S.E.A.T.S Inc."),
+    typingPrefix: z.string().max(60).default("A Japanese "),
+    typingWords: z.array(z.string().trim().min(1).max(60)).min(1, "Add at least one word").max(8).default(["Trading", "Import and Export", "Agricultural Production", "Distribution"]),
+    typingSuffix: z.string().max(60).default(" Company"),
+    tagline: L("Based In Phnom Penh, Cambodia.", "カンボジアから世界へ"),
+    /** One background used for every slide on phones */
+    mobileImage: url.default("/media/2025/01/phnom-penh-4903134_1280.jpg"),
+    /** Shown first in the home page News & Events block (up to 3) */
+    pinnedPostIds: z.array(z.number().int().positive()).max(3).default([]),
+  }),
   maintenance: z.object({
     enabled: z.boolean().default(false),
     message: L(

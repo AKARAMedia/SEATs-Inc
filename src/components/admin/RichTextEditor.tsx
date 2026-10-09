@@ -6,8 +6,9 @@ import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Youtube from "@tiptap/extension-youtube";
 import { Placeholder } from "@tiptap/extensions";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { uploadImage } from "./upload";
+import MediaPicker from "./media/MediaPicker";
 
 type Props = { name: string; defaultValue: string; placeholder?: string; lang: "en" | "ja" };
 
@@ -91,7 +92,7 @@ export default function RichTextEditor({ name, defaultValue, placeholder, lang }
   const [html, setHtml] = useState(defaultValue);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const [picking, setPicking] = useState(false);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -120,15 +121,28 @@ export default function RichTextEditor({ name, defaultValue, placeholder, lang }
       setError(e instanceof Error ? e.message : "Upload failed");
     } finally {
       setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
     }
   }
 
   return (
-    <div className="admin-editor overflow-hidden rounded-md border border-black/15 bg-white focus-within:border-primary">
+    <div
+      className="admin-editor overflow-hidden rounded-md border border-black/15 bg-white focus-within:border-primary"
+      // Dropping photos onto the editor uploads them (several at once) and inserts them
+      onDropCapture={(e) => {
+        if (!e.dataTransfer.files?.length) return;
+        e.preventDefault();
+        e.stopPropagation();
+        void onFiles(e.dataTransfer.files);
+      }}
+    >
       <input type="hidden" name={name} value={html} />
-      <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => onFiles(e.target.files)} />
-      {editor && <Toolbar editor={editor} onImage={() => fileRef.current?.click()} uploading={uploading} />}
+      {editor && <Toolbar editor={editor} onImage={() => setPicking(true)} uploading={uploading} />}
+      <MediaPicker
+        open={picking}
+        title="Insert an image"
+        onClose={() => setPicking(false)}
+        onPick={(p) => editor?.chain().focus().setImage({ src: p.url, alt: p.alt }).run()}
+      />
       {error && <p className="bg-red-50 px-3 py-1.5 text-[12px] text-red-700">{error}</p>}
       <div className="max-h-[640px] overflow-y-auto">
         <EditorContent editor={editor} />

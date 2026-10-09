@@ -47,6 +47,7 @@ const SETTINGS_FIELDS: { group: keyof Settings; title: string; fields: { field: 
       { field: "autoReplyBody", label: "Message", multiline: true },
     ],
   },
+  { group: "home", title: "Home page", fields: [{ field: "tagline", label: "Hero tagline" }] },
   { group: "maintenance", title: "Maintenance message", fields: [{ field: "message", label: "Message", multiline: true }] },
 ];
 

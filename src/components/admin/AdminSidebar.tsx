@@ -20,6 +20,9 @@ const SECTIONS: { title: string; items: Item[] }[] = [
     items: [
       { href: "/admin/posts/", label: "News & Events", icon: "news", perm: "viewPosts", match: (p) => p.startsWith("/admin/posts") },
       { href: "/admin/translate/", label: "Translation", icon: "translate", perm: "translate", match: (p) => p.startsWith("/admin/translate") },
+      { href: "/admin/home/", label: "Home page", icon: "home", perm: "content", match: (p) => p.startsWith("/admin/home") },
+      { href: "/admin/brands/", label: "Brands", icon: "tag", perm: "content", match: (p) => p.startsWith("/admin/brands") },
+      { href: "/admin/media/", label: "Media library", icon: "image", perm: "content", match: (p) => p.startsWith("/admin/media") },
     ],
   },
   {

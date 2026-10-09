@@ -8,6 +8,8 @@ const PERMS = {
   editPosts: ["admin", "editor"],
   /** Edit Japanese text */
   translate: ["admin", "editor", "translator"],
+  /** Home page, brands, media library */
+  content: ["admin", "editor"],
   messages: ["admin", "editor"],
   users: ["admin"],
   settings: ["admin"],

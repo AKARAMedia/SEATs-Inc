@@ -8,6 +8,7 @@ import { requireAdmin } from "@/lib/auth";
 import { ensureBaseline, getVersion, logActivity, saveVersion } from "@/lib/activity";
 import { eq } from "drizzle-orm";
 import { SETTINGS_TAG } from "@/lib/settings";
+import { HOME_TAG } from "@/lib/home";
 import { parseGroup, SETTINGS_GROUPS, SETTINGS_SCHEMA, type SettingsGroup } from "@/lib/settings-schema";
 import type { FormState } from "./actions";
 
@@ -24,10 +25,10 @@ function nest(fd: FormData) {
   return out;
 }
 
-const TAB_NAMES: Record<SettingsGroup, string> = { company: "Company", social: "Social links", seo: "SEO", contact: "Contact form", maintenance: "Maintenance" };
+const TAB_NAMES: Record<SettingsGroup, string> = { company: "Company", social: "Social links", seo: "SEO", contact: "Contact form", home: "Home page", maintenance: "Maintenance" };
 
 /** Settings groups that hold Japanese text: editing them here resets their Translation Center draft. */
-const TRANSLATED: SettingsGroup[] = ["company", "seo", "contact", "maintenance"];
+const TRANSLATED: SettingsGroup[] = ["company", "seo", "contact", "home", "maintenance"];
 
 /** All Japanese strings in a settings value, to tell whether the Japanese was edited. */
 const jaText = (v: unknown) =>
@@ -64,6 +65,15 @@ export async function saveSettingsAction(_: FormState, fd: FormData): Promise<Fo
     raw.autoReply = raw.autoReply === "on";
   }
   if (group === "maintenance") raw.enabled = raw.enabled === "on";
+  if (group === "home") {
+    raw.typingWords = String(raw.typingWords ?? "")
+      .split(/[\r\n]+/)
+      .map((w) => w.trim())
+      .filter(Boolean);
+    raw.pinnedPostIds = Object.values((raw.pinnedPostIds ?? {}) as Record<string, string>)
+      .map(Number)
+      .filter((n) => Number.isInteger(n) && n > 0);
+  }
 
   const parsed = SETTINGS_SCHEMA[group].safeParse(raw);
   if (!parsed.success) {
@@ -75,7 +85,9 @@ export async function saveSettingsAction(_: FormState, fd: FormData): Promise<Fo
   await store(group, parsed.data);
   await saveVersion(`settings:${group}`, parsed.data, who);
   await logActivity(who, "settings.update", { type: "settings", id: group, summary: TAB_NAMES[group] });
-  redirect(`/admin/settings/?tab=${group}&flash=settingsSaved`);
+  if (group === "home") updateTag(HOME_TAG);
+  const back = String(fd.get("_back") ?? "");
+  redirect(back.startsWith("/admin/") ? `${back}${back.includes("?") ? "&" : "?"}flash=settingsSaved` : `/admin/settings/?tab=${group}&flash=settingsSaved`);
 }
 
 export async function restoreSettingsVersionAction(fd: FormData) {

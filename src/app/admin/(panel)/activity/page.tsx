@@ -24,6 +24,13 @@ const ACTIONS: Record<string, string> = {
   "glossary.create": "added a glossary term:",
   "glossary.update": "edited a glossary term:",
   "glossary.delete": "deleted a glossary term:",
+  "home.create": "added a",
+  "home.update": "edited a",
+  "home.show": "showed a",
+  "home.hide": "hid a",
+  "home.reorder": "reordered",
+  "home.delete": "deleted a",
+  "media.delete": "deleted the image",
   "user.create": "added the user",
   "user.update": "changed the user",
   "user.delete": "deleted the user",
@@ -38,6 +45,8 @@ const AREAS = [
   { key: "settings", label: "Settings" },
   { key: "message", label: "Messages" },
   { key: "glossary", label: "Glossary" },
+  { key: "home", label: "Home page & brands" },
+  { key: "media", label: "Media" },
   { key: "user", label: "Users & sign-ins" },
 ];
 
