@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Lets a test server run beside `npm run dev` without sharing build output (pair with PGLITE_DIR)
+  ...(process.env.NEXT_DIST_DIR && { distDir: process.env.NEXT_DIST_DIR }),
   cacheComponents: true,
   partialPrefetching: true,
   // Keep WordPress-style URLs (/overview/) so existing links and SEO carry over

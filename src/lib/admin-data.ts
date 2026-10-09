@@ -1,7 +1,8 @@
 import "server-only";
-import { and, asc, count, desc, eq, gt, ilike, or } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, ilike, isNotNull, isNull, ne, or, sql, type SQL } from "drizzle-orm";
 import { db, ready } from "@/db";
-import { adminSessions, adminUsers, categories, contactMessages, posts } from "@/db/schema";
+import { adminSessions, adminUsers, categories, contactMessages, posts, siteSettings } from "@/db/schema";
+import { parseGroup, SETTINGS_GROUPS, type Settings } from "./settings-schema";
 import { requireAdmin } from "./auth";
 
 // Uncached reads for the admin panel (always fresh, always auth-checked)
@@ -12,7 +13,13 @@ export async function adminListPosts({ q, page = 1, status }: { q?: string; page
   const size = 25;
   const where = and(
     q ? or(ilike(posts.titleEn, `%${q}%`), ilike(posts.titleJa, `%${q}%`), ilike(posts.slug, `%${q}%`)) : undefined,
-    status === "draft" ? eq(posts.published, false) : status === "published" ? eq(posts.published, true) : undefined,
+    status === "draft"
+      ? eq(posts.published, false)
+      : status === "published"
+        ? eq(posts.published, true)
+        : status === "missingja"
+          ? or(eq(posts.titleJa, ""), eq(posts.bodyJa, ""))
+          : undefined,
   );
   const [rows, [{ total }]] = await Promise.all([
     db
@@ -55,10 +62,116 @@ export async function adminCategories() {
   return db.select({ id: categories.id, nameEn: categories.nameEn }).from(categories).orderBy(categories.sortOrder);
 }
 
-export async function adminMessages() {
+export type MessageView = "inbox" | "unread" | "archived" | "all";
+export type MessageFilter = { view?: MessageView; q?: string; lang?: string };
+
+function messageWhere({ view = "inbox", q, lang }: MessageFilter): SQL | undefined {
+  const m = contactMessages;
+  return and(
+    view === "archived" ? isNotNull(m.archivedAt) : view === "all" ? undefined : isNull(m.archivedAt),
+    view === "unread" ? isNull(m.readAt) : undefined,
+    lang === "en" || lang === "ja" ? eq(m.lang, lang) : undefined,
+    q ? or(ilike(m.name, `%${q}%`), ilike(m.email, `%${q}%`), ilike(m.subject, `%${q}%`), ilike(m.message, `%${q}%`)) : undefined,
+  );
+}
+
+export async function adminMessages(filter: MessageFilter & { page?: number }) {
   await requireAdmin("messages");
   await ready();
-  return db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt)).limit(200);
+  const size = 25;
+  const page = Math.max(1, filter.page ?? 1);
+  const where = messageWhere(filter);
+  const [rows, [{ total }], counts] = await Promise.all([
+    db.select().from(contactMessages).where(where).orderBy(desc(contactMessages.createdAt)).limit(size).offset((page - 1) * size),
+    db.select({ total: count() }).from(contactMessages).where(where),
+    messageCounts(),
+  ]);
+  return { rows, total, pages: Math.max(1, Math.ceil(total / size)), counts };
+}
+
+/** All messages matching a filter, for export. */
+export async function adminExportMessages(filter: MessageFilter) {
+  await requireAdmin("messages");
+  await ready();
+  return db.select().from(contactMessages).where(messageWhere(filter)).orderBy(desc(contactMessages.createdAt));
+}
+
+export async function messageCounts() {
+  const m = contactMessages;
+  const [[inbox], [unread], [archived]] = await Promise.all([
+    db.select({ n: count() }).from(m).where(isNull(m.archivedAt)),
+    db.select({ n: count() }).from(m).where(and(isNull(m.archivedAt), isNull(m.readAt))),
+    db.select({ n: count() }).from(m).where(isNotNull(m.archivedAt)),
+  ]);
+  return { inbox: inbox.n, unread: unread.n, archived: archived.n };
+}
+
+export async function unreadMessageCount() {
+  await ready();
+  const [{ n }] = await db
+    .select({ n: count() })
+    .from(contactMessages)
+    .where(and(isNull(contactMessages.archivedAt), isNull(contactMessages.readAt)));
+  return n;
+}
+
+export async function adminGetMessage(id: number) {
+  await requireAdmin("messages");
+  await ready();
+  const [row] = await db.select().from(contactMessages).where(eq(contactMessages.id, id));
+  if (!row) return null;
+  // Neighbours in the inbox for previous/next navigation (newer = previous)
+  const [[newer], [older]] = await Promise.all([
+    db
+      .select({ id: contactMessages.id })
+      .from(contactMessages)
+      .where(and(gt(contactMessages.createdAt, row.createdAt), row.archivedAt ? isNotNull(contactMessages.archivedAt) : isNull(contactMessages.archivedAt)))
+      .orderBy(asc(contactMessages.createdAt))
+      .limit(1),
+    db
+      .select({ id: contactMessages.id })
+      .from(contactMessages)
+      .where(
+        and(
+          sql`${contactMessages.createdAt} < ${row.createdAt}`,
+          ne(contactMessages.id, row.id),
+          row.archivedAt ? isNotNull(contactMessages.archivedAt) : isNull(contactMessages.archivedAt),
+        ),
+      )
+      .orderBy(desc(contactMessages.createdAt))
+      .limit(1),
+  ]);
+  return { ...row, newerId: newer?.id ?? null, olderId: older?.id ?? null };
+}
+
+/** Numbers and lists for the dashboard home. */
+export async function adminDashboard() {
+  await requireAdmin();
+  await ready();
+  const [[pub], [drafts], [missingJa], recentPosts, recentMessages, counts] = await Promise.all([
+    db.select({ n: count() }).from(posts).where(eq(posts.published, true)),
+    db.select({ n: count() }).from(posts).where(eq(posts.published, false)),
+    db.select({ n: count() }).from(posts).where(or(eq(posts.titleJa, ""), eq(posts.bodyJa, ""))),
+    db
+      .select({ id: posts.id, titleEn: posts.titleEn, published: posts.published, updatedAt: posts.updatedAt })
+      .from(posts)
+      .orderBy(desc(posts.updatedAt))
+      .limit(5),
+    db.select().from(contactMessages).where(isNull(contactMessages.archivedAt)).orderBy(desc(contactMessages.createdAt)).limit(5),
+    messageCounts(),
+  ]);
+  return { published: pub.n, drafts: drafts.n, missingJa: missingJa.n, recentPosts, recentMessages, unread: counts.unread };
+}
+
+/** Settings straight from the DB (uncached), with when each group was last saved. */
+export async function adminSettings() {
+  await requireAdmin("settings");
+  await ready();
+  const rows = await db.select().from(siteSettings);
+  const byKey = new Map(rows.map((r) => [r.key, r]));
+  const values = Object.fromEntries(SETTINGS_GROUPS.map((k) => [k, parseGroup(k, byKey.get(k)?.value)])) as Settings;
+  const updatedAt = Object.fromEntries(rows.map((r) => [r.key, r.updatedAt])) as Partial<Record<keyof Settings, Date>>;
+  return { values, updatedAt };
 }
 
 const userColumns = {

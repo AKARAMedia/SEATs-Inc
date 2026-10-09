@@ -20,7 +20,7 @@ export default async function EditPostPage({ params }: PageProps<"/admin/posts/[
     <div className="space-y-4">
       <div className="flex flex-wrap items-end gap-3">
         <div className="mr-auto min-w-0">
-          <Link href="/admin/" className="text-[13px] text-[#888] hover:text-primary">
+          <Link href="/admin/posts/" className="text-[13px] text-[#888] hover:text-primary">
             ← All posts
           </Link>
           <h1 className="truncate text-[22px] font-semibold">{post.titleEn}</h1>

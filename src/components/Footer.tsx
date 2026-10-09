@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { COMPANY, FOOTER } from "@/content/site";
+import { FOOTER } from "@/content/site";
+import type { Settings } from "@/lib/settings-schema";
 import type { Lang } from "@/lib/i18n";
 import SmartLink from "./SmartLink";
 
 const link = "text-white/90 hover:text-white";
 
-export default function Footer({ lang }: { lang: Lang }) {
+export default function Footer({ lang, company }: { lang: Lang; company: Settings["company"] }) {
   const f = FOOTER;
   return (
     <footer className="bg-footer text-[16px] leading-[1.6] text-white/80">
@@ -61,13 +62,13 @@ export default function Footer({ lang }: { lang: Lang }) {
             <ul className="list-disc space-y-2.5 pl-[17px] marker:text-white">
               <li>
                 <strong className="font-bold">{f.contact.phone[lang]} </strong>
-                <a href={`tel:${COMPANY.phone.replace(/\s/g, "")}`} className={link}>
-                  {COMPANY.phone}
+                <a href={`tel:${company.phone.replace(/[^\d+]/g, "")}`} className={link}>
+                  {company.phone}
                 </a>
               </li>
               <li>
                 <strong className="font-bold">{f.contact.address[lang]}</strong>
-                {COMPANY.address}
+                {company.address[lang]}
               </li>
             </ul>
             <a href={f.jbac.href} target="_blank" rel="noopener noreferrer" className="mt-5 block">

@@ -11,6 +11,9 @@ import { originalImage } from "@/lib/media";
 // News/Event post detail. Posts live at the site root (/<slug>/), same as WordPress permalinks.
 
 export async function generateStaticParams() {
+  // Local dev with embedded PGlite: Next.js runs this in a separate worker process, and PGlite can't be
+  // opened by two processes. Dev renders posts on demand anyway, so skip the DB here.
+  if (process.env.NODE_ENV === "development" && !process.env.DATABASE_URL) return [{ slug: "__placeholder__" }];
   const slugs = await allNewsSlugs();
   // Must return at least one entry for the route to prerender
   return slugs.length ? slugs.map((s) => ({ slug: s.slug })) : [{ slug: "__placeholder__" }];

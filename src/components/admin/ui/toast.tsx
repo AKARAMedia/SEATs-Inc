@@ -64,6 +64,7 @@ const FLASH: Record<string, [string, Toast["kind"]]> = {
   passwordChanged: ["Password changed. Other devices were signed out.", "success"],
   profileSaved: ["Profile saved.", "success"],
   sessionsEnded: ["Signed out of all other devices.", "success"],
+  settingsSaved: ["Settings saved. The website is updated.", "success"],
 };
 
 /** Shows a toast for ?flash=… and removes the parameter from the URL. */

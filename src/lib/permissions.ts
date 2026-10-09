@@ -10,6 +10,7 @@ const PERMS = {
   translate: ["admin", "editor", "translator"],
   messages: ["admin", "editor"],
   users: ["admin"],
+  settings: ["admin"],
 } as const satisfies Record<string, readonly Role[]>;
 
 export type Perm = keyof typeof PERMS;

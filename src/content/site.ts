@@ -44,20 +44,7 @@ export const MAIN_NAV: NavItem[] = [
   { label: { en: "Recruit", ja: "S.E.A.T.Sではたらく" }, href: "/option-career/", highlight: true },
 ];
 
-export const SOCIALS = [
-  { name: "Facebook", icon: "facebook", href: "https://www.facebook.com/seatsinccambodia/" },
-  { name: "X", icon: "x", href: "https://x.com/seatscoo" },
-  { name: "Instagram", icon: "instagram", href: "https://www.instagram.com/seatsinc_cambodia/" },
-  { name: "YouTube", icon: "youtube", href: "https://www.youtube.com/@seatsinc5038/featured" },
-  { name: "note", icon: "note", href: "https://note.com/mine_blog" },
-] as const;
-
-export const MAP_URL = "https://maps.app.goo.gl/NVLMhrNkBYBsuVHA6";
-
-export const COMPANY = {
-  phone: "+855 23 966 313",
-  address: "No.54 & 56, Street 388, Sangkat Toul Svay Prey 1, Khan Boeng Keng Kang, Phnom Penh, Cambodia.",
-};
+// Social links, map link and company contact details are admin-editable: see src/lib/settings-schema.ts
 
 export const FOOTER = {
   about: {

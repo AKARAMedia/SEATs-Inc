@@ -5,7 +5,7 @@ import { updateTag } from "next/cache";
 import { and, eq, ne } from "drizzle-orm";
 import { z } from "zod";
 import { db, ready } from "@/db";
-import { contactMessages, posts } from "@/db/schema";
+import { posts } from "@/db/schema";
 import { login, logout, requireAdmin } from "@/lib/auth";
 import { can } from "@/lib/permissions";
 import { NEWS_TAG } from "@/lib/news";
@@ -138,7 +138,7 @@ export async function deletePostAction(formData: FormData) {
   const id = Number(formData.get("id"));
   if (Number.isInteger(id)) await db.delete(posts).where(eq(posts.id, id));
   updateTag(NEWS_TAG);
-  redirect("/admin/?flash=deleted");
+  redirect("/admin/posts/?flash=deleted");
 }
 
 export async function togglePublishAction(formData: FormData) {
@@ -148,14 +148,4 @@ export async function togglePublishAction(formData: FormData) {
   const published = formData.get("published") === "true";
   if (Number.isInteger(id)) await db.update(posts).set({ published, updatedAt: new Date() }).where(eq(posts.id, id));
   updateTag(NEWS_TAG);
-}
-
-// ---------- contact messages ----------
-
-export async function deleteMessageAction(formData: FormData) {
-  await requireAdmin("messages");
-  await ready();
-  const id = Number(formData.get("id"));
-  if (Number.isInteger(id)) await db.delete(contactMessages).where(eq(contactMessages.id, id));
-  redirect("/admin/messages/?flash=msgDeleted");
 }

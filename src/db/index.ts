@@ -14,7 +14,8 @@ function create() {
     return drizzleNeon(neon(process.env.DATABASE_URL), { schema });
   }
   if (process.env.VERCEL) throw new Error("DATABASE_URL is not set (connect a Neon Postgres database to this Vercel project).");
-  const dir = path.join(process.cwd(), ".data", "pglite");
+  // PGLITE_DIR lets a second server (e.g. automated tests) use its own copy: PGlite allows one process per directory
+  const dir = process.env.PGLITE_DIR ?? path.join(process.cwd(), ".data", "pglite");
   fs.mkdirSync(dir, { recursive: true });
   const client = new PGlite(dir);
   return drizzlePglite(client, { schema });
@@ -22,14 +23,24 @@ function create() {
 
 type DB = ReturnType<typeof drizzleNeon<typeof schema>>;
 
-const g = globalThis as unknown as { __db?: DB; __dbReady?: Promise<void> };
+// Kept on `process` so every copy of this module in the process shares one connection:
+// a second PGlite instance on the same directory corrupts it.
+const g = process as unknown as { __seatsDb?: DB; __seatsDbReady?: Promise<void> };
 
-export const db: DB = (g.__db ??= create() as DB);
+// Opened on first use, not on import: Next.js dev loads route modules in short-lived worker processes,
+// and a second process opening the same PGlite directory corrupts it.
+export const db: DB = new Proxy({} as DB, {
+  get(_, prop) {
+    const real = (g.__seatsDb ??= create() as DB);
+    const value = Reflect.get(real, prop, real);
+    return typeof value === "function" ? value.bind(real) : value;
+  },
+});
 
 // PGlite: apply migrations on first use so `npm run dev` works with zero setup.
 export function ready(): Promise<void> {
   if (process.env.DATABASE_URL) return Promise.resolve();
-  return (g.__dbReady ??= migratePglite(db as never, {
+  return (g.__seatsDbReady ??= migratePglite(db as never, {
     migrationsFolder: path.join(process.cwd(), "drizzle"),
   }));
 }

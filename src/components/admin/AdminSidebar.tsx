@@ -8,32 +8,37 @@ import type { Role } from "@/db/schema";
 import { can, ROLE_LABELS, type Perm } from "@/lib/permissions";
 import { Icon, type IconName } from "./ui/icons";
 
-type Item = { href: string; label: string; icon: IconName; perm: Perm; match: (p: string) => boolean };
+type Item = { href: string; label: string; icon: IconName; perm?: Perm; badge?: "unread"; match: (p: string) => boolean };
 
 const SECTIONS: { title: string; items: Item[] }[] = [
   {
+    title: "Overview",
+    items: [{ href: "/admin/", label: "Dashboard", icon: "dashboard", match: (p) => p === "/admin/" }],
+  },
+  {
     title: "Content",
-    items: [
-      { href: "/admin/", label: "News & Events", icon: "news", perm: "viewPosts", match: (p) => p === "/admin/" || p.startsWith("/admin/posts") },
-    ],
+    items: [{ href: "/admin/posts/", label: "News & Events", icon: "news", perm: "viewPosts", match: (p) => p.startsWith("/admin/posts") }],
   },
   {
     title: "Inbox",
-    items: [{ href: "/admin/messages/", label: "Messages", icon: "mail", perm: "messages", match: (p) => p.startsWith("/admin/messages") }],
+    items: [{ href: "/admin/messages/", label: "Messages", icon: "mail", perm: "messages", badge: "unread", match: (p) => p.startsWith("/admin/messages") }],
   },
   {
     title: "System",
-    items: [{ href: "/admin/users/", label: "Users", icon: "users", perm: "users", match: (p) => p.startsWith("/admin/users") }],
+    items: [
+      { href: "/admin/users/", label: "Users", icon: "users", perm: "users", match: (p) => p.startsWith("/admin/users") },
+      { href: "/admin/settings/", label: "Settings", icon: "settings", perm: "settings", match: (p) => p.startsWith("/admin/settings") },
+    ],
   },
 ];
 
 type User = { name: string; email: string; role: Role };
 
-function NavLinks({ role, pathname }: { role: Role; pathname: string }) {
+function NavLinks({ role, pathname, unread }: { role: Role; pathname: string; unread: number }) {
   return (
     <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4">
       {SECTIONS.map((s) => {
-        const items = s.items.filter((i) => can(role, i.perm));
+        const items = s.items.filter((i) => !i.perm || can(role, i.perm));
         if (!items.length) return null;
         return (
           <div key={s.title}>
@@ -50,7 +55,12 @@ function NavLinks({ role, pathname }: { role: Role; pathname: string }) {
                   }`}
                 >
                   <Icon name={i.icon} />
-                  {i.label}
+                  <span className="flex-1">{i.label}</span>
+                  {i.badge === "unread" && unread > 0 && (
+                    <span className="min-w-5 rounded-full bg-red-600 px-1.5 text-center text-[11px] font-bold leading-5 text-white" aria-label={`${unread} unread`}>
+                      {unread > 99 ? "99+" : unread}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -91,7 +101,7 @@ function UserBox({ user, pathname, logout }: { user: User; pathname: string; log
 }
 
 /** Fixed sidebar on desktop; top bar with a slide-out drawer below 1024px. */
-export default function AdminSidebar({ user, logout }: { user: User; logout: () => Promise<void> }) {
+export default function AdminSidebar({ user, unread, logout }: { user: User; unread: number; logout: () => Promise<void> }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
@@ -126,6 +136,11 @@ export default function AdminSidebar({ user, logout }: { user: User; logout: () 
           <Icon name="menu" className="size-5" />
         </button>
         {logo}
+        {unread > 0 && (
+          <Link href="/admin/messages/?view=unread" className="ml-auto flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-[12px] font-semibold text-red-700">
+            <Icon name="mail" className="size-4" /> {unread}
+          </Link>
+        )}
       </header>
 
       {/* Drawer backdrop (mobile) */}
@@ -147,7 +162,7 @@ export default function AdminSidebar({ user, logout }: { user: User; logout: () 
             <Icon name="close" className="size-5" />
           </button>
         </div>
-        <NavLinks role={user.role} pathname={pathname} />
+        <NavLinks role={user.role} pathname={pathname} unread={unread} />
         <UserBox user={user} pathname={pathname} logout={logout} />
       </aside>
     </>

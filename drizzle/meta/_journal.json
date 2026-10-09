@@ -15,6 +15,13 @@
       "when": 1791529430420,
       "tag": "0001_admin_foundation",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791530656541,
+      "tag": "0002_phase1_dashboard_messages_settings",
+      "breakpoints": true
     }
   ]
 }

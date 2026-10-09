@@ -1,4 +1,4 @@
-import { boolean, index, integer, pgTable, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { boolean, date, index, integer, jsonb, pgTable, primaryKey, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
@@ -82,8 +82,38 @@ export const contactMessages = pgTable("contact_messages", {
   subject: text("subject").notNull().default(""),
   message: text("message").notNull(),
   lang: text("lang").notNull().default("en"),
+  readAt: timestamp("read_at", { withTimezone: true }),
+  archivedAt: timestamp("archived_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+// Admin-editable site settings, one JSON document per group (company, social, seo, contact, maintenance)
+export const siteSettings = pgTable("site_settings", {
+  key: text("key").primaryKey(),
+  value: jsonb("value").notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// Cookie-less visitor stats: page views per day and path…
+export const pageViewsDaily = pgTable(
+  "page_views_daily",
+  {
+    day: date("day").notNull(),
+    path: text("path").notNull(),
+    views: integer("views").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.day, t.path] })],
+);
+
+// …and one row per visitor per day, identified only by a salted daily hash (no IPs stored)
+export const visitorsDaily = pgTable(
+  "visitors_daily",
+  {
+    day: date("day").notNull(),
+    hash: text("hash").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.day, t.hash] })],
+);
 
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
