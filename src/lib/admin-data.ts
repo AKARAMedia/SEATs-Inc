@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, count, desc, eq, gt, ilike, isNotNull, isNull, ne, or, sql, type SQL } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, ilike, isNotNull, isNull, lte, ne, or, sql, type SQL } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { adminSessions, adminUsers, categories, contactMessages, posts, siteSettings } from "@/db/schema";
 import { parseGroup, SETTINGS_GROUPS, type Settings } from "./settings-schema";
@@ -16,7 +16,9 @@ export async function adminListPosts({ q, page = 1, status }: { q?: string; page
     status === "draft"
       ? eq(posts.published, false)
       : status === "published"
-        ? eq(posts.published, true)
+        ? and(eq(posts.published, true), lte(posts.publishedAt, new Date()))
+        : status === "scheduled"
+          ? and(eq(posts.published, true), gt(posts.publishedAt, new Date()))
         : status === "missingja"
           ? or(eq(posts.titleJa, ""), eq(posts.bodyJa, ""))
           : undefined,

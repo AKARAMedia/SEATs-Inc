@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import crypto from "node:crypto";
 import { cookies, headers } from "next/headers";
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
@@ -53,7 +54,7 @@ async function lockedFor(key: string, max: number) {
   return Math.max(1, Math.ceil((unlockAt - Date.now()) / 60000));
 }
 
-export type LoginResult = { ok: true } | { ok: false; error: string };
+export type LoginResult = { ok: true; user: { id: number; name: string; email: string } } | { ok: false; error: string };
 
 export async function login(rawEmail: string, password: string): Promise<LoginResult> {
   await ready();
@@ -81,7 +82,7 @@ export async function login(rawEmail: string, password: string): Promise<LoginRe
   await db.delete(loginAttempts).where(eq(loginAttempts.key, keys[0]));
   await startSession(user.id, { ip, userAgent });
   await db.update(adminUsers).set({ lastLoginAt: new Date() }).where(eq(adminUsers.id, user.id));
-  return { ok: true };
+  return { ok: true, user: { id: user.id, name: user.name, email: user.email } };
 }
 
 async function startSession(userId: number, info: { ip: string; userAgent: string }) {
@@ -118,6 +119,8 @@ export async function endSessions(userId: number, keepSid?: string) {
 
 /** Verified session for this request (cached per request). Checks the DB, so ended sessions stop working at once. */
 export const getSession = cache(async (): Promise<Session | null> => {
+  // Session checks read the clock (token expiry) and must never be prerendered
+  await connection();
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
   if (!token) return null;
   let sid: string;

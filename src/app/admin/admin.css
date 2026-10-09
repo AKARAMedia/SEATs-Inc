@@ -107,3 +107,26 @@
   font-weight: 600;
   white-space: nowrap;
 }
+
+/* Translation Center row editor (one paragraph) */
+.admin-row-editor {
+  min-height: 42px;
+  padding: 9px 11px;
+  font-size: 15px;
+  line-height: 1.6;
+  outline: none;
+}
+.admin-row-editor p {
+  margin: 0;
+}
+.admin-row-editor p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: #aaa;
+  pointer-events: none;
+}
+.admin-row-editor a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}

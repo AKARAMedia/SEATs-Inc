@@ -3,6 +3,10 @@ import { CompanyForm, ContactSettingsForm, MaintenanceForm, SeoForm, SocialForm 
 import { adminSettings, fmtDateTime } from "@/lib/admin-data";
 import { emailConfigured } from "@/lib/email";
 import type { SettingsGroup } from "@/lib/settings-schema";
+import VersionList from "@/components/admin/VersionList";
+import { Icon } from "@/components/admin/ui/icons";
+import { listVersions } from "@/lib/activity";
+import { restoreSettingsVersionAction } from "@/app/admin/settings-actions";
 
 export const metadata = { title: "Settings" };
 
@@ -17,7 +21,7 @@ const TABS: { key: SettingsGroup; label: string; description: string }[] = [
 export default async function SettingsPage({ searchParams }: PageProps<"/admin/settings">) {
   const sp = await searchParams;
   const tab = TABS.find((t) => t.key === sp.tab) ?? TABS[0];
-  const { values, updatedAt } = await adminSettings();
+  const [{ values, updatedAt }, history] = await Promise.all([adminSettings(), listVersions(`settings:${tab.key}`, 20)]);
   const saved = updatedAt[tab.key];
 
   return (
@@ -53,6 +57,17 @@ export default async function SettingsPage({ searchParams }: PageProps<"/admin/s
       {tab.key === "seo" && <SeoForm key={String(saved)} value={values.seo} />}
       {tab.key === "contact" && <ContactSettingsForm key={String(saved)} value={values.contact} emailReady={emailConfigured()} />}
       {tab.key === "maintenance" && <MaintenanceForm key={String(saved)} value={values.maintenance} />}
+
+      <details className="admin-card group max-w-[860px] p-5">
+        <summary className="flex cursor-pointer list-none items-center gap-2 text-[14px] font-semibold">
+          <Icon name="history" className="size-4 text-[#888]" />
+          History of {tab.label} <span className="font-normal text-[#999]">({history.length})</span>
+          <span className="ml-auto text-[12px] font-normal text-[#999] group-open:hidden">Show</span>
+        </summary>
+        <div className="mt-3">
+          <VersionList versions={history} restore={restoreSettingsVersionAction} fields={{ group: tab.key }} />
+        </div>
+      </details>
     </div>
   );
 }

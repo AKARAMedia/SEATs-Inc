@@ -11,6 +11,7 @@ const PERMS = {
   messages: ["admin", "editor"],
   users: ["admin"],
   settings: ["admin"],
+  activity: ["admin"],
 } as const satisfies Record<string, readonly Role[]>;
 
 export type Perm = keyof typeof PERMS;

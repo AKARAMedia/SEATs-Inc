@@ -7,6 +7,7 @@ import { db, ready } from "@/db";
 import { adminUsers, ROLES } from "@/db/schema";
 import { countAdmins, endSessions, hashPassword, passwordProblem, requireAdmin, verifyPassword } from "@/lib/auth";
 import type { FormState } from "./actions";
+import { logActivity } from "@/lib/activity";
 
 const fail = (field: string, message: string): FormState => ({ error: message, fieldErrors: { [field]: message } });
 
@@ -19,7 +20,7 @@ const UserInput = z.object({
 });
 
 export async function createUserAction(_: FormState, formData: FormData): Promise<FormState> {
-  await requireAdmin("users");
+  const me = await requireAdmin("users");
   await ready();
   const parsed = UserInput.safeParse(Object.fromEntries(formData));
   if (!parsed.success) return fail(String(parsed.error.issues[0].path[0]), parsed.error.issues[0].message);
@@ -31,6 +32,7 @@ export async function createUserAction(_: FormState, formData: FormData): Promis
   if (exists) return fail("email", "A user with this email already exists.");
 
   await db.insert(adminUsers).values({ ...parsed.data, passwordHash: await hashPassword(password) });
+  await logActivity(me, "user.create", { type: "user", summary: `${parsed.data.email} (${parsed.data.role})` });
   redirect("/admin/users/?flash=userCreated");
 }
 
@@ -63,6 +65,11 @@ export async function updateUserAction(_: FormState, formData: FormData): Promis
     .where(eq(adminUsers.id, id));
   // A disabled account or a reset password signs the user out everywhere
   if (!active || password) await endSessions(id, id === me.id ? me.sid : undefined);
+  await logActivity(me, "user.update", {
+    type: "user",
+    id,
+    summary: [parsed.data.email, parsed.data.role, !active && "disabled", password && "password reset"].filter(Boolean).join(", "),
+  });
   redirect(`/admin/users/?flash=userSaved`);
 }
 
@@ -82,6 +89,7 @@ export async function deleteUserAction(formData: FormData) {
   const [user] = await db.select().from(adminUsers).where(eq(adminUsers.id, id));
   if (user?.role === "admin" && user.active && (await countAdmins()) <= 1) redirect(`/admin/users/${id}/`);
   await db.delete(adminUsers).where(eq(adminUsers.id, id));
+  await logActivity(me, "user.delete", { type: "user", id, summary: user?.email ?? "" });
   redirect("/admin/users/?flash=userDeleted");
 }
 
@@ -110,6 +118,7 @@ export async function changePasswordAction(_: FormState, formData: FormData): Pr
 
   await db.update(adminUsers).set({ passwordHash: await hashPassword(next) }).where(eq(adminUsers.id, me.id));
   await endSessions(me.id, me.sid);
+  await logActivity(me, "user.password");
   redirect("/admin/account/?flash=passwordChanged");
 }
 

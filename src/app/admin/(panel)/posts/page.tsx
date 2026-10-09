@@ -19,6 +19,7 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
   const page = Math.max(1, Number(sp.page) || 1);
   const [{ rows, total, pages }, session] = await Promise.all([adminListPosts({ q, page, status }), requireAdmin("viewPosts")]);
   const canEdit = can(session.role, "editPosts");
+  const now = new Date();
   const qs = (p: number) => `?${new URLSearchParams({ ...(q && { q }), ...(status && { status }), page: String(p) })}`;
 
   return (
@@ -33,6 +34,7 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
             <option value="">All</option>
             <option value="published">Published</option>
             <option value="draft">Drafts</option>
+            <option value="scheduled">Scheduled</option>
             <option value="missingja">Missing Japanese</option>
           </select>
           <button className="admin-btn-secondary">Filter</button>
@@ -86,7 +88,12 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
                 </td>
                 <td className="whitespace-nowrap px-4 py-2.5 text-[13px] text-[#666]">{fmt(p.publishedAt)}</td>
                 <td className="px-4 py-2.5">
-                  <PublishToggle id={p.id} published={p.published} disabled={!canEdit} />
+                  <PublishToggle
+                    id={p.id}
+                    published={p.published}
+                    scheduled={p.publishedAt > now ? p.publishedAt.toLocaleString("en-GB", { timeZone: "Asia/Phnom_Penh", dateStyle: "medium", timeStyle: "short" }) : undefined}
+                    disabled={!canEdit}
+                  />
                 </td>
               </tr>
             ))}

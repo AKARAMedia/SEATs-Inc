@@ -6,6 +6,7 @@ import { eq, inArray } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { contactMessages } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
+import { logActivity } from "@/lib/activity";
 
 async function ids(formData: FormData) {
   await requireAdmin("messages");
@@ -50,7 +51,11 @@ export async function setArchivedAction(formData: FormData) {
 
 export async function deleteMessagesAction(formData: FormData) {
   const list = await ids(formData);
-  if (list.length) await db.delete(contactMessages).where(inArray(contactMessages.id, list));
+  if (list.length) {
+    const gone = await db.delete(contactMessages).where(inArray(contactMessages.id, list)).returning({ name: contactMessages.name });
+    const who = await requireAdmin("messages");
+    await logActivity(who, "message.delete", { type: "message", summary: gone.length === 1 ? `Message from ${gone[0].name}` : `${gone.length} messages` });
+  }
   const back = String(formData.get("back") ?? "");
   redirect(`${back.startsWith("/admin/messages/") ? back : "/admin/messages/"}${back.includes("?") ? "&" : "?"}flash=msgDeleted`);
 }

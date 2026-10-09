@@ -118,3 +118,65 @@ export const visitorsDaily = pgTable(
 export type Post = typeof posts.$inferSelect;
 export type NewPost = typeof posts.$inferInsert;
 export type Category = typeof categories.$inferSelect;
+
+// ---------- Translation Center ----------
+
+/** One translatable thing (a post, a settings group, the categories) and its paragraph-aligned JA draft. */
+export const translationItems = pgTable("translation_items", {
+  key: text("key").primaryKey(), // "post:12", "settings:company", "categories"
+  // Ordered rows: [{ group, src, srcHash, target, auto }] aligned to the English at last save
+  segments: jsonb("segments").notNull().default([]),
+  // Draft differs from what is live on the Japanese site
+  dirty: boolean("dirty").notNull().default(false),
+  publishedAt: timestamp("published_at", { withTimezone: true }),
+  updatedBy: text("updated_by").notNull().default(""),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/** Every confirmed English → Japanese pair, keyed by a hash of the normalized English text. */
+export const translationMemory = pgTable("translation_memory", {
+  sourceHash: text("source_hash").primaryKey(),
+  sourceText: text("source_text").notNull(),
+  target: text("target").notNull(),
+  uses: integer("uses").notNull().default(1),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const glossary = pgTable("glossary", {
+  id: serial("id").primaryKey(),
+  termEn: text("term_en").notNull(),
+  termJa: text("term_ja").notNull(),
+  note: text("note").notNull().default(""),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// ---------- Activity log & version history ----------
+
+export const activityLog = pgTable(
+  "activity_log",
+  {
+    id: serial("id").primaryKey(),
+    userId: integer("user_id"),
+    userName: text("user_name").notNull().default(""),
+    action: text("action").notNull(), // "post.update", "settings.update", …
+    targetType: text("target_type").notNull().default(""),
+    targetId: text("target_id").notNull().default(""),
+    summary: text("summary").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("activity_log_created_idx").on(t.createdAt)],
+);
+
+/** Snapshots taken on every save, for compare/restore. */
+export const versions = pgTable(
+  "versions",
+  {
+    id: serial("id").primaryKey(),
+    entity: text("entity").notNull(), // "post:12", "settings:company"
+    data: jsonb("data").notNull(),
+    userName: text("user_name").notNull().default(""),
+    note: text("note").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("versions_entity_idx").on(t.entity, t.createdAt)],
+);

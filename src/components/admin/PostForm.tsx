@@ -28,6 +28,49 @@ function Err({ state, field }: { state: FormState; field: string }) {
   return msg ? <p className="mt-1 text-[12px] text-red-600">{msg}</p> : null;
 }
 
+/** Draft / Publish choice plus date; a future date with "Publish" means scheduled. */
+function PublishControls({ published, publishedAt, error }: { published: boolean; publishedAt: string; error?: string }) {
+  const [pub, setPub] = useState(published);
+  const [date, setDate] = useState(publishedAt);
+  const [now] = useState(Date.now);
+  const when = new Date(`${date}:00+07:00`);
+  const scheduled = pub && !Number.isNaN(when.getTime()) && when.getTime() > now;
+  const label = when.toLocaleString("en-GB", { timeZone: "Asia/Phnom_Penh", weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  return (
+    <>
+      <div>
+        <span className="admin-label">Status</span>
+        <div className="grid grid-cols-2 rounded-md bg-black/5 p-1">
+          {[false, true].map((v) => (
+            <label key={String(v)} className={`cursor-pointer rounded px-2 py-1.5 text-center text-[13px] font-semibold ${pub === v ? "bg-white text-[#222] shadow-sm" : "text-[#666]"}`}>
+              <input type="radio" name="published" value={v ? "on" : ""} checked={pub === v} onChange={() => setPub(v)} className="sr-only" />
+              {v ? "Publish" : "Draft"}
+            </label>
+          ))}
+        </div>
+      </div>
+      <label className="block">
+        <span className="admin-label">{pub ? "Publish date & time" : "Date"} (Cambodia time)</span>
+        <input type="datetime-local" name="publishedAt" value={date} onChange={(e) => setDate(e.target.value)} required aria-invalid={!!error} className="admin-input" />
+        {error && <p className="mt-1 text-[12px] text-red-600">{error}</p>}
+      </label>
+      <p
+        className={`rounded-md px-3 py-2 text-[12px] ${scheduled ? "bg-sky-50 text-sky-800 ring-1 ring-sky-200" : pub ? "bg-green-50 text-green-800" : "bg-black/[0.03] text-[#666]"}`}
+      >
+        {scheduled ? (
+          <>
+            ⏰ <strong>Scheduled</strong> — goes live automatically on {label}.
+          </>
+        ) : pub ? (
+          "● Visible on the website after saving."
+        ) : (
+          "Not visible on the website. Use Preview to check it."
+        )}
+      </p>
+    </>
+  );
+}
+
 /** English shown as reference for translators (not part of the form). */
 function ReadOnlyEnglish({ values }: { values: PostFormValues }) {
   return (
@@ -167,15 +210,7 @@ export default function PostForm({ values, categories, mode = "full" }: { values
         ) : (
           <aside className="space-y-4">
             <div className="space-y-4 rounded-lg bg-white p-4 ring-1 ring-black/5">
-              <label className="flex items-center gap-2 text-[14px] font-semibold">
-                <input type="checkbox" name="published" defaultChecked={values.published} className="size-4 accent-[var(--color-primary)]" />
-                Published
-              </label>
-              <label className="block">
-                <span className="admin-label">Date (Cambodia time)</span>
-                <input type="datetime-local" name="publishedAt" defaultValue={values.publishedAt} required className="admin-input" />
-                <Err state={state} field="publishedAt" />
-              </label>
+              <PublishControls published={values.published} publishedAt={values.publishedAt} error={state?.fieldErrors?.publishedAt} />
               <label className="block">
                 <span className="admin-label">Category</span>
                 <select name="categoryId" defaultValue={values.categoryId ?? ""} className="admin-input">

@@ -17,7 +17,10 @@ const SECTIONS: { title: string; items: Item[] }[] = [
   },
   {
     title: "Content",
-    items: [{ href: "/admin/posts/", label: "News & Events", icon: "news", perm: "viewPosts", match: (p) => p.startsWith("/admin/posts") }],
+    items: [
+      { href: "/admin/posts/", label: "News & Events", icon: "news", perm: "viewPosts", match: (p) => p.startsWith("/admin/posts") },
+      { href: "/admin/translate/", label: "Translation", icon: "translate", perm: "translate", match: (p) => p.startsWith("/admin/translate") },
+    ],
   },
   {
     title: "Inbox",
@@ -28,6 +31,7 @@ const SECTIONS: { title: string; items: Item[] }[] = [
     items: [
       { href: "/admin/users/", label: "Users", icon: "users", perm: "users", match: (p) => p.startsWith("/admin/users") },
       { href: "/admin/settings/", label: "Settings", icon: "settings", perm: "settings", match: (p) => p.startsWith("/admin/settings") },
+      { href: "/admin/activity/", label: "Activity log", icon: "history", perm: "activity", match: (p) => p.startsWith("/admin/activity") },
     ],
   },
 ];

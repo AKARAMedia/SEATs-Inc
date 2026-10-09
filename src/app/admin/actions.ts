@@ -5,7 +5,10 @@ import { updateTag } from "next/cache";
 import { and, eq, ne } from "drizzle-orm";
 import { z } from "zod";
 import { db, ready } from "@/db";
-import { posts } from "@/db/schema";
+import { posts, translationItems, type Post } from "@/db/schema";
+import { ensureBaseline, getVersion, logActivity, saveVersion } from "@/lib/activity";
+import type { Session } from "@/lib/auth";
+import { htmlText } from "@/lib/translation/text";
 import { login, logout, requireAdmin } from "@/lib/auth";
 import { can } from "@/lib/permissions";
 import { NEWS_TAG } from "@/lib/news";
@@ -21,6 +24,7 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
   if (!email || !password) return { error: "Enter your email and password." };
   const result = await login(email, password);
   if (!result.ok) return { error: result.error };
+  await logActivity({ id: result.user.id, name: result.user.name, email: result.user.email }, "user.login");
   redirect("/admin/");
 }
 
@@ -57,6 +61,29 @@ const TranslationInput = z.object({
   bodyJa: z.string().default(""),
 });
 
+/**
+ * After any change to a post: keep a version, log it, and if the Japanese was edited directly
+ * (not via the Translation Center) drop the translation draft so it is rebuilt from the live text.
+ */
+async function afterPostChange(id: number, prev: Post | undefined, who: Session, action: string, note = "") {
+  const [cur] = await db.select().from(posts).where(eq(posts.id, id));
+  if (!cur) return;
+  await ensureBaseline(`post:${id}`, prev);
+  await saveVersion(`post:${id}`, cur, who, note);
+  // Compare visible text: re-saving through the editor reformats HTML without changing the words
+  const jaChanged = prev && (prev.titleJa !== cur.titleJa || prev.excerptJa !== cur.excerptJa || htmlText(prev.bodyJa) !== htmlText(cur.bodyJa));
+  if (jaChanged) {
+    await db.delete(translationItems).where(eq(translationItems.key, `post:${id}`));
+  }
+  await logActivity(who, action, { type: "post", id, summary: cur.titleEn });
+}
+
+async function getPost(id: number | undefined) {
+  if (!id) return undefined;
+  const [row] = await db.select().from(posts).where(eq(posts.id, id));
+  return row;
+}
+
 export async function savePostAction(_: FormState, formData: FormData): Promise<FormState> {
   const session = await requireAdmin("viewPosts");
   await ready();
@@ -67,6 +94,7 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
     const t = TranslationInput.safeParse(raw);
     if (!t.success) return { error: "Invalid input." };
     const bodyJa = sanitizeBody(t.data.bodyJa);
+    const prev = await getPost(t.data.id);
     await db
       .update(posts)
       .set({
@@ -76,6 +104,7 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
         updatedAt: new Date(),
       })
       .where(eq(posts.id, t.data.id));
+    await afterPostChange(t.data.id, prev, session, "post.translate", "Japanese edited");
     updateTag(NEWS_TAG);
     redirect(`/admin/posts/${t.data.id}/?flash=saved`);
   }
@@ -123,29 +152,74 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
   };
 
   let id = d.id;
+  const prev = await getPost(id);
   if (id) {
     await db.update(posts).set(values).where(eq(posts.id, id));
   } else {
     [{ id }] = await db.insert(posts).values(values).returning({ id: posts.id });
   }
+  await afterPostChange(id!, prev, session, d.id ? "post.update" : "post.create");
   updateTag(NEWS_TAG);
   redirect(`/admin/posts/${id}/?flash=${d.id ? "saved" : "created"}`);
 }
 
 export async function deletePostAction(formData: FormData) {
-  await requireAdmin("editPosts");
+  const who = await requireAdmin("editPosts");
   await ready();
   const id = Number(formData.get("id"));
-  if (Number.isInteger(id)) await db.delete(posts).where(eq(posts.id, id));
+  if (Number.isInteger(id)) {
+    const [row] = await db.delete(posts).where(eq(posts.id, id)).returning();
+    await db.delete(translationItems).where(eq(translationItems.key, `post:${id}`));
+    // Versions are kept, so a deleted post can still be recovered from the database if needed
+    if (row) await logActivity(who, "post.delete", { type: "post", id, summary: row.titleEn });
+  }
   updateTag(NEWS_TAG);
   redirect("/admin/posts/?flash=deleted");
 }
 
 export async function togglePublishAction(formData: FormData) {
-  await requireAdmin("editPosts");
+  const who = await requireAdmin("editPosts");
   await ready();
   const id = Number(formData.get("id"));
   const published = formData.get("published") === "true";
-  if (Number.isInteger(id)) await db.update(posts).set({ published, updatedAt: new Date() }).where(eq(posts.id, id));
+  if (Number.isInteger(id)) {
+    const prev = await getPost(id);
+    await db.update(posts).set({ published, updatedAt: new Date() }).where(eq(posts.id, id));
+    await afterPostChange(id, prev, who, published ? "post.publish" : "post.unpublish");
+  }
   updateTag(NEWS_TAG);
+}
+
+/** Put a post back to how it was in an earlier version (the current state is kept as a version too). */
+export async function restorePostVersionAction(formData: FormData) {
+  const who = await requireAdmin("editPosts");
+  await ready();
+  const id = Number(formData.get("id"));
+  const versionId = Number(formData.get("versionId"));
+  const v = await getVersion(`post:${id}`, versionId);
+  const prev = await getPost(id);
+  if (!v || !prev) redirect(`/admin/posts/${id}/`);
+  const d = v.data as Post;
+  // Keep the current slug if the old one is now used by another post
+  const [clash] = await db.select({ id: posts.id }).from(posts).where(and(eq(posts.slug, d.slug), ne(posts.id, id)));
+  await db
+    .update(posts)
+    .set({
+      slug: clash ? prev.slug : d.slug,
+      titleEn: d.titleEn,
+      titleJa: d.titleJa,
+      excerptEn: d.excerptEn,
+      excerptJa: d.excerptJa,
+      bodyEn: d.bodyEn,
+      bodyJa: d.bodyJa,
+      categoryId: d.categoryId,
+      imageUrl: d.imageUrl,
+      published: d.published,
+      publishedAt: new Date(d.publishedAt),
+      updatedAt: new Date(),
+    })
+    .where(eq(posts.id, id));
+  await afterPostChange(id, prev, who, "post.restore", `Restored version from ${new Date(v.createdAt).toLocaleString("en-GB", { timeZone: "Asia/Phnom_Penh" })}`);
+  updateTag(NEWS_TAG);
+  redirect(`/admin/posts/${id}/?flash=restored`);
 }
