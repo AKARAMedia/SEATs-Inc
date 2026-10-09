@@ -107,5 +107,5 @@ export function keyToSlug(key: string) {
   return key.replace(":", "-");
 }
 export function slugToKey(slug: string) {
-  return /^(post|settings)-/.test(slug) ? slug.replace("-", ":") : slug;
+  return /^(post|settings|page|job)-/.test(slug) ? slug.replace("-", ":") : slug;
 }

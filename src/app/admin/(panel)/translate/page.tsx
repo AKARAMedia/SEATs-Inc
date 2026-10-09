@@ -17,7 +17,7 @@ const VIEWS: { key: string; label: string; match: (s: ItemStatus) => boolean }[]
   { key: "all", label: "All", match: () => true },
 ];
 
-const TYPES = { post: "News", settings: "Settings", categories: "Categories" } as const;
+const TYPES = { post: "News", page: "Pages", job: "Jobs", settings: "Settings", categories: "Categories" } as const;
 
 export default async function TranslatePage({ searchParams }: PageProps<"/admin/translate">) {
   await requireAdmin("translate");

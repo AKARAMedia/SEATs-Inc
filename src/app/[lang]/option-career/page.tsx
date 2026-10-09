@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Montserrat } from "next/font/google";
-import { CAREER } from "@/content/pages/option-career";
+import { getPage } from "@/lib/pages/store";
+import { listOpenJobs } from "@/lib/careers";
+import { href } from "@/lib/i18n";
+import Link from "next/link";
 import { isLang } from "@/lib/i18n";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"], display: "swap" });
@@ -12,6 +15,8 @@ export const metadata: Metadata = { title: "Option Career" };
 export default async function Page({ params }: PageProps<"/[lang]/option-career">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
+  // Editable in admin → Pages
+  const [{ CAREER }, openJobs] = await Promise.all([getPage("option-career"), listOpenJobs(lang)]);
   const c = CAREER;
   const [cambodian, japanese] = c.buttons;
   const btn = "inline-flex items-center justify-center bg-[#0080cc] text-[#f5f5f5] hover:bg-accent hover:text-white";
@@ -70,6 +75,33 @@ export default async function Page({ params }: PageProps<"/[lang]/option-career"
           </div>
         </div>
       </div>
+
+      {/* Job posts from admin → Careers (section only appears when a position is open) */}
+      {openJobs.length > 0 && (
+        <section className="container-site relative pb-[80px]">
+          <h2 className={`${montserrat.className} mb-6 text-center text-[28px] font-bold text-[#0080cc] desktop:text-[36px]`}>{lang === "ja" ? "募集中のポジション" : "Open positions"}</h2>
+          <ul className="mx-auto grid max-w-[960px] gap-4 tablet:grid-cols-2">
+            {openJobs.map((j) => (
+              <li key={j.slug}>
+                <Link
+                  href={href(lang, `/careers/${j.slug}/`)}
+                  className="block h-full rounded-[12px] border-2 border-[#e4f1f6] bg-white p-5 transition-colors hover:border-[#0080cc]"
+                >
+                  <span className="block text-[19px] font-bold leading-snug text-[#222]">{j.title}</span>
+                  <span className="mt-2 flex flex-wrap gap-2 text-[13px]">
+                    {[j.type, j.department, j.location].filter(Boolean).map((t) => (
+                      <span key={t} className="rounded-full bg-[#eef7fc] px-2.5 py-0.5 text-[#0080cc]">
+                        {t}
+                      </span>
+                    ))}
+                  </span>
+                  <span className="mt-3 block text-[14px] font-semibold text-[#0080cc]">{lang === "ja" ? "詳細・応募 →" : "Details & apply →"}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

@@ -9,6 +9,8 @@ const PATHS = {
   trash: "M4 7h16M10 11v6M14 11v6M5 7l1 12a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1l1-12M9 7V4h6v3",
   eye: "M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
   plus: "M12 5v14M5 12h14",
+  page: "M6 3h9l4 4v14H6zM15 3v4h4M9 12h7M9 16h7",
+  briefcase: "M4 8h16v11H4zM9 8V5h6v3M4 13h16",
   home: "M3 11 12 4l9 7M5 9.5V20h5v-6h4v6h5V9.5",
   tag: "M3 12V4h8l10 10-8 8L3 12ZM7.5 8.5h.01",
   image: "M4 5h16v14H4zM4 16l5-5 4 4 3-3 4 4M15 9.5h.01",

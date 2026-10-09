@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { requireAdmin } from "@/lib/auth";
 import { unreadMessageCount } from "@/lib/admin-data";
+import { newApplicationCount } from "@/lib/careers";
 import { can } from "@/lib/permissions";
 import { getSettings } from "@/lib/settings";
 import Link from "next/link";
@@ -11,8 +12,11 @@ import { ConfirmHost } from "@/components/admin/ui/confirm";
 
 async function Sidebar() {
   const { name, email, role } = await requireAdmin();
-  const unread = can(role, "messages") ? await unreadMessageCount() : 0;
-  return <AdminSidebar user={{ name, email, role }} unread={unread} logout={logoutAction} />;
+  const [unread, applications] = await Promise.all([
+    can(role, "messages") ? unreadMessageCount() : 0,
+    can(role, "careers") ? newApplicationCount() : 0,
+  ]);
+  return <AdminSidebar user={{ name, email, role }} unread={unread} applications={applications} logout={logoutAction} />;
 }
 
 async function MaintenanceBanner() {

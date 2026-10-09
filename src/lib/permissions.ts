@@ -11,6 +11,8 @@ const PERMS = {
   /** Home page, brands, media library */
   content: ["admin", "editor"],
   messages: ["admin", "editor"],
+  /** Job posts and applications (CVs contain personal data) */
+  careers: ["admin", "editor"],
   users: ["admin"],
   settings: ["admin"],
   activity: ["admin"],

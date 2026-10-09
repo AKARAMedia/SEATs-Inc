@@ -1,4 +1,9 @@
-import { boolean, date, index, integer, jsonb, pgTable, primaryKey, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import { boolean, customType, date, index, integer, jsonb, pgTable, primaryKey, serial, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+
+const bytea = customType<{ data: Buffer; driverData: Buffer | Uint8Array | string }>({
+  dataType: () => "bytea",
+  fromDriver: (v) => (typeof v === "string" ? Buffer.from(v.replace(/^\\x/, ""), "hex") : Buffer.from(v)),
+});
 
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
@@ -236,4 +241,66 @@ export const homeBanners = pgTable("home_banners", {
   sortOrder: integer("sort_order").notNull().default(0),
   startsAt: timestamp("starts_at", { withTimezone: true }),
   endsAt: timestamp("ends_at", { withTimezone: true }),
+});
+
+// ---------- Company pages & careers ----------
+
+/** Edited content of a company page (admin → Pages). Missing = the built-in default content. */
+export const pages = pgTable("pages", {
+  key: text("key").primaryKey(),
+  value: jsonb("value").notNull(),
+  updatedBy: text("updated_by").notNull().default(""),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const JOB_TYPES = ["Full-time", "Part-time", "Contract", "Internship"] as const;
+
+export const jobs = pgTable("jobs", {
+  id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
+  titleEn: text("title_en").notNull(),
+  titleJa: text("title_ja").notNull().default(""),
+  department: text("department").notNull().default(""),
+  location: text("location").notNull().default("Phnom Penh"),
+  type: text("type").notNull().default("Full-time"),
+  // Sanitized HTML
+  descriptionEn: text("description_en").notNull().default(""),
+  descriptionJa: text("description_ja").notNull().default(""),
+  open: boolean("open").notNull().default(true),
+  closesAt: timestamp("closes_at", { withTimezone: true }),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const APPLICATION_STATUSES = ["new", "reviewing", "interview", "hired", "rejected"] as const;
+export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number];
+
+export const jobApplications = pgTable(
+  "job_applications",
+  {
+    id: serial("id").primaryKey(),
+    jobId: integer("job_id").references(() => jobs.id, { onDelete: "set null" }),
+    jobTitle: text("job_title").notNull().default(""), // kept if the job is deleted
+    name: text("name").notNull(),
+    email: text("email").notNull(),
+    phone: text("phone").notNull().default(""),
+    message: text("message").notNull().default(""),
+    lang: text("lang").notNull().default("en"),
+    status: text("status").$type<ApplicationStatus>().notNull().default("new"),
+    notes: text("notes").notNull().default(""),
+    cvName: text("cv_name").notNull().default(""),
+    cvSize: integer("cv_size").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("job_applications_job_idx").on(t.jobId), index("job_applications_created_idx").on(t.createdAt)],
+);
+
+/** CV files live in the database, never at a public URL; admins download them through an authenticated route. */
+export const applicationFiles = pgTable("application_files", {
+  applicationId: integer("application_id")
+    .primaryKey()
+    .references(() => jobApplications.id, { onDelete: "cascade" }),
+  contentType: text("content_type").notNull().default("application/pdf"),
+  data: bytea("data").notNull(),
 });

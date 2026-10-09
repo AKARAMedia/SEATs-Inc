@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { DivisionPage, mont } from "@/components/sections/division/primitives";
-import { LOKA } from "@/content/pages/loka-japanese-foods-beverage";
+import { getPage } from "@/lib/pages/store";
 import { isLang } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "LOKA JAPANESE FOODS & BEVERAGE" };
@@ -35,6 +35,8 @@ function Photo({ src, className = "", sizes, rounded = "" }: { src: string; clas
 export default async function Page({ params }: PageProps<"/[lang]/loka-japanese-foods-beverage">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
+  // Editable in admin → Pages
+  const { LOKA } = await getPage("loka-japanese-foods-beverage");
   const l = LOKA;
 
   return (

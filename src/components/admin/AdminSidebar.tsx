@@ -8,7 +8,7 @@ import type { Role } from "@/db/schema";
 import { can, ROLE_LABELS, type Perm } from "@/lib/permissions";
 import { Icon, type IconName } from "./ui/icons";
 
-type Item = { href: string; label: string; icon: IconName; perm?: Perm; badge?: "unread"; match: (p: string) => boolean };
+type Item = { href: string; label: string; icon: IconName; perm?: Perm; badge?: "unread" | "applications"; match: (p: string) => boolean };
 
 const SECTIONS: { title: string; items: Item[] }[] = [
   {
@@ -21,13 +21,17 @@ const SECTIONS: { title: string; items: Item[] }[] = [
       { href: "/admin/posts/", label: "News & Events", icon: "news", perm: "viewPosts", match: (p) => p.startsWith("/admin/posts") },
       { href: "/admin/translate/", label: "Translation", icon: "translate", perm: "translate", match: (p) => p.startsWith("/admin/translate") },
       { href: "/admin/home/", label: "Home page", icon: "home", perm: "content", match: (p) => p.startsWith("/admin/home") },
+      { href: "/admin/pages/", label: "Pages", icon: "page", perm: "content", match: (p) => p.startsWith("/admin/pages") },
       { href: "/admin/brands/", label: "Brands", icon: "tag", perm: "content", match: (p) => p.startsWith("/admin/brands") },
       { href: "/admin/media/", label: "Media library", icon: "image", perm: "content", match: (p) => p.startsWith("/admin/media") },
     ],
   },
   {
     title: "Inbox",
-    items: [{ href: "/admin/messages/", label: "Messages", icon: "mail", perm: "messages", badge: "unread", match: (p) => p.startsWith("/admin/messages") }],
+    items: [
+      { href: "/admin/messages/", label: "Messages", icon: "mail", perm: "messages", badge: "unread", match: (p) => p.startsWith("/admin/messages") },
+      { href: "/admin/careers/", label: "Careers", icon: "briefcase", perm: "careers", badge: "applications", match: (p) => p.startsWith("/admin/careers") },
+    ],
   },
   {
     title: "System",
@@ -41,7 +45,7 @@ const SECTIONS: { title: string; items: Item[] }[] = [
 
 type User = { name: string; email: string; role: Role };
 
-function NavLinks({ role, pathname, unread }: { role: Role; pathname: string; unread: number }) {
+function NavLinks({ role, pathname, unread, applications }: { role: Role; pathname: string; unread: number; applications: number }) {
   return (
     <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4">
       {SECTIONS.map((s) => {
@@ -63,9 +67,9 @@ function NavLinks({ role, pathname, unread }: { role: Role; pathname: string; un
                 >
                   <Icon name={i.icon} />
                   <span className="flex-1">{i.label}</span>
-                  {i.badge === "unread" && unread > 0 && (
-                    <span className="min-w-5 rounded-full bg-red-600 px-1.5 text-center text-[11px] font-bold leading-5 text-white" aria-label={`${unread} unread`}>
-                      {unread > 99 ? "99+" : unread}
+                  {i.badge && (i.badge === "unread" ? unread : applications) > 0 && (
+                    <span className="min-w-5 rounded-full bg-red-600 px-1.5 text-center text-[11px] font-bold leading-5 text-white" aria-label={`${i.badge === "unread" ? unread : applications} new`}>
+                      {Math.min(99, i.badge === "unread" ? unread : applications)}
                     </span>
                   )}
                 </Link>
@@ -108,7 +112,7 @@ function UserBox({ user, pathname, logout }: { user: User; pathname: string; log
 }
 
 /** Fixed sidebar on desktop; top bar with a slide-out drawer below 1024px. */
-export default function AdminSidebar({ user, unread, logout }: { user: User; unread: number; logout: () => Promise<void> }) {
+export default function AdminSidebar({ user, unread, applications, logout }: { user: User; unread: number; applications: number; logout: () => Promise<void> }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
@@ -169,7 +173,7 @@ export default function AdminSidebar({ user, unread, logout }: { user: User; unr
             <Icon name="close" className="size-5" />
           </button>
         </div>
-        <NavLinks role={user.role} pathname={pathname} unread={unread} />
+        <NavLinks role={user.role} pathname={pathname} unread={unread} applications={applications} />
         <UserBox user={user} pathname={pathname} logout={logout} />
       </aside>
     </>

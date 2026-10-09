@@ -2,7 +2,8 @@ import "server-only";
 import { updateTag } from "next/cache";
 import { asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { db, ready } from "@/db";
-import { categories, glossary, posts, siteSettings, translationItems, translationMemory } from "@/db/schema";
+import { categories, glossary, jobs, posts, siteSettings, translationItems, translationMemory } from "@/db/schema";
+import { CAREERS_TAG } from "@/lib/careers";
 import type { Session } from "@/lib/auth";
 import { ensureBaseline, logActivity, saveVersion } from "@/lib/activity";
 import { NEWS_TAG } from "@/lib/news";
@@ -10,6 +11,10 @@ import { previewToken } from "@/lib/preview";
 import { sanitizeBody, stripTags } from "@/lib/sanitize";
 import { SETTINGS_TAG } from "@/lib/settings";
 import { parseGroup, type Settings } from "@/lib/settings-schema";
+import { isPageKey, PAGE_KEYS, PAGES, type PageKey } from "@/lib/pages/registry";
+import { storePage } from "@/lib/pages/save";
+import { bilingualFields, conform, humanize, setAt, type Path } from "@/lib/pages/shape";
+import { loadPageForEdit } from "@/lib/pages/store";
 import { alignRows, itemStatus, rowCounts, type AlignedRow, type ItemStatus, type SourceSeg, type StoredRow } from "./align";
 import { assembleHtml, segmentHash, segmentHtml } from "./segments";
 import { htmlText, similarity, trigrams, type GlossaryTerm } from "./text";
@@ -19,7 +24,7 @@ import { htmlText, similarity, trigrams, type GlossaryTerm } from "./text";
 type Group = { group: string; label: string; kind: "text" | "html"; multiline?: boolean; maxLen?: number; en: string[]; ja: string[] };
 type Source = {
   key: string;
-  type: "post" | "settings" | "categories";
+  type: "post" | "settings" | "categories" | "page" | "job";
   title: string;
   subtitle?: string;
   groups: Group[];
@@ -121,17 +126,78 @@ function categoriesSource(cats: (typeof categories.$inferSelect)[]): Source {
   };
 }
 
+function jobSource(j: typeof jobs.$inferSelect): Source {
+  return {
+    key: `job:${j.id}`,
+    type: "job",
+    title: j.titleEn,
+    subtitle: j.open ? undefined : "Closed",
+    groups: [
+      { group: "title", label: "Job title", kind: "text", en: [j.titleEn], ja: [j.titleJa] },
+      { group: "body", label: "Description", kind: "html", en: segmentHtml(j.descriptionEn), ja: segmentHtml(j.descriptionJa) },
+    ],
+    editUrl: `/admin/careers/jobs/${j.id}/`,
+    publish: async (t) => {
+      const [cur] = await db.select().from(jobs).where(eq(jobs.id, j.id));
+      if (!cur) throw new Error("Job not found");
+      await db
+        .update(jobs)
+        .set({ titleJa: t.title?.[0] ?? "", descriptionJa: sanitizeBody(assembleHtml(cur.descriptionEn, t.body ?? [])), updatedAt: new Date() })
+        .where(eq(jobs.id, j.id));
+      updateTag(CAREERS_TAG);
+    },
+  };
+}
+
+/** "SERVICES.items.1.heading" → "Our services › #2 › Heading" */
+function pathLabel(def: (typeof PAGES)[PageKey], path: Path) {
+  const labels = ("labels" in def ? def.labels : {}) as Record<string, string>;
+  const parts = path.map((p, i) => (typeof p === "number" ? `#${p + 1}` : (labels[path.slice(0, i + 1).join(".")] ?? labels[p] ?? humanize(p))));
+  // A page held in one constant (e.g. CEO) doesn't need its name in every label
+  return (Object.keys(def.defaults).length === 1 ? parts.slice(1) : parts).join(" › ") || parts.join(" › ");
+}
+
+function pageSource(key: PageKey, value: unknown): Source {
+  const def = PAGES[key];
+  const fields = bilingualFields(value);
+  return {
+    key: `page:${key}`,
+    type: "page",
+    title: def.title,
+    groups: fields.map((f) => ({
+      group: f.path.join("."),
+      label: pathLabel(def, f.path),
+      kind: "text" as const,
+      multiline: f.kind === "paras" || (f.en as string).length > 90,
+      en: f.kind === "paras" ? (f.en as string[]) : [f.en as string],
+      ja: f.kind === "paras" ? (f.ja as string[]) : [f.ja as string],
+    })),
+    editUrl: `/admin/pages/${key}/`,
+    publish: async (t, who) => {
+      let next = (await loadPageForEdit(key)).value;
+      for (const f of bilingualFields(next)) {
+        const ja = t[f.path.join(".")];
+        if (ja) next = setAt(next, [...f.path, "ja"], f.kind === "paras" ? ja : ja[0]);
+      }
+      await storePage(key, conform(def.defaults, next, "fixed" in def ? (def.fixed as string[]) : []), who, "Japanese published from Translation Center");
+    },
+  };
+}
+
 async function allSources(): Promise<Source[]> {
-  const [postRows, cats, settingRows] = await Promise.all([
+  const [postRows, cats, settingRows, jobRows] = await Promise.all([
     db.select().from(posts).orderBy(desc(posts.publishedAt)),
     db.select().from(categories).orderBy(asc(categories.sortOrder)),
     db.select().from(siteSettings),
+    db.select().from(jobs).orderBy(desc(jobs.createdAt)),
   ]);
   const settingsByKey = new Map(settingRows.map((r) => [r.key, r.value]));
   return [
     ...postRows.map(postSource),
     ...SETTINGS_FIELDS.map((d) => settingsSource(d, parseGroup(d.group, settingsByKey.get(d.group)) as Record<string, unknown>)),
     ...(cats.length ? [categoriesSource(cats)] : []),
+    ...(await Promise.all(PAGE_KEYS.map(async (k) => pageSource(k, (await loadPageForEdit(k)).value)))),
+    ...jobRows.map(jobSource),
   ];
 }
 
@@ -145,6 +211,14 @@ async function getSource(key: string): Promise<Source | null> {
     if (!def) return null;
     const [row] = await db.select().from(siteSettings).where(eq(siteSettings.key, def.group));
     return settingsSource(def, parseGroup(def.group, row?.value) as Record<string, unknown>);
+  }
+  if (key.startsWith("job:")) {
+    const [j] = await db.select().from(jobs).where(eq(jobs.id, Number(key.slice(4))));
+    return j ? jobSource(j) : null;
+  }
+  if (key.startsWith("page:")) {
+    const k = key.slice(5);
+    return isPageKey(k) ? pageSource(k, (await loadPageForEdit(k)).value) : null;
   }
   if (key === "categories") {
     const cats = await db.select().from(categories).orderBy(asc(categories.sortOrder));

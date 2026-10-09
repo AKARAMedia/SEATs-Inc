@@ -31,6 +31,16 @@ const ACTIONS: Record<string, string> = {
   "home.reorder": "reordered",
   "home.delete": "deleted a",
   "media.delete": "deleted the image",
+  "page.update": "edited the page",
+  "page.restore": "restored an earlier version of the page",
+  "page.reset": "reset to the original content:",
+  "job.create": "created the job",
+  "job.update": "edited the job",
+  "job.open": "opened the job",
+  "job.close": "closed the job",
+  "job.delete": "deleted the job",
+  "application.status": "updated the application of",
+  "application.delete": "deleted the application of",
   "user.create": "added the user",
   "user.update": "changed the user",
   "user.delete": "deleted the user",
@@ -47,6 +57,9 @@ const AREAS = [
   { key: "glossary", label: "Glossary" },
   { key: "home", label: "Home page & brands" },
   { key: "media", label: "Media" },
+  { key: "page", label: "Pages" },
+  { key: "job", label: "Job posts" },
+  { key: "application", label: "Applications" },
   { key: "user", label: "Users & sign-ins" },
 ];
 
@@ -56,6 +69,9 @@ function targetHref(type: string, id: string, action: string) {
   if (action === "translation.publish") return `/admin/translate/${keyToSlug(id)}/`;
   if (type === "settings") return `/admin/settings/?tab=${id}`;
   if (type === "user") return `/admin/users/${id}/`;
+  if (type === "page") return `/admin/pages/${id}/`;
+  if (type === "job") return `/admin/careers/jobs/${id}/`;
+  if (type === "application") return `/admin/careers/applications/${id}/`;
   return null;
 }
 

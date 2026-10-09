@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import CenteredPageTitle from "@/components/sections/CenteredPageTitle";
-import { CEO } from "@/content/pages/ceo-message";
+import { getPage } from "@/lib/pages/store";
 import { isLang } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "CEO Message" };
@@ -37,6 +37,8 @@ function LinkBox({ path, viewBox, label, text, href, className }: { path: string
 export default async function Page({ params }: PageProps<"/[lang]/ceo-message">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
+  // Editable in admin → Pages
+  const { CEO } = await getPage("ceo-message");
   const c = CEO;
 
   return (
