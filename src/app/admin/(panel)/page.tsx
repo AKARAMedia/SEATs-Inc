@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { adminListPosts } from "@/lib/admin-data";
-import { togglePublishAction } from "../actions";
+import { requireAdmin } from "@/lib/auth";
+import { can } from "@/lib/permissions";
+import PublishToggle from "@/components/admin/PublishToggle";
+import Pagination from "@/components/admin/ui/Pagination";
 
 export const metadata = { title: "News & Events" };
 
@@ -14,19 +17,18 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
   const q = typeof sp.q === "string" ? sp.q.trim() : "";
   const status = typeof sp.status === "string" ? sp.status : "";
   const page = Math.max(1, Number(sp.page) || 1);
-  const { rows, total, pages } = await adminListPosts({ q, page, status });
+  const [{ rows, total, pages }, session] = await Promise.all([adminListPosts({ q, page, status }), requireAdmin("viewPosts")]);
+  const canEdit = can(session.role, "editPosts");
   const qs = (p: number) => `?${new URLSearchParams({ ...(q && { q }), ...(status && { status }), page: String(p) })}`;
 
   return (
     <div className="space-y-4">
-      {sp.deleted && <p className="rounded-md bg-green-50 px-4 py-2.5 text-[13px] text-green-800 ring-1 ring-green-200">Post deleted.</p>}
-
       <div className="flex flex-wrap items-center gap-3">
         <h1 className="mr-auto text-[22px] font-semibold">
           News &amp; Events <span className="text-[14px] font-normal text-[#888]">({total})</span>
         </h1>
-        <form className="flex gap-2" role="search">
-          <input name="q" defaultValue={q} placeholder="Search titles…" className="admin-input !w-56" />
+        <form className="flex w-full gap-2 sm:w-auto" role="search">
+          <input name="q" defaultValue={q} placeholder="Search titles…" className="admin-input min-w-0 flex-1 sm:!w-56 sm:flex-none" />
           <select name="status" defaultValue={status} className="admin-input !w-auto">
             <option value="">All</option>
             <option value="published">Published</option>
@@ -34,9 +36,11 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
           </select>
           <button className="admin-btn-secondary">Filter</button>
         </form>
-        <Link href="/admin/posts/new/" className="admin-btn">
-          + New post
-        </Link>
+        {canEdit && (
+          <Link href="/admin/posts/new/" className="admin-btn">
+            + New post
+          </Link>
+        )}
       </div>
 
       <div className="overflow-x-auto rounded-lg bg-white ring-1 ring-black/5">
@@ -81,18 +85,7 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
                 </td>
                 <td className="whitespace-nowrap px-4 py-2.5 text-[13px] text-[#666]">{fmt(p.publishedAt)}</td>
                 <td className="px-4 py-2.5">
-                  <form action={togglePublishAction}>
-                    <input type="hidden" name="id" value={p.id} />
-                    <input type="hidden" name="published" value={String(!p.published)} />
-                    <button
-                      title={p.published ? "Click to unpublish" : "Click to publish"}
-                      className={`rounded-full px-2 py-0.5 text-[12px] font-semibold ${
-                        p.published ? "bg-primary/10 text-primary" : "bg-black/5 text-[#777]"
-                      }`}
-                    >
-                      {p.published ? "Published" : "Draft"}
-                    </button>
-                  </form>
+                  <PublishToggle id={p.id} published={p.published} disabled={!canEdit} />
                 </td>
               </tr>
             ))}
@@ -107,20 +100,7 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
         </table>
       </div>
 
-      {pages > 1 && (
-        <nav className="flex justify-center gap-1" aria-label="Pagination">
-          {Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-            <Link
-              key={n}
-              href={qs(n)}
-              aria-current={n === page ? "page" : undefined}
-              className={`min-w-9 rounded px-3 py-1.5 text-center text-[13px] ${n === page ? "bg-primary text-white" : "bg-white ring-1 ring-black/10"}`}
-            >
-              {n}
-            </Link>
-          ))}
-        </nav>
-      )}
+      <Pagination page={page} pages={pages} href={qs} />
     </div>
   );
 }

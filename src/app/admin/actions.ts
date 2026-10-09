@@ -7,6 +7,7 @@ import { z } from "zod";
 import { db, ready } from "@/db";
 import { contactMessages, posts } from "@/db/schema";
 import { login, logout, requireAdmin } from "@/lib/auth";
+import { can } from "@/lib/permissions";
 import { NEWS_TAG } from "@/lib/news";
 import { sanitizeBody, slugify, stripTags } from "@/lib/sanitize";
 
@@ -18,7 +19,8 @@ export async function loginAction(_: FormState, formData: FormData): Promise<For
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
   if (!email || !password) return { error: "Enter your email and password." };
-  if (!(await login(email, password))) return { error: "Invalid email or password." };
+  const result = await login(email, password);
+  if (!result.ok) return { error: result.error };
   redirect("/admin/");
 }
 
@@ -48,10 +50,36 @@ const PostInput = z.object({
   published: z.boolean(),
 });
 
+const TranslationInput = z.object({
+  id: z.coerce.number().int().positive(),
+  titleJa: z.string().trim().max(300).default(""),
+  excerptJa: z.string().trim().max(1000).default(""),
+  bodyJa: z.string().default(""),
+});
+
 export async function savePostAction(_: FormState, formData: FormData): Promise<FormState> {
-  await requireAdmin();
+  const session = await requireAdmin("viewPosts");
   await ready();
   const raw = Object.fromEntries(formData);
+
+  // Translators may only change the Japanese fields of an existing post
+  if (!can(session.role, "editPosts")) {
+    const t = TranslationInput.safeParse(raw);
+    if (!t.success) return { error: "Invalid input." };
+    const bodyJa = sanitizeBody(t.data.bodyJa);
+    await db
+      .update(posts)
+      .set({
+        titleJa: t.data.titleJa,
+        excerptJa: t.data.excerptJa || stripTags(bodyJa).slice(0, 120),
+        bodyJa,
+        updatedAt: new Date(),
+      })
+      .where(eq(posts.id, t.data.id));
+    updateTag(NEWS_TAG);
+    redirect(`/admin/posts/${t.data.id}/?flash=saved`);
+  }
+
   const parsed = PostInput.safeParse({
     ...raw,
     id: raw.id || undefined,
@@ -101,20 +129,20 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
     [{ id }] = await db.insert(posts).values(values).returning({ id: posts.id });
   }
   updateTag(NEWS_TAG);
-  redirect(`/admin/posts/${id}/?saved=1`);
+  redirect(`/admin/posts/${id}/?flash=${d.id ? "saved" : "created"}`);
 }
 
 export async function deletePostAction(formData: FormData) {
-  await requireAdmin();
+  await requireAdmin("editPosts");
   await ready();
   const id = Number(formData.get("id"));
   if (Number.isInteger(id)) await db.delete(posts).where(eq(posts.id, id));
   updateTag(NEWS_TAG);
-  redirect("/admin/?deleted=1");
+  redirect("/admin/?flash=deleted");
 }
 
 export async function togglePublishAction(formData: FormData) {
-  await requireAdmin();
+  await requireAdmin("editPosts");
   await ready();
   const id = Number(formData.get("id"));
   const published = formData.get("published") === "true";
@@ -125,9 +153,9 @@ export async function togglePublishAction(formData: FormData) {
 // ---------- contact messages ----------
 
 export async function deleteMessageAction(formData: FormData) {
-  await requireAdmin();
+  await requireAdmin("messages");
   await ready();
   const id = Number(formData.get("id"));
   if (Number.isInteger(id)) await db.delete(contactMessages).where(eq(contactMessages.id, id));
-  redirect("/admin/messages/");
+  redirect("/admin/messages/?flash=msgDeleted");
 }

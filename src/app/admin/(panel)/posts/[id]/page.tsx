@@ -1,15 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PostForm from "@/components/admin/PostForm";
-import DeletePostButton from "@/components/admin/DeletePostButton";
+import { ConfirmForm } from "@/components/admin/ui/confirm";
 import { adminCategories, adminGetPost, toLocalInput } from "@/lib/admin-data";
+import { requireAdmin } from "@/lib/auth";
+import { can } from "@/lib/permissions";
+import { deletePostAction } from "@/app/admin/actions";
 
 export const metadata = { title: "Edit post" };
 
-export default async function EditPostPage({ params, searchParams }: PageProps<"/admin/posts/[id]">) {
-  const [{ id }, sp] = await Promise.all([params, searchParams]);
-  const post = await adminGetPost(Number(id));
+export default async function EditPostPage({ params }: PageProps<"/admin/posts/[id]">) {
+  const { id } = await params;
+  const [post, session] = await Promise.all([adminGetPost(Number(id)), requireAdmin("viewPosts")]);
   if (!post) notFound();
+  const canEdit = can(session.role, "editPosts");
   const categories = await adminCategories();
 
   return (
@@ -31,14 +35,20 @@ export default async function EditPostPage({ params, searchParams }: PageProps<"
             </a>
           </>
         )}
-        <DeletePostButton id={post.id} title={post.titleEn} />
+        {canEdit && (
+          <ConfirmForm
+            action={deletePostAction}
+            fields={{ id: post.id }}
+            confirm={{ title: "Delete this post?", message: <>“{post.titleEn}” will be removed from the website. This cannot be undone.</>, confirmLabel: "Delete post", danger: true }}
+          >
+            <button type="submit" className="admin-btn-secondary !text-red-600 hover:!bg-red-50">
+              Delete
+            </button>
+          </ConfirmForm>
+        )}
       </div>
-      {sp.saved && (
-        <p className="rounded-md bg-green-50 px-4 py-2.5 text-[13px] text-green-800 ring-1 ring-green-200">
-          Saved. Changes are live on the site.
-        </p>
-      )}
       <PostForm
+        mode={canEdit ? "full" : "translate"}
         // Remount after each save so editors reload the sanitized HTML
         key={post.updatedAt.toISOString()}
         categories={categories}

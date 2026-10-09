@@ -79,3 +79,31 @@
 .admin-editor .ProseMirror img.ProseMirror-selectednode {
   outline: 3px solid var(--color-primary);
 }
+
+/* Toasts and dialogs */
+.admin-toast {
+  animation: admin-toast-in 0.2s ease-out;
+}
+@keyframes admin-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.admin-dialog[open] {
+  animation: admin-toast-in 0.15s ease-out;
+}
+.admin-card {
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.06);
+}
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}

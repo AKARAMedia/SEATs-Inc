@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   // Keep WordPress-style URLs (/overview/) so existing links and SEO carry over
   trailingSlash: true,
   serverExternalPackages: ["@electric-sql/pglite"],
+  // Local builds use the embedded PGlite DB, which only one process may open at a time
+  ...(!process.env.DATABASE_URL && { experimental: { cpus: 1 } }),
   images: {
     remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
   },

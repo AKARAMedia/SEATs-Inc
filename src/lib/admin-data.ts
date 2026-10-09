@@ -1,13 +1,13 @@
 import "server-only";
-import { and, count, desc, eq, ilike, or } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, ilike, or } from "drizzle-orm";
 import { db, ready } from "@/db";
-import { categories, contactMessages, posts } from "@/db/schema";
+import { adminSessions, adminUsers, categories, contactMessages, posts } from "@/db/schema";
 import { requireAdmin } from "./auth";
 
 // Uncached reads for the admin panel (always fresh, always auth-checked)
 
 export async function adminListPosts({ q, page = 1, status }: { q?: string; page?: number; status?: string }) {
-  await requireAdmin();
+  await requireAdmin("viewPosts");
   await ready();
   const size = 25;
   const where = and(
@@ -43,7 +43,7 @@ export async function adminListPosts({ q, page = 1, status }: { q?: string; page
 }
 
 export async function adminGetPost(id: number) {
-  await requireAdmin();
+  await requireAdmin("viewPosts");
   await ready();
   const [row] = await db.select().from(posts).where(eq(posts.id, id));
   return row ?? null;
@@ -56,9 +56,54 @@ export async function adminCategories() {
 }
 
 export async function adminMessages() {
-  await requireAdmin();
+  await requireAdmin("messages");
   await ready();
   return db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt)).limit(200);
+}
+
+const userColumns = {
+  id: adminUsers.id,
+  email: adminUsers.email,
+  name: adminUsers.name,
+  role: adminUsers.role,
+  active: adminUsers.active,
+  lastLoginAt: adminUsers.lastLoginAt,
+  createdAt: adminUsers.createdAt,
+};
+
+export async function adminUsersList() {
+  await requireAdmin("users");
+  await ready();
+  return db.select(userColumns).from(adminUsers).orderBy(asc(adminUsers.createdAt));
+}
+
+export async function adminGetUser(id: number) {
+  await requireAdmin("users");
+  await ready();
+  const [row] = await db.select(userColumns).from(adminUsers).where(eq(adminUsers.id, id));
+  return row ?? null;
+}
+
+/** Signed-in browsers of a user, newest first. */
+export async function adminUserSessions(userId: number) {
+  await requireAdmin();
+  await ready();
+  return db
+    .select({ id: adminSessions.id, userAgent: adminSessions.userAgent, ip: adminSessions.ip, createdAt: adminSessions.createdAt, lastSeenAt: adminSessions.lastSeenAt })
+    .from(adminSessions)
+    .where(and(eq(adminSessions.userId, userId), gt(adminSessions.expiresAt, new Date())))
+    .orderBy(desc(adminSessions.lastSeenAt));
+}
+
+/** "Chrome on Windows" from a user-agent string. */
+export function describeDevice(ua: string) {
+  const browser = /Edg\//.test(ua) ? "Edge" : /OPR\//.test(ua) ? "Opera" : /Chrome\//.test(ua) ? "Chrome" : /Firefox\//.test(ua) ? "Firefox" : /Safari\//.test(ua) ? "Safari" : "Browser";
+  const os = /iPhone|iPad/.test(ua) ? "iOS" : /Android/.test(ua) ? "Android" : /Windows/.test(ua) ? "Windows" : /Mac OS X/.test(ua) ? "macOS" : /Linux/.test(ua) ? "Linux" : "";
+  return os ? `${browser} on ${os}` : browser;
+}
+
+export function fmtDateTime(d: Date | null) {
+  return d ? d.toLocaleString("en-GB", { timeZone: "Asia/Phnom_Penh", dateStyle: "medium", timeStyle: "short" }) : "Never";
 }
 
 /** Date → "yyyy-MM-ddTHH:mm" in Cambodia time for <input type="datetime-local"> */

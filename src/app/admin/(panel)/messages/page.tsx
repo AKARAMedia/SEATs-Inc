@@ -1,4 +1,5 @@
 import { adminMessages } from "@/lib/admin-data";
+import { ConfirmForm } from "@/components/admin/ui/confirm";
 import { deleteMessageAction } from "../../actions";
 
 export const metadata = { title: "Contact messages" };
@@ -27,10 +28,14 @@ export default async function MessagesPage() {
             </div>
             {m.subject && <p className="mb-1 font-semibold">{m.subject}</p>}
             <p className="whitespace-pre-wrap text-[14px] text-[#444]">{m.message}</p>
-            <form action={deleteMessageAction} className="mt-3 text-right">
-              <input type="hidden" name="id" value={m.id} />
+            <ConfirmForm
+              action={deleteMessageAction}
+              fields={{ id: m.id }}
+              confirm={{ title: "Delete this message?", message: `The message from ${m.name} will be permanently deleted.`, confirmLabel: "Delete", danger: true }}
+              className="mt-3 text-right"
+            >
               <button className="text-[12px] text-red-600 hover:underline">Delete</button>
-            </form>
+            </ConfirmForm>
           </li>
         ))}
       </ul>
