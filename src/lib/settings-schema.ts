@@ -57,7 +57,7 @@ export const SETTINGS_SCHEMA = {
     shareImage: url.default(""),
   }),
   contact: z.object({
-    notifyEmails: z.array(email.refine((v) => v !== "")).max(10).default([]),
+    notifyEmails: z.array(email.refine((v) => v !== "")).max(10).default(["hr-recruiting@seats-inc.com"]),
     autoReply: z.boolean().default(false),
     autoReplySubject: L("Thank you for contacting S.E.A.T.S Inc.", "S.E.A.T.S Inc.へのお問い合わせありがとうございます"),
     autoReplyBody: L(
