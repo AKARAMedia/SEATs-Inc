@@ -61,7 +61,11 @@ export function conform(def: unknown, value: unknown, fixed: string[] = [], path
 }
 
 function conformItem(template: unknown, optional: Set<string>, value: unknown, fixed: string[], path: Path) {
-  if (!isObj(template) || isPair(template) || isParas(template)) return conform(template, value ?? blank(template), fixed, path);
+  // `template` is a real list item (e.g. items[0]) reused only for its *shape* — conforming
+  // directly against it would mean a wrong-typed/missing field falls back to that other item's
+  // actual content instead of becoming empty. Conform against blank(template) instead: same
+  // shape, no real content to leak.
+  if (!isObj(template) || isPair(template) || isParas(template)) return conform(blank(template), value, fixed, path);
   const v = isObj(value) ? value : {};
   const out: Obj = {};
   for (const [k, d] of Object.entries(template)) {

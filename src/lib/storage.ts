@@ -19,7 +19,12 @@ export async function deleteImage(url: string) {
     return;
   }
   if (url.startsWith("/uploads/")) {
-    const file = path.join(process.cwd(), "public", ...url.split("/").filter(Boolean));
+    // Resolve against the uploads root and refuse anything that escapes it (e.g. a "../" segment) —
+    // url is only ever expected to be exactly what saveImage() itself produced, but this is cheap
+    // insurance against a future caller passing an unsanitized value through.
+    const root = path.join(process.cwd(), "public", "uploads");
+    const file = path.resolve(root, "." + url.slice("/uploads".length));
+    if (file === root || !file.startsWith(root + path.sep)) return;
     await fs.rm(file, { force: true });
   }
 }

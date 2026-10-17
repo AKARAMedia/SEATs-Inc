@@ -11,7 +11,7 @@ import { deleteImage } from "@/lib/storage";
 
 /** For the image picker: every image, newest uploads first. */
 export async function pickerMediaAction(): Promise<MediaItem[]> {
-  await requireAdmin("translate");
+  await requireAdmin("content");
   return listMedia();
 }
 

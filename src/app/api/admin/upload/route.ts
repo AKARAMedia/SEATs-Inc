@@ -17,7 +17,7 @@ async function dimensions(file: File, form: FormData) {
 
 export async function POST(req: Request) {
   const session = await getSession();
-  if (!session || !can(session.role, "translate")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session || !can(session.role, "content")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const form = await req.formData();
   const file = form.get("file");
   if (!(file instanceof File)) return NextResponse.json({ error: "No file" }, { status: 400 });
