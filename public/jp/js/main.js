@@ -132,9 +132,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  // ----- Contact form (Formspree) -----
-  // Formspreeのフォームを作成し、そのIDに置き換えてください: https://formspree.io/forms
-  var FORMSPREE_ENDPOINT = 'https://formspree.io/f/xnjepvdl';
+  // ----- Contact form -----
+  // Posts to this site's own API, so submissions land in admin -> Messages like every other
+  // contact channel, instead of a third-party dashboard (was Formspree).
+  var LEAD_ENDPOINT = '/api/jp-lead/';
 
   var form = document.getElementById('contact-form');
 
@@ -157,13 +158,12 @@ document.addEventListener('DOMContentLoaded', function () {
     submitBtn.disabled = true;
     submitBtn.textContent = '送信中...';
 
-    fetch(FORMSPREE_ENDPOINT, {
+    fetch(LEAD_ENDPOINT, {
       method: 'POST',
-      headers: { 'Accept': 'application/json' },
       body: new FormData(form)
     })
       .then(function (res) {
-        if (!res.ok) throw new Error('Formspree error: ' + res.status);
+        if (!res.ok) throw new Error('Submission error: ' + res.status);
         // A dedicated URL (not an inline swap) so Google Ads/GA conversion tracking can count
         // completed submissions by pageview on this specific Thank You page.
         window.location.href = '/jp/thanks/';
