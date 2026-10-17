@@ -1,9 +1,11 @@
 import "server-only";
+import { redirect } from "next/navigation";
 import { and, asc, count, desc, eq, gt, ilike, isNotNull, isNull, lte, ne, or, sql, type SQL } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { adminSessions, adminUsers, categories, contactMessages, posts, siteSettings } from "@/db/schema";
 import { parseGroup, SETTINGS_GROUPS, type Settings } from "./settings-schema";
 import { requireAdmin } from "./auth";
+import { can } from "./permissions";
 
 // Uncached reads for the admin panel (always fresh, always auth-checked)
 
@@ -199,9 +201,12 @@ export async function adminGetUser(id: number) {
   return row ?? null;
 }
 
-/** Signed-in browsers of a user, newest first. */
+/** Signed-in browsers of a user, newest first. Callable for your own id (account/page.tsx) by any
+ * role, or for anyone's id if you hold the "users" permission (users/[id]/page.tsx) — mirroring the
+ * "users" check its only other caller, adminGetUser, already enforces before this ever runs there. */
 export async function adminUserSessions(userId: number) {
-  await requireAdmin();
+  const session = await requireAdmin();
+  if (session.id !== userId && !can(session.role, "users")) redirect("/admin/?flash=forbidden");
   await ready();
   return db
     .select({ id: adminSessions.id, userAgent: adminSessions.userAgent, ip: adminSessions.ip, createdAt: adminSessions.createdAt, lastSeenAt: adminSessions.lastSeenAt })

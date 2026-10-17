@@ -9,6 +9,10 @@ export type AlignedRow = SourceSeg & { target: string; state: RowState; oldSrc?:
 function lcsPairs(a: string[], b: string[]) {
   const n = a.length;
   const m = b.length;
+  // Same O(n·m) table as wordDiff (lib/translation/text.ts) — mirror its bailout so a pathologically
+  // large document can't allocate an oversized table here either. No matches just means alignRows
+  // treats every paragraph in the group as changed, instead of skipped alignment.
+  if (n * m > 5_000_000) return [];
   const dp = Array.from({ length: n + 1 }, () => new Uint16Array(m + 1));
   for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
   const pairs: [number, number][] = [];
