@@ -45,7 +45,10 @@ export async function notifyContact(message: ContactNotification): Promise<void>
       sendEmail({
         to: message.email,
         subject: contact.autoReplySubject[lang],
-        text: contact.autoReplyBody[lang].replaceAll("{name}", message.name),
+        // A replacer function (not a plain string) is required here: when the replacement is a
+        // string, replaceAll treats $&/$`/$'/$$ as special patterns even for a plain-string search —
+        // a submitted name containing one would otherwise corrupt the auto-reply body.
+        text: contact.autoReplyBody[lang].replaceAll("{name}", () => message.name),
         replyTo: contact.notifyEmails[0],
       }),
     );
