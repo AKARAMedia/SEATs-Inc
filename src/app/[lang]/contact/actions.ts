@@ -1,14 +1,15 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { z } from "zod";
 import { db, ready } from "@/db";
 import { contactMessages } from "@/db/schema";
 import { notifyContact } from "@/lib/contact-notify";
-import { isLang, type Lang } from "@/lib/i18n";
+import { href, isLang, type Lang } from "@/lib/i18n";
 import { CONTACT } from "@/content/pages/contact";
 
 export type ContactState = {
-  status: "idle" | "success" | "error" | "invalid";
+  status: "idle" | "error" | "invalid";
   message?: string;
   fieldErrors?: Partial<Record<"name" | "email" | "message", string>>;
 };
@@ -26,7 +27,7 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   const f = CONTACT.form;
 
   // Honeypot: real users never see or fill this field. Pretend success so bots move on.
-  if (formData.get("botcheck")) return { status: "success", message: f.success[lang] };
+  if (formData.get("botcheck")) redirect(href(lang, "/contact/thank-you/"));
 
   const parsed = schema.safeParse({
     name: formData.get("name") ?? "",
@@ -54,5 +55,5 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
     return { status: "error", message: f.error[lang] };
   }
   await notifyContact({ name, email, company, message, lang });
-  return { status: "success", message: f.success[lang] };
+  redirect(href(lang, "/contact/thank-you/"));
 }

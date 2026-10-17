@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useActionState, useRef } from "react";
 import { submitContact, type ContactState } from "@/app/[lang]/contact/actions";
 import { CONTACT } from "@/content/pages/contact";
 import type { Lang } from "@/lib/i18n";
@@ -12,10 +12,6 @@ export default function ContactForm({ lang }: { lang: Lang }) {
   const f = CONTACT.form;
   const [state, action, pending] = useActionState<ContactState, FormData>(submitContact, { status: "idle" });
   const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    if (state.status === "success") formRef.current?.reset();
-  }, [state]);
 
   const err = (k: "name" | "email" | "message") =>
     state.fieldErrors?.[k] ? (
@@ -70,12 +66,7 @@ export default function ContactForm({ lang }: { lang: Lang }) {
           {pending ? f.sending[lang] : f.submit[lang]}
         </button>
         {state.message && (
-          <p
-            role="status"
-            className={`mt-5 rounded-[9px] border px-4 py-3 text-[16px] ${
-              state.status === "success" ? "border-[#46b450] text-[#2f7d32]" : "border-[#dc3232] text-[#dc3232]"
-            }`}
-          >
+          <p role="status" className="mt-5 rounded-[9px] border border-[#dc3232] px-4 py-3 text-[16px] text-[#dc3232]">
             {state.message}
           </p>
         )}
