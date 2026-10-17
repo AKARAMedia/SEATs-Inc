@@ -164,8 +164,9 @@ document.addEventListener('DOMContentLoaded', function () {
     })
       .then(function (res) {
         if (!res.ok) throw new Error('Formspree error: ' + res.status);
-        form.innerHTML =
-          '<p class="form-success">送信ありがとうございました！<br>担当者よりご連絡いたします。</p>';
+        // A dedicated URL (not an inline swap) so Google Ads/GA conversion tracking can count
+        // completed submissions by pageview on this specific Thank You page.
+        window.location.href = '/jp/thanks/';
       })
       .catch(function () {
         submitBtn.disabled = false;

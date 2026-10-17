@@ -43,6 +43,11 @@ export async function proxy(req: NextRequest) {
     url.pathname = "/jp/index.html";
     return NextResponse.rewrite(url);
   }
+  if (pathname === "/jp/thanks" || pathname === "/jp/thanks/") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/jp/thanks/index.html";
+    return NextResponse.rewrite(url);
+  }
 
   if (pathname === "/ja" || pathname.startsWith("/ja/")) return NextResponse.next();
 
