@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Icon } from "@/components/admin/ui/icons";
 import { requireAdmin } from "@/lib/auth";
 import { listCareerSiteJobs } from "@/lib/career-site";
+import { importCareerJobsSeedAction } from "@/app/admin/career-job-actions";
 import CareerJobOpenToggle from "@/components/admin/CareerJobOpenToggle";
 
 export const metadata = { title: "Career Jobs" };
@@ -20,6 +21,11 @@ export default async function CareerJobsPage() {
         <a href="https://seatsinc-career.com/jobs/" target="_blank" rel="noopener noreferrer" className="admin-btn-secondary">
           View Jobs page ↗
         </a>
+        <form action={importCareerJobsSeedAction}>
+          <button className="admin-btn-secondary" type="submit">
+            Import from seed
+          </button>
+        </form>
         <Link href="/admin/career-jobs/new/" className="admin-btn">
           <Icon name="plus" className="size-4" /> New job
         </Link>
@@ -44,9 +50,14 @@ export default async function CareerJobsPage() {
       ) : (
         <div className="admin-card p-10 text-center text-[#888]">
           No career-site jobs yet.
-          <div className="mt-4">
-            <Link href="/admin/career-jobs/new/" className="admin-btn">
-              Create the first job
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <form action={importCareerJobsSeedAction}>
+              <button className="admin-btn" type="submit">
+                Import the 41 postings from seed
+              </button>
+            </form>
+            <Link href="/admin/career-jobs/new/" className="admin-btn-secondary">
+              Or create one manually
             </Link>
           </div>
         </div>

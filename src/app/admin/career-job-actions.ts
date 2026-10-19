@@ -84,3 +84,41 @@ export async function deleteCareerJobAction(fd: FormData) {
   if (row) await logActivity(who, "job.delete", { type: "job", id, summary: `${row.title} (career site)` });
   redirect("/admin/career-jobs/?flash=jobDeleted");
 }
+
+// One-time: populate the 41 seatsinc-career.com postings on a fresh environment
+// (e.g. production, which has its own DATABASE_URL separate from local dev).
+// Safe to click more than once — upserts on slug, so re-running just re-syncs.
+export async function importCareerJobsSeedAction() {
+  const who = await requireAdmin("careers");
+  await ready();
+  const seed = (await import("@/data/career-jobs-seed.json")).default as {
+    slug: string;
+    titleEn: string;
+    type: string;
+    salaryRange: string;
+    workDays: string;
+    location: string;
+    descriptionEn: string;
+    sortOrder: number;
+    postedAt: string;
+    wpId: number | null;
+  }[];
+  for (const j of seed) {
+    const values = {
+      site: "career" as const,
+      slug: j.slug,
+      titleEn: j.titleEn,
+      type: j.type,
+      salaryRange: j.salaryRange,
+      workDays: j.workDays,
+      location: j.location,
+      descriptionEn: j.descriptionEn,
+      sortOrder: j.sortOrder,
+      createdAt: new Date(j.postedAt),
+      wpId: j.wpId,
+    };
+    await db.insert(jobs).values(values).onConflictDoUpdate({ target: jobs.slug, set: { ...values, updatedAt: new Date() } });
+  }
+  await logActivity(who, "job.create", { type: "job", summary: `Imported ${seed.length} career-site jobs from seed` });
+  redirect("/admin/career-jobs/?flash=jobCreated");
+}
