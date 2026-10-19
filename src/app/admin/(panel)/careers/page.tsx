@@ -63,6 +63,7 @@ async function JobsTab() {
       fresh: sql<number>`(select count(*)::int from ${jobApplications} where ${jobApplications.jobId} = ${jobs.id} and ${jobApplications.status} = 'new')`,
     })
     .from(jobs)
+    .where(eq(jobs.site, "main"))
     .orderBy(desc(jobs.open), desc(jobs.createdAt));
   if (!rows.length)
     return (
@@ -120,7 +121,7 @@ async function ApplicationsTab({ status, job }: { status: string; job: number })
       .from(jobApplications)
       .where(job ? eq(jobApplications.jobId, job) : undefined)
       .groupBy(jobApplications.status),
-    db.select({ id: jobs.id, title: jobs.titleEn }).from(jobs).orderBy(desc(jobs.createdAt)),
+    db.select({ id: jobs.id, title: jobs.titleEn }).from(jobs).where(eq(jobs.site, "main")).orderBy(desc(jobs.createdAt)),
   ]);
   const n = (s: string) => counts.find((c) => c.status === s)?.n ?? 0;
   const all = counts.reduce((a, c) => a + c.n, 0);

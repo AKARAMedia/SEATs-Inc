@@ -255,14 +255,24 @@ export const pages = pgTable("pages", {
 
 export const JOB_TYPES = ["Full-time", "Part-time", "Contract", "Internship"] as const;
 
+// "main" = seats-inc.com's own /option-career/ page (in-house application form).
+// "career" = the seatsinc-career.com microsite (41 postings, applicants go to Telegram HR).
+// Both are rows in this one table so there's a single admin panel for all job postings;
+// each site's queries filter to its own `site` value so neither list bleeds into the other.
+export const JOB_SITES = ["main", "career"] as const;
+export type JobSite = (typeof JOB_SITES)[number];
+
 export const jobs = pgTable("jobs", {
   id: serial("id").primaryKey(),
   slug: text("slug").notNull().unique(),
+  site: text("site").$type<JobSite>().notNull().default("main"),
   titleEn: text("title_en").notNull(),
   titleJa: text("title_ja").notNull().default(""),
   department: text("department").notNull().default(""),
   location: text("location").notNull().default("Phnom Penh"),
   type: text("type").notNull().default("Full-time"),
+  salaryRange: text("salary_range").notNull().default(""),
+  workDays: text("work_days").notNull().default(""),
   // Sanitized HTML
   descriptionEn: text("description_en").notNull().default(""),
   descriptionJa: text("description_ja").notNull().default(""),
@@ -271,6 +281,8 @@ export const jobs = pgTable("jobs", {
   sortOrder: integer("sort_order").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  // Original WordPress post id (seatsinc-career.com import), kept for import idempotency
+  wpId: integer("wp_id"),
 });
 
 export const APPLICATION_STATUSES = ["new", "reviewing", "interview", "hired", "rejected"] as const;

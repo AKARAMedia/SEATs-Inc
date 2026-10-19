@@ -11,6 +11,7 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx scripts/migrate.ts",
     "db:import-wp": "tsx scripts/import-wp.ts",
+    "db:import-career-jobs": "tsx scripts/import-career-jobs.ts",
     "export:live": "python -I scripts/export-live-site.py",
     "qa:screens": "node scripts/screenshot.mjs"
   },

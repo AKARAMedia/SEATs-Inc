@@ -25,7 +25,15 @@ function nest(fd: FormData) {
   return out;
 }
 
-const TAB_NAMES: Record<SettingsGroup, string> = { company: "Company", social: "Social links", seo: "SEO", contact: "Contact form", home: "Home page", maintenance: "Maintenance" };
+const TAB_NAMES: Record<SettingsGroup, string> = {
+  company: "Company",
+  social: "Social links",
+  seo: "SEO",
+  contact: "Contact form",
+  home: "Home page",
+  maintenance: "Maintenance",
+  careerHrContact: "Career Site HR Contact",
+};
 
 /** Settings groups that hold Japanese text: editing them here resets their Translation Center draft. */
 const TRANSLATED: SettingsGroup[] = ["company", "seo", "contact", "home", "maintenance"];

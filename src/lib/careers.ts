@@ -22,8 +22,8 @@ function localize(j: typeof jobs.$inferSelect, lang: Lang): PublicJob {
   };
 }
 
-/** Open and not past its closing date. */
-const accepting = () => and(eq(jobs.open, true), or(isNull(jobs.closesAt), gt(jobs.closesAt, new Date())));
+/** Open, not past its closing date, and belongs to this site (not the seatsinc-career.com jobs). */
+const accepting = () => and(eq(jobs.site, "main"), eq(jobs.open, true), or(isNull(jobs.closesAt), gt(jobs.closesAt, new Date())));
 
 /** Cache until the next closing date (if soon), so closed jobs disappear on time. */
 async function careersLife() {

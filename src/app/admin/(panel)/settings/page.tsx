@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CompanyForm, ContactSettingsForm, MaintenanceForm, SeoForm, SocialForm } from "@/components/admin/SettingsForms";
+import { CareerHrContactForm, CompanyForm, ContactSettingsForm, MaintenanceForm, SeoForm, SocialForm } from "@/components/admin/SettingsForms";
 import { adminSettings, fmtDateTime } from "@/lib/admin-data";
 import { emailConfigured } from "@/lib/email";
 import type { SettingsGroup } from "@/lib/settings-schema";
@@ -16,6 +16,7 @@ const TABS: { key: SettingsGroup; label: string; description: string }[] = [
   { key: "seo", label: "SEO", description: "Google and link-sharing previews" },
   { key: "contact", label: "Contact form", description: "Email notifications and auto-reply" },
   { key: "maintenance", label: "Maintenance", description: "Temporarily hide the website" },
+  { key: "careerHrContact", label: "Career Site HR Contact", description: "Shown on every seatsinc-career.com job page" },
 ];
 
 export default async function SettingsPage({ searchParams }: PageProps<"/admin/settings">) {
@@ -57,6 +58,7 @@ export default async function SettingsPage({ searchParams }: PageProps<"/admin/s
       {tab.key === "seo" && <SeoForm key={String(saved)} value={values.seo} />}
       {tab.key === "contact" && <ContactSettingsForm key={String(saved)} value={values.contact} emailReady={emailConfigured()} />}
       {tab.key === "maintenance" && <MaintenanceForm key={String(saved)} value={values.maintenance} />}
+      {tab.key === "careerHrContact" && <CareerHrContactForm key={String(saved)} value={values.careerHrContact} />}
 
       <details className="admin-card group max-w-[860px] p-5">
         <summary className="flex cursor-pointer list-none items-center gap-2 text-[14px] font-semibold">
