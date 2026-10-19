@@ -2,6 +2,9 @@ import "server-only";
 import fs from "node:fs/promises";
 import path from "node:path";
 import crypto from "node:crypto";
+import { eq } from "drizzle-orm";
+import { db, ready } from "@/db";
+import { uploadFiles } from "@/db/schema";
 
 const ALLOWED = new Map([
   ["image/jpeg", "jpg"],
@@ -11,11 +14,38 @@ const ALLOWED = new Map([
 ]);
 export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024; // Vercel Functions accept request bodies up to 4.5 MB
 
-/** Remove an uploaded image (Vercel Blob or public/uploads). Site images in public/media are never touched. */
+// Upload keys look like news/2026/10/<uuid>.jpg and are served at /uploads/<key>
+const UPLOAD_KEY = /^news\/\d{4}\/\d{2}\/[0-9a-f-]{36}\.(?:jpg|png|webp|gif)$/;
+
+/** Cloudflare Workers have no filesystem: uploads are stored in the database there instead. */
+const uploadsInDb = () => globalThis.navigator?.userAgent === "Cloudflare-Workers";
+
+/** An image stored by saveImage() in the database, or null. */
+export async function loadUpload(key: string) {
+  await ready();
+  const [row] = await db.select({ contentType: uploadFiles.contentType, data: uploadFiles.data }).from(uploadFiles).where(eq(uploadFiles.key, key));
+  return row ?? null;
+}
+
+/** The storage key for an /uploads/... URL, or null if it isn't one saveImage() could have produced. */
+export function uploadKey(url: string): string | null {
+  const key = url.startsWith("/uploads/") ? url.slice("/uploads/".length) : null;
+  return key && UPLOAD_KEY.test(key) ? key : null;
+}
+
+/** Remove an uploaded image (Vercel Blob, the database or public/uploads). Site images in public/media are never touched. */
 export async function deleteImage(url: string) {
   if (/^https:\/\/[^/]+\.public\.blob\.vercel-storage\.com\//.test(url)) {
     const { del } = await import("@vercel/blob");
     await del(url);
+    return;
+  }
+  if (uploadsInDb()) {
+    const key = uploadKey(url);
+    if (key) {
+      await ready();
+      await db.delete(uploadFiles).where(eq(uploadFiles.key, key));
+    }
     return;
   }
   if (url.startsWith("/uploads/")) {
@@ -31,7 +61,7 @@ export async function deleteImage(url: string) {
 
 /**
  * Store an uploaded image and return its public URL.
- * Production: Vercel Blob (requires BLOB_READ_WRITE_TOKEN). Local dev: public/uploads/.
+ * Vercel: Vercel Blob (requires BLOB_READ_WRITE_TOKEN). Cloudflare Workers: the database. Local dev: public/uploads/.
  */
 export async function saveImage(file: File): Promise<string> {
   const ext = ALLOWED.get(file.type);
@@ -45,6 +75,11 @@ export async function saveImage(file: File): Promise<string> {
     const { put } = await import("@vercel/blob");
     const blob = await put(key, file, { access: "public", contentType: file.type });
     return blob.url;
+  }
+  if (uploadsInDb()) {
+    await ready();
+    await db.insert(uploadFiles).values({ key, contentType: file.type, data: Buffer.from(await file.arrayBuffer()) });
+    return `/uploads/${key}`;
   }
   if (process.env.VERCEL) {
     throw new Error("Image storage is not configured (connect Vercel Blob to this project).");

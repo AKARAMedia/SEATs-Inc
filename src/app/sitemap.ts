@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { listNews } from "@/lib/news";
 import { listOpenJobs } from "@/lib/careers";
 
+// Lists live posts and jobs from the database.
+export const dynamic = "force-dynamic";
+
 const STATIC_PATHS = [
   "/", "/overview/", "/history/", "/philosophy-our-value/", "/ceo-message/",
   "/loka-japanese-foods-beverage/", "/nova-marketing/", "/pisa-food-retail/",

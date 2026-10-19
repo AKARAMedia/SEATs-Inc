@@ -1,0 +1,38 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "seats-inc",
+  "compatibility_date": "2026-10-15",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  // Keeps the Worker bundle smaller (size limits are on the compressed upload)
+  "minify": true,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Self-reference service binding, the service name must match the worker name
+      // see https://opennext.js.org/cloudflare/caching
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "seats-inc"
+    }
+  ],
+  "images": {
+    // next/image optimization, see https://opennext.js.org/cloudflare/howtos/image
+    "binding": "IMAGES"
+  },
+  // Keep the *.workers.dev address for testing alongside the real domain
+  "workers_dev": true,
+  // Custom Domains: Cloudflare creates the DNS records and certificates for these hostnames
+  "routes": [
+    { "pattern": "seats-inc.com", "custom_domain": true },
+    { "pattern": "www.seats-inc.com", "custom_domain": true }
+  ],
+  "vars": {
+    "SITE_URL": "https://seats-inc.com"
+  },
+  // Secrets (wrangler secret put <NAME>): DATABASE_URL, SESSION_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD,
+  // and optionally RESEND_API_KEY, EMAIL_FROM, WEB3FORMS_ACCESS_KEY, CONTACT_WEBHOOK_URL
+  "observability": { "enabled": true }
+}

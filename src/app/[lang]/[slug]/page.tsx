@@ -2,19 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { isLang, LANGS } from "@/lib/i18n";
-import { allNewsSlugs, getNews } from "@/lib/news";
+import { getNews } from "@/lib/news";
 import NewsArticle from "@/components/news/NewsArticle";
 
 // News/Event post detail. Posts live at the site root (/<slug>/), same as WordPress permalinks.
-
-export async function generateStaticParams() {
-  // Local dev with embedded PGlite: Next.js runs this in a separate worker process, and PGlite can't be
-  // opened by two processes. Dev renders posts on demand anyway, so skip the DB here.
-  if (process.env.NODE_ENV === "development" && !process.env.DATABASE_URL) return [{ slug: "__placeholder__" }];
-  const slugs = await allNewsSlugs();
-  // Must return at least one entry for the route to prerender
-  return slugs.length ? slugs.map((s) => ({ slug: s.slug })) : [{ slug: "__placeholder__" }];
-}
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params;

@@ -5,10 +5,13 @@ import LEGACY_SLUGS from "@/content/legacy-redirects.json";
 
 const legacy: Record<string, string> = LEGACY_SLUGS;
 
+// Deliberately middleware.ts (Edge runtime) rather than Next 16's proxy.ts (Node.js runtime only):
+// the Node bundle adds ~2 MB to the Cloudflare Worker, which must stay under the size limit.
+
 // URL scheme mirrors the old WordPress/TranslatePress site:
 //   /overview/      -> English (internally /en/overview)
 //   /ja/overview/   -> Japanese
-export async function proxy(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (pathname.startsWith("/admin")) {

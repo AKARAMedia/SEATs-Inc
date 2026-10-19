@@ -1,6 +1,6 @@
 import "server-only";
 import crypto from "node:crypto";
-import * as cheerio from "cheerio";
+import { loadFragment, type Cheerio, type CheerioAPI } from "@/lib/html";
 import type { AnyNode } from "domhandler";
 import { htmlText, normalizeForMatch } from "./text";
 
@@ -9,8 +9,8 @@ import { htmlText, normalizeForMatch } from "./text";
 const LEAF = "p,h1,h2,h3,h4,h5,h6,li,blockquote,figcaption,td,th";
 
 /** Text blocks in document order: the innermost block elements that contain visible text. */
-function leaves($: cheerio.CheerioAPI) {
-  const out: cheerio.Cheerio<AnyNode>[] = [];
+function leaves($: CheerioAPI) {
+  const out: Cheerio<AnyNode>[] = [];
   $(LEAF).each((_, el) => {
     const node = $(el);
     if (node.find(LEAF).length) return;
@@ -23,7 +23,7 @@ function leaves($: cheerio.CheerioAPI) {
 /** Inner HTML of each text block. */
 export function segmentHtml(html: string): string[] {
   if (!html.trim()) return [];
-  const $ = cheerio.load(html, null, false);
+  const $ = loadFragment(html);
   return leaves($).map((n) => (n.html() ?? "").trim());
 }
 
@@ -32,7 +32,7 @@ export function segmentHtml(html: string): string[] {
  * Images, embeds and layout come from the English, so they never need translating.
  */
 export function assembleHtml(enHtml: string, targets: string[]): string {
-  const $ = cheerio.load(enHtml, null, false);
+  const $ = loadFragment(enHtml);
   leaves($).forEach((node, i) => {
     if (targets[i] !== undefined) node.html(targets[i]);
   });

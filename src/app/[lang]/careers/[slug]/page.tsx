@@ -8,11 +8,6 @@ import { href, isLang } from "@/lib/i18n";
 
 // A job post with its application form. Jobs are managed in admin → Careers.
 
-export function generateStaticParams() {
-  // Rendered on demand; one placeholder lets the route build (as for news posts)
-  return [{ slug: "__placeholder__" }];
-}
-
 export async function generateMetadata({ params }: PageProps<"/[lang]/careers/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params;
   if (!isLang(lang)) return {};

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Static assets (e.g. the standalone /jp landing page) aren't part of the Next.js app.
+    "public/**",
   ]),
 ]);
 
