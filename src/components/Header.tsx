@@ -132,7 +132,7 @@ export default function Header({ lang, socials, mapUrl }: { lang: Lang; socials:
         className={`fixed inset-x-0 top-0 z-40 bg-white transition-shadow ${stuck ? "shadow-[0_1px_2px_rgba(0,0,0,0.08)]" : ""}`}
       >
         <div
-          className="mx-auto flex h-[70px] max-w-[1440px] items-center px-[15px] min-[1366px]:px-[51px]"
+          className="flex h-[70px] items-center px-[15px] min-[1366px]:px-[51px]"
         >
           <Link href={localHref(lang, "/")} aria-label="Site logo" className="mr-auto shrink-0 desktop:mr-0">
             <Image
