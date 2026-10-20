@@ -37,11 +37,9 @@ export const SITEMAP = {
 
 export const BRAND_TITLE = "Our Brand";
 
-const FACEBOOK_EMBED_URL = (width: number, height: number) =>
-  `https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fseatsinccambodia&tabs=timeline%2Cevents%2Cmessages&width=${width}&height=${height}&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true`;
-
-/** Facebook page plugin: 500px (plugin maximum) on PC/tablet, unchanged 340px on mobile */
-export const FACEBOOK_EMBED = {
-  desktop: { src: FACEBOOK_EMBED_URL(500, 700), width: 500, height: 700 },
-  mobile: { src: FACEBOOK_EMBED_URL(340, 700), width: 346, height: 700 },
-};
+// Note: Facebook's Page Plugin timeline only renders posts for visitors who are
+// logged into Facebook in their own browser — it shows blank (header only) for
+// everyone else, confirmed by loading the plugin URL directly on facebook.com
+// outside any iframe. Kept anyway per request; the "Open Facebook Page" link
+// below the embed is the fallback for visitors who see a blank box.
+export const FACEBOOK_PAGE_URL = "https://www.facebook.com/seatsinccambodia";
