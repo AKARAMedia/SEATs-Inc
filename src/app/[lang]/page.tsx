@@ -6,7 +6,7 @@ import FancyText from "@/components/sections/FancyText";
 import HeroSlider from "@/components/sections/HeroSlider";
 import HomeSitemap from "@/components/sections/HomeSitemap";
 import SmartLink from "@/components/SmartLink";
-import { BRAND_TITLE, FACEBOOK_PAGE_URL } from "@/content/pages/home";
+import { BRAND_TITLE, FACEBOOK_EMBED, FACEBOOK_PAGE_URL, facebookEmbedUrl } from "@/content/pages/home";
 import { isLang } from "@/lib/i18n";
 import { getBrands, getHomeBanners, getHomeSlides } from "@/lib/home";
 import { getSettings } from "@/lib/settings";
@@ -111,21 +111,23 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <div className="mt-[10px] flex flex-col items-center">
           <h3 className="mb-4 text-[20px] font-bold text-heading">S.E.A.T.S Inc. Facebook</h3>
           <div className="w-full max-w-[500px] overflow-hidden rounded-[5px] shadow-[0_0_3px_rgba(0,0,0,0.15)]">
-            <iframe
-              title={lang === "ja" ? "S.E.A.T.S Inc. Facebookページのタイムライン" : "S.E.A.T.S Inc. Facebook timeline"}
-              data-page-url={FACEBOOK_PAGE_URL}
-              src={`https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(FACEBOOK_PAGE_URL)}&tabs=timeline&width=500&height=620&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&locale=${
-                lang === "ja" ? "ja_JP" : "en_US"
-              }`}
-              width={500}
-              height={620}
-              loading="lazy"
-              scrolling="no"
-              frameBorder="0"
-              allowFullScreen
-              allow="encrypted-media"
-              className="w-full"
-            />
+            {/* Only the visible variant loads: lazy iframes inside display:none are never fetched */}
+            {(["desktop", "mobile"] as const).map((v) => (
+              <iframe
+                key={v}
+                title={lang === "ja" ? "S.E.A.T.S Inc. Facebookページのタイムライン" : "S.E.A.T.S Inc. Facebook timeline"}
+                data-page-url={FACEBOOK_PAGE_URL}
+                src={facebookEmbedUrl(v, lang === "ja" ? "ja_JP" : "en_US")}
+                width={FACEBOOK_EMBED[v].width}
+                height={FACEBOOK_EMBED[v].height}
+                loading="lazy"
+                scrolling="no"
+                frameBorder="0"
+                allowFullScreen
+                allow="encrypted-media"
+                className={`w-full ${v === "desktop" ? "hidden tablet:block" : "tablet:hidden"}`}
+              />
+            ))}
           </div>
           <p className="mt-3">
             <a href={FACEBOOK_PAGE_URL} target="_blank" rel="noopener noreferrer" className="text-[14px] font-semibold text-primary hover:underline">

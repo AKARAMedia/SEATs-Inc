@@ -43,3 +43,14 @@ export const BRAND_TITLE = "Our Brand";
 // outside any iframe. Kept anyway per request; the "Open Facebook Page" link
 // below the embed is the fallback for visitors who see a blank box.
 export const FACEBOOK_PAGE_URL = "https://www.facebook.com/seatsinccambodia";
+
+const facebookEmbedSrc = (width: number, locale: "en_US" | "ja_JP") =>
+  `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(FACEBOOK_PAGE_URL)}&tabs=timeline&width=${width}&height=620&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&locale=${locale}`;
+
+/** Facebook page plugin: 500px (plugin maximum) on desktop/tablet, 360px on mobile */
+export const FACEBOOK_EMBED = {
+  desktop: { width: 500, height: 620 },
+  mobile: { width: 360, height: 620 },
+};
+export const facebookEmbedUrl = (variant: "desktop" | "mobile", locale: "en_US" | "ja_JP") =>
+  facebookEmbedSrc(FACEBOOK_EMBED[variant].width, locale);
