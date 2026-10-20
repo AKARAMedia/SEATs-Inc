@@ -111,7 +111,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
         <div className="mt-[10px] flex flex-col items-center">
           <h3 className="mb-4 text-[20px] font-bold text-heading">S.E.A.T.S Inc. Facebook</h3>
-          <div className="w-full max-w-[500px] overflow-hidden rounded-[5px] shadow-[0_0_3px_rgba(0,0,0,0.15)]">
+          <div className="h-[620px] w-full max-w-[500px] overflow-y-auto rounded-[5px] shadow-[0_0_3px_rgba(0,0,0,0.15)]">
             <div className="sk-ww-facebook-page-posts" data-embed-id={SOCIABLEKIT_FACEBOOK_FEED_EMBED_ID} />
             <Script src="https://widgets.sociablekit.com/facebook-page-posts/widget.js" strategy="lazyOnload" />
           </div>
