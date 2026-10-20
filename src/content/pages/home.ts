@@ -37,20 +37,9 @@ export const SITEMAP = {
 
 export const BRAND_TITLE = "Our Brand";
 
-// Note: Facebook's Page Plugin timeline only renders posts for visitors who are
-// logged into Facebook in their own browser — it shows blank (header only) for
-// everyone else, confirmed by loading the plugin URL directly on facebook.com
-// outside any iframe. Kept anyway per request; the "Open Facebook Page" link
-// below the embed is the fallback for visitors who see a blank box.
 export const FACEBOOK_PAGE_URL = "https://www.facebook.com/seatsinccambodia";
 
-const facebookEmbedSrc = (width: number, locale: "en_US" | "ja_JP") =>
-  `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(FACEBOOK_PAGE_URL)}&tabs=timeline&width=${width}&height=620&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&locale=${locale}`;
-
-/** Facebook page plugin: 500px (plugin maximum) on desktop/tablet, 360px on mobile */
-export const FACEBOOK_EMBED = {
-  desktop: { width: 500, height: 620 },
-  mobile: { width: 360, height: 620 },
-};
-export const facebookEmbedUrl = (variant: "desktop" | "mobile", locale: "en_US" | "ja_JP") =>
-  facebookEmbedSrc(FACEBOOK_EMBED[variant].width, locale);
+// SociableKIT "Facebook Page Feed" widget — fetches posts server-side on their end,
+// so (unlike Facebook's own Page Plugin) it renders for every visitor regardless of
+// whether they're logged into Facebook. Connected to the SEATS Inc Page via their dashboard.
+export const SOCIABLEKIT_FACEBOOK_FEED_EMBED_ID = "25723456";
