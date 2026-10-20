@@ -121,7 +121,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                 width={FACEBOOK_EMBED[v].width}
                 height={FACEBOOK_EMBED[v].height}
                 loading="lazy"
-                scrolling="no"
+                scrolling="yes"
                 frameBorder="0"
                 allowFullScreen
                 allow="encrypted-media"
