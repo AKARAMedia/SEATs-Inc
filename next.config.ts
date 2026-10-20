@@ -12,8 +12,11 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   ...(!cloudflare && { serverExternalPackages: ["@electric-sql/pglite"] }),
   experimental: {
-    // Job applications upload a CV (max 4 MB) through a server action; the default limit is 1 MB
-    serverActions: { bodySizeLimit: "4.5mb" },
+    // Job applications upload a CV (max 4 MB) through a server action; the default limit is 1 MB.
+    // allowedOrigins: without this, Server Actions reject requests whose Origin header doesn't match
+    // what Next.js expects — seen as the contact form's submit silently doing nothing on this domain
+    // (confirmed via Workers logs: zero POST requests to /contact/ ever reached the Worker).
+    serverActions: { bodySizeLimit: "4.5mb", allowedOrigins: ["seats-inc.com", "www.seats-inc.com"] },
     // Local builds use the embedded PGlite DB, which only one process may open at a time
     ...(!process.env.DATABASE_URL && { cpus: 1 }),
   },
