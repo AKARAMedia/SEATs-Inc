@@ -193,8 +193,6 @@ export default function Header({ lang, socials, mapUrl }: { lang: Lang; socials:
             </a>
             {/* Hidden at 1025–1279px so the menu stays on one row */}
             <Socials links={socials} className="hidden min-[1280px]:flex min-[1366px]:pl-[20px]" />
-            {/* Mobile shows socials in two rows next to the logo */}
-            <Socials links={socials} className="flex max-w-[80px] flex-wrap justify-center desktop:hidden" />
             <Suspense fallback={<LangSwitcherFallback lang={lang} />}>
               <LangSwitcher lang={lang} />
             </Suspense>
@@ -237,6 +235,7 @@ export default function Header({ lang, socials, mapUrl }: { lang: Lang; socials:
             <MobileItem key={item.label.en} item={item} lang={lang} />
           ))}
         </ul>
+        <Socials links={socials} className="justify-center gap-2 border-t border-black/10 px-5 py-5" />
       </aside>
     </>
   );
