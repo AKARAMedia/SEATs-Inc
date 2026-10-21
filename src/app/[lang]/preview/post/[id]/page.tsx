@@ -16,11 +16,6 @@ import { draftPostJa } from "@/lib/translation/center";
 
 export const metadata: Metadata = { title: "Preview", robots: { index: false, follow: false } };
 
-// Previews are always rendered per request; one placeholder lets the route build like /[slug]
-export function generateStaticParams() {
-  return [{ id: "0" }];
-}
-
 async function Preview({ params, searchParams }: PageProps<"/[lang]/preview/post/[id]">) {
   await connection(); // always rendered per request (shows live draft state)
   const [{ lang, id }, sp] = await Promise.all([params, searchParams]);

@@ -1,5 +1,5 @@
 import "server-only";
-import * as cheerio from "cheerio";
+import { loadFragment } from "./html";
 import { originalImage } from "./media";
 
 const PER_ROW = 2;
@@ -12,7 +12,7 @@ const PER_ROW = 2;
  */
 export function prepareArticleHtml(html: string): string {
   if (!html.includes("<img")) return html;
-  const $ = cheerio.load(html, null, false);
+  const $ = loadFragment(html);
 
   $("img").each((_, el) => {
     const src = $(el).attr("src");

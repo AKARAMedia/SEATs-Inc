@@ -13,6 +13,9 @@ const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans", d
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-roboto", display: "swap" });
 const robotoSlab = Roboto_Slab({ subsets: ["latin"], weight: ["400"], variable: "--font-roboto-slab", display: "swap" });
 
+// Every page reads live content from the database, so nothing is prerendered at build time.
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
   const { lang } = await params;
   const { seo, maintenance } = await getSettings();

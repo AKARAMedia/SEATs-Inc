@@ -46,3 +46,8 @@ next-env.d.ts
 /qa
 /public/uploads
 !.env.example
+
+# Cloudflare (OpenNext)
+/.open-next/
+/.wrangler/
+.dev.vars*

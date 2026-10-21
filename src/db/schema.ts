@@ -202,6 +202,14 @@ export const media = pgTable("media", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+/** Bytes of admin-uploaded images where there is no filesystem or blob store (Cloudflare Workers). Served at /uploads/<key>. */
+export const uploadFiles = pgTable("upload_files", {
+  key: text("key").primaryKey(),
+  contentType: text("content_type").notNull(),
+  data: bytea("data").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 /** "Our Brand" logos on the home page. Heights are the rendered logo heights in px. */
 export const brands = pgTable("brands", {
   id: serial("id").primaryKey(),

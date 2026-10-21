@@ -14,6 +14,9 @@ function create() {
     return drizzleNeon(neon(process.env.DATABASE_URL), { schema });
   }
   if (process.env.VERCEL) throw new Error("DATABASE_URL is not set (connect a Neon Postgres database to this Vercel project).");
+  if (globalThis.navigator?.userAgent === "Cloudflare-Workers") {
+    throw new Error("DATABASE_URL is not set (add it as a secret: wrangler secret put DATABASE_URL).");
+  }
   // PGLITE_DIR lets a second server (e.g. automated tests) use its own copy: PGlite allows one process per directory
   const dir = process.env.PGLITE_DIR ?? path.join(process.cwd(), ".data", "pglite");
   fs.mkdirSync(dir, { recursive: true });

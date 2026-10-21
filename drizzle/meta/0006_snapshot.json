@@ -1,5 +1,5 @@
 {
-  "id": "7ba089d2-62c4-422f-9b9a-af2eaaf1668c",
+  "id": "2e772cb5-0b31-4bcd-820d-144dbf1e3059",
   "prevId": "f287473f-5bbd-4115-9070-77e2c0ee9b26",
   "version": "7",
   "dialect": "postgresql",
@@ -849,13 +849,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "site": {
-          "name": "site",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'main'"
-        },
         "title_en": {
           "name": "title_en",
           "type": "text",
@@ -889,20 +882,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'Full-time'"
-        },
-        "salary_range": {
-          "name": "salary_range",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
-        },
-        "work_days": {
-          "name": "work_days",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "''"
         },
         "description_en": {
           "name": "description_en",
@@ -951,12 +930,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "wp_id": {
-          "name": "wp_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
@@ -1470,6 +1443,44 @@
         },
         "updated_at": {
           "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.upload_files": {
+      "name": "upload_files",
+      "schema": "",
+      "columns": {
+        "key": {
+          "name": "key",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "content_type": {
+          "name": "content_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "data": {
+          "name": "data",
+          "type": "bytea",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,

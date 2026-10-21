@@ -1,6 +1,11 @@
 // DB client for CLI scripts (mirrors src/db/index.ts without the server-only guard).
 import path from "node:path";
+import { loadEnvConfig } from "@next/env";
 import * as schema from "../src/db/schema";
+
+// Run via `tsx`, not the Next.js CLI, so .env.local isn't loaded automatically like it is for
+// `next build`/`next dev` — load it the same way Next.js itself does (same file precedence).
+loadEnvConfig(process.cwd());
 
 export async function scriptDb() {
   if (process.env.DATABASE_URL) {

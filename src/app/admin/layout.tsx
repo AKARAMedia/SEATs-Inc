@@ -5,6 +5,9 @@ import "./admin.css";
 
 const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans", display: "swap" });
 
+// Admin pages always show live data.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: { default: "Admin", template: "%s · S.E.A.T.S Admin" },
   robots: { index: false, follow: false },

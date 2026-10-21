@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Script from "next/script";
 import { notFound } from "next/navigation";
 import HomeNews from "@/components/news/HomeNews";
 import FancyText from "@/components/sections/FancyText";
 import HeroSlider from "@/components/sections/HeroSlider";
 import HomeSitemap from "@/components/sections/HomeSitemap";
 import SmartLink from "@/components/SmartLink";
-import { BRAND_TITLE, FACEBOOK_EMBED } from "@/content/pages/home";
+import { BRAND_TITLE, FACEBOOK_PAGE_URL, SOCIABLEKIT_FACEBOOK_FEED_EMBED_ID } from "@/content/pages/home";
 import { isLang } from "@/lib/i18n";
 import { getBrands, getHomeBanners, getHomeSlides } from "@/lib/home";
 import { getSettings } from "@/lib/settings";
@@ -108,19 +109,17 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </div>
         </section>
 
-        <div className="mt-[10px] flex justify-center">
-          {/* Only the visible variant loads: lazy iframes inside display:none are never fetched */}
-          {(["desktop", "mobile"] as const).map((v) => (
-            <iframe
-              key={v}
-              src={FACEBOOK_EMBED[v].src}
-              title="S.E.A.T.S Inc. Facebook"
-              loading="lazy"
-              style={{ maxWidth: FACEBOOK_EMBED[v].width, height: FACEBOOK_EMBED[v].height }}
-              className={`w-full border-0 ${v === "desktop" ? "hidden tablet:block" : "tablet:hidden"}`}
-              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            />
-          ))}
+        <div className="mt-[10px] flex flex-col items-center">
+          <h3 className="mb-4 text-[20px] font-bold text-heading">S.E.A.T.S Inc. Facebook</h3>
+          <div className="h-[620px] w-full max-w-[500px] overflow-y-auto rounded-[5px] shadow-[0_0_3px_rgba(0,0,0,0.15)]">
+            <div className="sk-ww-facebook-page-posts" data-embed-id={SOCIABLEKIT_FACEBOOK_FEED_EMBED_ID} />
+            <Script src="https://widgets.sociablekit.com/facebook-page-posts/widget.js" strategy="lazyOnload" />
+          </div>
+          <p className="mt-3">
+            <a href={FACEBOOK_PAGE_URL} target="_blank" rel="noopener noreferrer" className="text-[14px] font-semibold text-primary hover:underline">
+              {lang === "ja" ? "Facebookページを開く →" : "Open Facebook Page →"}
+            </a>
+          </p>
         </div>
       </div>
     </div>

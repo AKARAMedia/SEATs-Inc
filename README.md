@@ -17,7 +17,7 @@ URLs are identical to WordPress so links and SEO carry over:
 - English at the root: `/overview/`, `/news-event/`, `/<post-slug>/`
 - Japanese under `/ja`: `/ja/overview/`, `/ja/<post-slug>/`
 
-`src/proxy.ts` rewrites unprefixed paths to the internal `[lang]` segment, protects `/admin`, and 301s the two legacy
+`src/middleware.ts` rewrites unprefixed paths to the internal `[lang]` segment, protects `/admin`, and 301s the two legacy
 Japanese-slug posts. `next.config.ts` redirects old WP archive/upload URLs (`/category/*`, `/wp-content/uploads/*`, …).
 The language switcher in the header swaps to the same page in the other language.
 
