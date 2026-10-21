@@ -17,7 +17,7 @@ export default async function NewJobPage() {
       </div>
       <JobForm
         types={JOB_TYPES}
-        values={{ titleEn: "", titleJa: "", department: "", location: "Phnom Penh", type: "Full-time", descriptionEn: "", descriptionJa: "", slug: "", closesAt: "", open: true }}
+        values={{ titleEn: "", titleJa: "", department: "", location: "Phnom Penh", type: "Full-time", descriptionEn: "", descriptionJa: "", slug: "", postedAt: "", open: true }}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, gt, isNull, or } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { JOB_SITES, jobs, type JobSite } from "@/db/schema";
 
@@ -25,7 +25,7 @@ export async function GET(req: Request) {
   const rows = await db
     .select()
     .from(jobs)
-    .where(and(eq(jobs.site, site), eq(jobs.open, true), or(isNull(jobs.closesAt), gt(jobs.closesAt, new Date()))))
+    .where(and(eq(jobs.site, site), eq(jobs.open, true)))
     .orderBy(asc(jobs.sortOrder), desc(jobs.createdAt));
 
   const data = rows.map((j) => ({
@@ -38,7 +38,6 @@ export async function GET(req: Request) {
     salaryRange: j.salaryRange,
     workDays: j.workDays,
     descriptionHtml: (ja && j.descriptionJa) || j.descriptionEn,
-    closesAt: j.closesAt?.toISOString() ?? null,
     postedAt: j.createdAt.toISOString(),
     updatedAt: j.updatedAt.toISOString(),
   }));

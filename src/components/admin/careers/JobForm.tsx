@@ -16,7 +16,7 @@ export type JobValues = {
   descriptionEn: string;
   descriptionJa: string;
   slug: string;
-  closesAt: string; // yyyy-MM-ddTHH:mm Cambodia time, or ""
+  postedAt: string; // yyyy-MM-dd (Cambodia), or "" to use today
   open: boolean;
 };
 
@@ -93,10 +93,10 @@ export default function JobForm({ values, types }: { values: JobValues; types: r
             <input name="location" defaultValue={values.location} className="admin-input" />
           </label>
           <label className="block">
-            <span className="admin-label">Closing date (optional)</span>
-            <input type="datetime-local" name="closesAt" defaultValue={values.closesAt} className="admin-input" />
-            <span className="mt-1 block text-[12px] text-[#999]">The job disappears from the website after this time (Cambodia time).</span>
-            <FieldError state={state} field="closesAt" />
+            <span className="admin-label">Posted date</span>
+            <input type="date" name="postedAt" defaultValue={values.postedAt} className="admin-input" />
+            <span className="mt-1 block text-[12px] text-[#999]">The date this job was posted. Leave blank to use today.</span>
+            <FieldError state={state} field="postedAt" />
           </label>
           <label className="block">
             <span className="admin-label">URL</span>

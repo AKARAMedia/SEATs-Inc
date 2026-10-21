@@ -55,7 +55,6 @@ export default async function CareersPage({ searchParams }: PageProps<"/admin/ca
 }
 
 async function JobsTab() {
-  const now = new Date();
   const rows = await db
     .select({
       job: jobs,
@@ -79,15 +78,14 @@ async function JobsTab() {
   return (
     <ul className="admin-card divide-y divide-black/5">
       {rows.map(({ job: j, total, fresh }) => {
-        const expired = j.closesAt && j.closesAt <= now;
-        const state = !j.open ? ["Closed", "bg-black/5 text-[#777]"] : expired ? ["Past closing date", "bg-black/5 text-[#777]"] : ["Open", "bg-green-50 text-green-700"];
+        const state = !j.open ? ["Closed", "bg-black/5 text-[#777]"] : ["Open", "bg-green-50 text-green-700"];
         return (
           <li key={j.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
             <Link href={`/admin/careers/jobs/${j.id}/`} className="min-w-0 flex-1 basis-[260px]">
               <span className="block truncate font-medium text-[#222] hover:text-primary">{j.titleEn}</span>
               <span className="block text-[12px] text-[#999]">
                 {[j.type, j.department, j.location].filter(Boolean).join(" · ")}
-                {j.closesAt && ` · closes ${shortDate(j.closesAt)}`}
+                {` · posted ${shortDate(j.createdAt)}`}
                 {!j.titleJa && " · no Japanese title"}
               </span>
             </Link>

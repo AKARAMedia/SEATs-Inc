@@ -20,9 +20,7 @@ async function Job({ params }: { params: PageProps<"/[lang]/careers/[slug]">["pa
   if (!isLang(lang)) notFound();
   const job = await getOpenJob(lang, decodeURIComponent(slug));
   if (!job) notFound();
-  const closes = job.closesAt
-    ? new Date(job.closesAt).toLocaleDateString(lang === "ja" ? "ja-JP" : "en-GB", { timeZone: "Asia/Phnom_Penh", day: "numeric", month: "long", year: "numeric" })
-    : null;
+  const posted = new Date(job.postedAt).toLocaleDateString(lang === "ja" ? "ja-JP" : "en-GB", { timeZone: "Asia/Phnom_Penh", day: "numeric", month: "long", year: "numeric" });
 
   return (
     <div className="container-site pb-20 pt-10">
@@ -38,7 +36,7 @@ async function Job({ params }: { params: PageProps<"/[lang]/careers/[slug]">["pa
                 {t}
               </span>
             ))}
-            {closes && <span className="rounded-full bg-[#fff4e5] px-3 py-1 text-[#a35b00]">{lang === "ja" ? `締切：${closes}` : `Apply by ${closes}`}</span>}
+            <span className="rounded-full bg-[#f3f3f3] px-3 py-1 text-[#666]">{lang === "ja" ? `掲載日：${posted}` : `Posted ${posted}`}</span>
           </p>
           <div className="prose-seats mt-6 [&_li]:mb-1 [&_p]:mb-4 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6" dangerouslySetInnerHTML={{ __html: job.description }} />
         </article>
