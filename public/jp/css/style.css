@@ -1614,6 +1614,16 @@ textarea {
   overflow: hidden;
 }
 
+.fb-feed-widget {
+  width: 100%;
+
+  max-width: 100%;
+
+  height: 620px;
+
+  overflow-y: auto;
+}
+
 .fb-feed-link {
   text-align: center;
 
