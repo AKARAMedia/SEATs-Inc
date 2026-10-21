@@ -13,7 +13,7 @@
     "db:import-wp": "tsx scripts/import-wp.ts",
     "export:live": "python -I scripts/export-live-site.py",
     "qa:screens": "node scripts/screenshot.mjs",
-    "cf:build": "CLOUDFLARE_BUILD=1 opennextjs-cloudflare build",
+    "cf:build": "cross-env CLOUDFLARE_BUILD=1 opennextjs-cloudflare build",
     "cf:preview": "npm run cf:build && opennextjs-cloudflare preview",
     "cf:deploy": "npm run cf:build && opennextjs-cloudflare deploy"
   },
@@ -48,6 +48,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/sanitize-html": "^2.16.2",
+    "cross-env": "^10.1.0",
     "drizzle-kit": "^0.31.11",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
