@@ -18,7 +18,7 @@ export default async function EditJobPage({ params }: PageProps<"/admin/careers/
   const { id } = await params;
   const [j] = await db.select().from(jobs).where(eq(jobs.id, Number(id)));
   if (!j || j.site !== "main") notFound();
-  const live = j.open && (!j.closesAt || j.closesAt > new Date());
+  const live = j.open;
 
   return (
     <div className="space-y-4">
@@ -51,7 +51,7 @@ export default async function EditJobPage({ params }: PageProps<"/admin/careers/
       <JobForm
         key={j.updatedAt.toISOString()}
         types={JOB_TYPES}
-        values={{ ...j, closesAt: j.closesAt ? toLocalInput(j.closesAt) : "" }}
+        values={{ ...j, postedAt: toLocalInput(j.createdAt).slice(0, 10) }}
       />
     </div>
   );
