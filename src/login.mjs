@@ -1,0 +1,13 @@
+import { chromium } from "playwright";
+import fs from "node:fs";
+const env = Object.fromEntries(fs.readFileSync(".env.local","utf8").trim().split(/\r?\n/).map(l=>l.split(/=(.*)/s).slice(0,2)));
+const base = process.argv[2];
+const b = await chromium.launch({ channel: "chrome" }); const p = await b.newPage();
+await p.goto(base + "/admin/login/");
+await p.fill('input[name=email]', env.ADMIN_EMAIL);
+await p.fill('input[name=password]', env.ADMIN_PASSWORD);
+await p.click('button[type=submit]');
+await p.waitForTimeout(6000);
+console.log("url:", p.url());
+console.log("error:", await p.locator('[role=alert]').allTextContents());
+await b.close();
