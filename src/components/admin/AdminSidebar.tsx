@@ -34,6 +34,10 @@ const SECTIONS: { title: string; items: Item[] }[] = [
     ],
   },
   {
+    title: "Career Site",
+    items: [{ href: "/admin/career-jobs/", label: "Career Jobs", icon: "briefcase", perm: "careers", match: (p) => p.startsWith("/admin/career-jobs") }],
+  },
+  {
     title: "System",
     items: [
       { href: "/admin/users/", label: "Users", icon: "users", perm: "users", match: (p) => p.startsWith("/admin/users") },

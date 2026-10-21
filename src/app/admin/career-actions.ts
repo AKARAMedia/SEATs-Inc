@@ -47,6 +47,7 @@ export async function saveJobAction(_: FormState, fd: FormData): Promise<FormSta
 
   const values = {
     ...d,
+    site: "main" as const,
     slug,
     closesAt,
     open: fd.get("open") === "on",
@@ -56,9 +57,10 @@ export async function saveJobAction(_: FormState, fd: FormData): Promise<FormSta
   };
   let jobId = id;
   if (id) {
-    const [prev] = await db.select().from(jobs).where(eq(jobs.id, id));
+    const [prev] = await db.select().from(jobs).where(and(eq(jobs.id, id), eq(jobs.site, "main")));
+    if (!prev) return { error: "Job not found." };
     await db.update(jobs).set(values).where(eq(jobs.id, id));
-    if (prev && (prev.titleJa !== values.titleJa || htmlText(prev.descriptionJa) !== htmlText(values.descriptionJa))) {
+    if (prev.titleJa !== values.titleJa || htmlText(prev.descriptionJa) !== htmlText(values.descriptionJa)) {
       await db.delete(translationItems).where(eq(translationItems.key, `job:${id}`));
     }
   } else {
@@ -72,7 +74,11 @@ export async function saveJobAction(_: FormState, fd: FormData): Promise<FormSta
 export async function setJobOpenAction(id: number, open: boolean) {
   const who = await requireAdmin("careers");
   await ready();
-  const [row] = await db.update(jobs).set({ open, updatedAt: new Date() }).where(eq(jobs.id, id)).returning({ title: jobs.titleEn });
+  const [row] = await db
+    .update(jobs)
+    .set({ open, updatedAt: new Date() })
+    .where(and(eq(jobs.id, id), eq(jobs.site, "main")))
+    .returning({ title: jobs.titleEn });
   await logActivity(who, open ? "job.open" : "job.close", { type: "job", id, summary: row?.title ?? "" });
   updateTag(CAREERS_TAG);
   refresh();
@@ -83,7 +89,10 @@ export async function deleteJobAction(fd: FormData) {
   await ready();
   const id = Number(fd.get("id"));
   // Applications are kept (job title is stored on each application)
-  const [row] = await db.delete(jobs).where(eq(jobs.id, id)).returning({ title: jobs.titleEn });
+  const [row] = await db
+    .delete(jobs)
+    .where(and(eq(jobs.id, id), eq(jobs.site, "main")))
+    .returning({ title: jobs.titleEn });
   await db.delete(translationItems).where(eq(translationItems.key, `job:${id}`));
   if (row) await logActivity(who, "job.delete", { type: "job", id, summary: row.title });
   updateTag(CAREERS_TAG);

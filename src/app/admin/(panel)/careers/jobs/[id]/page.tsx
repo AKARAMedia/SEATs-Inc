@@ -17,7 +17,7 @@ export default async function EditJobPage({ params }: PageProps<"/admin/careers/
   await ready();
   const { id } = await params;
   const [j] = await db.select().from(jobs).where(eq(jobs.id, Number(id)));
-  if (!j) notFound();
+  if (!j || j.site !== "main") notFound();
   const live = j.open && (!j.closesAt || j.closesAt > new Date());
 
   return (

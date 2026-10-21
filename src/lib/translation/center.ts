@@ -189,7 +189,7 @@ async function allSources(): Promise<Source[]> {
     db.select().from(posts).orderBy(desc(posts.publishedAt)),
     db.select().from(categories).orderBy(asc(categories.sortOrder)),
     db.select().from(siteSettings),
-    db.select().from(jobs).orderBy(desc(jobs.createdAt)),
+    db.select().from(jobs).where(eq(jobs.site, "main")).orderBy(desc(jobs.createdAt)),
   ]);
   const settingsByKey = new Map(settingRows.map((r) => [r.key, r.value]));
   return [
@@ -214,7 +214,7 @@ async function getSource(key: string): Promise<Source | null> {
   }
   if (key.startsWith("job:")) {
     const [j] = await db.select().from(jobs).where(eq(jobs.id, Number(key.slice(4))));
-    return j ? jobSource(j) : null;
+    return j && j.site === "main" ? jobSource(j) : null;
   }
   if (key.startsWith("page:")) {
     const k = key.slice(5);

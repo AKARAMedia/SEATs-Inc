@@ -83,6 +83,13 @@ export const SETTINGS_SCHEMA = {
       "現在ウェブサイトのメンテナンスを行っております。しばらくしてから再度アクセスしてください。",
     ),
   }),
+  /** HR contact card shown on every seatsinc-career.com job detail page. No photo, by design. */
+  careerHrContact: z.object({
+    name: z.string().trim().min(1).max(120).default("SOVANNRIM RUOM"),
+    email: email.default("hr-recruiting@seats-inc.com"),
+    phone: z.string().trim().max(50).default("089 777 231"),
+    address: z.string().trim().max(300).default("Street 388, Sangkat Toul Svay Prey, 1, Phnom Penh."),
+  }),
 } as const;
 
 export type SettingsGroup = keyof typeof SETTINGS_SCHEMA;
