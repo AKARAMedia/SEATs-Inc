@@ -9,6 +9,9 @@
   gtag('js', new Date());
 
   gtag('config', 'G-M3NCEFSVMJ');
+
+  // Mark as a Key event in GA4 (Admin > Events) to count completed casual-interview submissions as conversions.
+  gtag('event', 'generate_lead', { form_name: 'jp_casual_interview' });
 </script>
 
   <meta charset="UTF-8">
