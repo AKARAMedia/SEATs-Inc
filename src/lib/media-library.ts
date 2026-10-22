@@ -3,6 +3,7 @@ import { desc, eq } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { brands, homeBanners, homeSlides, jobs, media, pages, posts, siteSettings } from "@/db/schema";
 import SITE_MEDIA from "@/content/site-media.json";
+import { filterMedia } from "@/lib/media-paging";
 
 export type MediaItem = {
   id: number | null; // null = image shipped with the website (public/media), read-only
@@ -40,6 +41,32 @@ export async function listMedia(): Promise<MediaItem[]> {
     source: "upload",
   }));
   return [...uploads, ...siteItems];
+}
+
+export type MediaListFilter = "all" | "upload" | "site" | "unused";
+
+/** One page of the media library, filtered on the server. `usage` only covers the items on this page. */
+export async function queryMedia({ q, filter, page, limit }: { q: string; filter: MediaListFilter; page: number; limit: number }) {
+  const [all, usage] = await Promise.all([listMedia(), mediaUsage()]);
+  const isUnused = (m: MediaItem) => m.source === "upload" && !usage.has(m.url);
+  const counts = {
+    all: all.length,
+    upload: all.filter((m) => m.source === "upload").length,
+    site: all.filter((m) => m.source === "site").length,
+    unused: all.filter(isUnused).length,
+  };
+  const matches = filter === "unused" ? filterMedia(all, q, "upload").filter(isUnused) : filterMedia(all, q, filter);
+  const pages = Math.max(1, Math.ceil(matches.length / limit));
+  const current = Math.min(page, pages);
+  const items = matches.slice((current - 1) * limit, current * limit);
+  return {
+    items,
+    usage: Object.fromEntries(items.flatMap((m) => (usage.has(m.url) ? [[m.url, usage.get(m.url)!]] : []))),
+    counts,
+    total: matches.length,
+    pages,
+    page: current,
+  };
 }
 
 export async function getMediaByUrl(url: string) {
