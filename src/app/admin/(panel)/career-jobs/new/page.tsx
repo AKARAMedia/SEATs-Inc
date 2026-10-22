@@ -14,7 +14,7 @@ export default async function NewCareerJobPage() {
         </Link>
         <h1 className="text-[22px] font-semibold">New career job</h1>
       </div>
-      <CareerJobForm values={{ title: "", jobType: "Full-time", salaryRange: "", workDays: "", workplace: "", responsibilitiesHtml: "", slug: "", open: true }} />
+      <CareerJobForm values={{ title: "", type: "Full-time", department: "", location: "Phnom Penh", salaryRange: "", workDays: "", responsibilitiesHtml: "", slug: "", closesAt: "", open: true }} />
     </div>
   );
 }

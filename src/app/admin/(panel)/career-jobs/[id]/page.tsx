@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CareerJobForm from "@/components/admin/CareerJobForm";
 import { ConfirmForm } from "@/components/admin/ui/confirm";
+import { toLocalInput } from "@/lib/admin-data";
 import { requireAdmin } from "@/lib/auth";
 import { getCareerSiteJob } from "@/lib/career-site";
 import { deleteCareerJobAction } from "@/app/admin/career-job-actions";
@@ -41,12 +42,14 @@ export default async function EditCareerJobPage({ params }: PageProps<"/admin/ca
         values={{
           id: j.id,
           title: j.titleEn,
-          jobType: j.type,
+          type: j.type,
+          department: j.department,
+          location: j.location,
           salaryRange: j.salaryRange,
           workDays: j.workDays,
-          workplace: j.location,
           responsibilitiesHtml: j.descriptionEn,
           slug: j.slug,
+          closesAt: j.closesAt ? toLocalInput(j.closesAt) : "",
           open: j.open,
         }}
       />

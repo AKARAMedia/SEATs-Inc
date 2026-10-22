@@ -2,6 +2,7 @@
 
 import { startTransition, useActionState, useRef } from "react";
 import { saveCareerJobAction } from "@/app/admin/career-job-actions";
+import { JOB_TYPES } from "@/db/schema";
 import RichTextEditor from "./RichTextEditor";
 import { FieldError, FormError } from "./ui/Field";
 import { useUnsavedChanges } from "./ui/useUnsavedChanges";
@@ -9,19 +10,31 @@ import { useUnsavedChanges } from "./ui/useUnsavedChanges";
 export type CareerJobValues = {
   id?: number;
   title: string;
-  jobType: string;
+  type: string;
+  department: string;
+  location: string;
   salaryRange: string;
   workDays: string;
-  workplace: string;
   responsibilitiesHtml: string;
   slug: string;
+  closesAt: string; // yyyy-MM-ddTHH:mm Cambodia time, or ""
   open: boolean;
 };
+
+const DEPARTMENTS = ["NOVA Marketing", "Lokajapanesefoodsbeverage", "SEATS Inc", "SEATS Farm", "PISA Food Retail", "SELECT STORE SORA"];
+
+// The career site also posts freelance work, which the main-site list doesn't have
+const CAREER_JOB_TYPES: readonly string[] = [...JOB_TYPES, "Freelance"];
 
 export default function CareerJobForm({ values }: { values: CareerJobValues }) {
   const [state, action, pending] = useActionState(saveCareerJobAction, undefined);
   const ref = useRef<HTMLFormElement>(null);
   useUnsavedChanges(ref);
+  // Postings imported from the old WordPress site use free-text types ("Full - Time", …); keep them selectable so saving doesn't change them
+  const types = CAREER_JOB_TYPES.includes(values.type) ? CAREER_JOB_TYPES : [...CAREER_JOB_TYPES, values.type];
+
+  // A department typed before this was a dropdown stays selectable so saving doesn't clear it
+  const departments = !values.department || DEPARTMENTS.includes(values.department) ? DEPARTMENTS : [...DEPARTMENTS, values.department];
 
   return (
     <form
@@ -53,13 +66,30 @@ export default function CareerJobForm({ values }: { values: CareerJobValues }) {
           <label className="flex items-start gap-2">
             <input type="checkbox" name="open" defaultChecked={values.open} className="mt-1 size-4 accent-[var(--color-primary)]" />
             <span>
-              <span className="block text-[14px] font-semibold">Open</span>
-              <span className="block text-[12px] text-[#777]">Shown on seatsinc-career.com while open.</span>
+              <span className="block text-[14px] font-semibold">Accepting applications</span>
+              <span className="block text-[12px] text-[#777]">Shown on the Recruit page while open.</span>
             </span>
           </label>
           <label className="block">
-            <span className="admin-label">Job Type</span>
-            <input name="jobType" defaultValue={values.jobType} required className="admin-input" placeholder="Full-time" />
+            <span className="admin-label">Type</span>
+            <select name="type" defaultValue={values.type} className="admin-input">
+              {types.map((t) => (
+                <option key={t}>{t}</option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="admin-label">Department</span>
+            <select name="department" defaultValue={values.department} className="admin-input">
+              <option value="">Select department</option>
+              {departments.map((d) => (
+                <option key={d}>{d}</option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="admin-label">Location</span>
+            <input name="location" defaultValue={values.location} className="admin-input" />
           </label>
           <label className="block">
             <span className="admin-label">Salary Range</span>
@@ -70,8 +100,10 @@ export default function CareerJobForm({ values }: { values: CareerJobValues }) {
             <input name="workDays" defaultValue={values.workDays} className="admin-input" placeholder="Mon - Sat" />
           </label>
           <label className="block">
-            <span className="admin-label">Workplace</span>
-            <input name="workplace" defaultValue={values.workplace} className="admin-input" />
+            <span className="admin-label">Closing date (optional)</span>
+            <input type="datetime-local" name="closesAt" defaultValue={values.closesAt} className="admin-input" />
+            <span className="mt-1 block text-[12px] text-[#999]">The job disappears from the website after this time (Cambodia time).</span>
+            <FieldError state={state} field="closesAt" />
           </label>
           <label className="block">
             <span className="admin-label">URL</span>
