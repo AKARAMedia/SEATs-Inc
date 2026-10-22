@@ -13,12 +13,14 @@ import type { FormState } from "./actions";
 
 const CareerJobInput = z.object({
   title: z.string().trim().min(1, "Enter the job title").max(200),
-  jobType: z.string().trim().min(1).max(60),
+  type: z.string().trim().min(1).max(60),
+  department: z.string().trim().max(100).default(""),
+  location: z.string().trim().max(300).default(""),
   salaryRange: z.string().trim().max(60).default(""),
   workDays: z.string().trim().max(60).default(""),
-  workplace: z.string().trim().max(300).default(""),
   responsibilitiesHtml: z.string().max(20000).default(""),
   slug: z.string().trim().max(120).default(""),
+  closesAt: z.string().default(""),
 });
 
 export async function saveCareerJobAction(_: FormState, fd: FormData): Promise<FormState> {
@@ -39,13 +41,18 @@ export async function saveCareerJobAction(_: FormState, fd: FormData): Promise<F
     .where(id ? and(eq(jobs.slug, slug), ne(jobs.id, id)) : eq(jobs.slug, slug));
   if (clash) return { error: "Another job already uses this URL.", fieldErrors: { slug: "Already in use" } };
 
+  const closesAt = d.closesAt ? new Date(d.closesAt.length === 16 ? `${d.closesAt}:00+07:00` : d.closesAt) : null;
+  if (closesAt && Number.isNaN(closesAt.getTime())) return { error: "Invalid closing date.", fieldErrors: { closesAt: "Invalid date" } };
+
   const values = {
     site: "career" as const,
     titleEn: d.title,
-    type: d.jobType,
+    type: d.type,
+    department: d.department,
     salaryRange: d.salaryRange,
     workDays: d.workDays,
-    location: d.workplace,
+    location: d.location,
+    closesAt,
     descriptionEn: sanitizeBody(d.responsibilitiesHtml),
     slug,
     open: fd.get("open") === "on",
