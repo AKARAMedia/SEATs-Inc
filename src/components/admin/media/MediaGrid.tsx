@@ -2,12 +2,7 @@
 
 import type { MediaItem } from "@/lib/media-library";
 
-export type MediaFilter = "all" | "upload" | "site";
-
-export function filterMedia(items: MediaItem[], q: string, filter: MediaFilter) {
-  const needle = q.trim().toLowerCase();
-  return items.filter((m) => (filter === "all" || m.source === filter) && (!needle || `${m.filename} ${m.alt} ${m.url}`.toLowerCase().includes(needle)));
-}
+export { filterMedia, type MediaFilter } from "@/lib/media-paging";
 
 export function fmtSize(bytes: number) {
   return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`;

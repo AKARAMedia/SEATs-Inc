@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { adminListPosts } from "@/lib/admin-data";
+import { adminListPosts, POST_PAGE_SIZES } from "@/lib/admin-data";
 import { requireAdmin } from "@/lib/auth";
 import { can } from "@/lib/permissions";
 import PublishToggle from "@/components/admin/PublishToggle";
 import Pagination from "@/components/admin/ui/Pagination";
+import FilterForm from "@/components/admin/ui/FilterForm";
+import AutoSubmitSelect from "@/components/admin/ui/AutoSubmitSelect";
+import PageSizeSelect from "@/components/admin/ui/PageSizeSelect";
 
 export const metadata = { title: "News & Events" };
 
@@ -17,10 +20,12 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
   const q = typeof sp.q === "string" ? sp.q.trim() : "";
   const status = typeof sp.status === "string" ? sp.status : "";
   const page = Math.max(1, Number(sp.page) || 1);
-  const [{ rows, total, pages }, session] = await Promise.all([adminListPosts({ q, page, status }), requireAdmin("viewPosts")]);
+  const limitParam = Number(sp.limit);
+  const limit = POST_PAGE_SIZES.find((n) => n === limitParam) ?? POST_PAGE_SIZES[0];
+  const [{ rows, total, pages }, session] = await Promise.all([adminListPosts({ q, page, status, size: limit }), requireAdmin("viewPosts")]);
   const canEdit = can(session.role, "editPosts");
   const now = new Date();
-  const qs = (p: number) => `?${new URLSearchParams({ ...(q && { q }), ...(status && { status }), page: String(p) })}`;
+  const qs = (p: number) => `?${new URLSearchParams({ ...(q && { q }), ...(status && { status }), limit: String(limit), page: String(p) })}`;
 
   return (
     <div className="space-y-4">
@@ -28,17 +33,21 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
         <h1 className="mr-auto text-[22px] font-semibold">
           News &amp; Events <span className="text-[14px] font-normal text-[#888]">({total})</span>
         </h1>
-        <form className="flex w-full gap-2 sm:w-auto" role="search">
+        <FilterForm className="flex w-full gap-2 sm:w-auto">
           <input name="q" defaultValue={q} placeholder="Search titles…" className="admin-input min-w-0 flex-1 sm:!w-56 sm:flex-none" />
-          <select name="status" defaultValue={status} className="admin-input !w-auto">
-            <option value="">All</option>
-            <option value="published">Published</option>
-            <option value="draft">Drafts</option>
-            <option value="scheduled">Scheduled</option>
-            <option value="missingja">Missing Japanese</option>
-          </select>
-          <button className="admin-btn-secondary">Filter</button>
-        </form>
+          <input type="hidden" name="limit" value={limit} />
+          <AutoSubmitSelect
+            name="status"
+            defaultValue={status}
+            options={[
+              { value: "", label: "All" },
+              { value: "published", label: "Published" },
+              { value: "draft", label: "Drafts" },
+              { value: "scheduled", label: "Scheduled" },
+              { value: "missingja", label: "Missing Japanese" },
+            ]}
+          />
+        </FilterForm>
         {canEdit && (
           <Link href="/admin/posts/new/" className="admin-btn">
             + New post
@@ -108,7 +117,10 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
         </table>
       </div>
 
-      <Pagination page={page} pages={pages} href={qs} />
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <Pagination page={page} pages={pages} href={qs} />
+        <PageSizeSelect sizes={POST_PAGE_SIZES} value={limit} params={{ ...(q && { q }), ...(status && { status }) }} />
+      </div>
     </div>
   );
 }

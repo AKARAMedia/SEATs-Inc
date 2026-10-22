@@ -1,15 +1,25 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import PageSizeSelect from "@/components/admin/ui/PageSizeSelect";
+import Pagination from "@/components/admin/ui/Pagination";
 import { Icon } from "@/components/admin/ui/icons";
 import { requireAdmin } from "@/lib/auth";
-import { listCareerSiteJobs } from "@/lib/career-site";
+import { CAREER_JOB_PAGE_SIZES, listCareerSiteJobs } from "@/lib/career-site";
 import { importCareerJobsSeedAction } from "@/app/admin/career-job-actions";
 import CareerJobOpenToggle from "@/components/admin/CareerJobOpenToggle";
 
 export const metadata = { title: "Career Jobs" };
 
-export default async function CareerJobsPage() {
+export default async function CareerJobsPage({ searchParams }: PageProps<"/admin/career-jobs">) {
   await requireAdmin("careers");
-  const rows = await listCareerSiteJobs();
+  const sp = await searchParams;
+  const pageParam = Number(sp.page);
+  const limitParam = Number(sp.limit);
+  const limit = CAREER_JOB_PAGE_SIZES.find((n) => n === limitParam) ?? CAREER_JOB_PAGE_SIZES[0];
+  const { rows, total, pages, page } = await listCareerSiteJobs({ page: Number.isInteger(pageParam) && pageParam >= 1 ? pageParam : 1, size: limit });
+  const href = (n: number) => `/admin/career-jobs/?${new URLSearchParams({ limit: String(limit), page: String(n) })}`;
+  // Keep `page` and `limit` visible in the URL, and fix up values that were out of range
+  if (page !== pageParam || limit !== limitParam) redirect(href(page));
 
   return (
     <div className="max-w-[1100px] space-y-4">
@@ -31,7 +41,7 @@ export default async function CareerJobsPage() {
         </Link>
       </div>
 
-      {rows.length ? (
+      {total ? (
         <ul className="admin-card divide-y divide-black/5">
           {rows.map((j) => (
             <li key={j.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
@@ -60,6 +70,14 @@ export default async function CareerJobsPage() {
               Or create one manually
             </Link>
           </div>
+        </div>
+      )}
+
+      {total > 0 && (
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <Pagination page={page} pages={pages} href={href} />
+          <PageSizeSelect sizes={CAREER_JOB_PAGE_SIZES} value={limit} params={{}} />
+          <span className="text-[12px] text-[#999]">{total} job{total === 1 ? "" : "s"}</span>
         </div>
       )}
     </div>

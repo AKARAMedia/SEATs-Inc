@@ -9,10 +9,11 @@ import { can } from "./permissions";
 
 // Uncached reads for the admin panel (always fresh, always auth-checked)
 
-export async function adminListPosts({ q, page = 1, status }: { q?: string; page?: number; status?: string }) {
+export const POST_PAGE_SIZES = [10, 25, 50] as const;
+
+export async function adminListPosts({ q, page = 1, status, size = 10 }: { q?: string; page?: number; status?: string; size?: number }) {
   await requireAdmin("viewPosts");
   await ready();
-  const size = 25;
   const where = and(
     q ? or(ilike(posts.titleEn, `%${q}%`), ilike(posts.titleJa, `%${q}%`), ilike(posts.slug, `%${q}%`)) : undefined,
     status === "draft"
@@ -79,10 +80,12 @@ function messageWhere({ view = "inbox", q, lang }: MessageFilter): SQL | undefin
   );
 }
 
-export async function adminMessages(filter: MessageFilter & { page?: number }) {
+export const MESSAGE_PAGE_SIZES = [10, 25, 50] as const;
+
+export async function adminMessages(filter: MessageFilter & { page?: number; size?: number }) {
   await requireAdmin("messages");
   await ready();
-  const size = 25;
+  const size = filter.size ?? 10;
   const page = Math.max(1, filter.page ?? 1);
   const where = messageWhere(filter);
   const [rows, [{ total }], counts] = await Promise.all([
