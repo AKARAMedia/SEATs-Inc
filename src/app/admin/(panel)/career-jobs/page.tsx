@@ -15,6 +15,7 @@ import { CAREER_JOB_PAGE_SIZES, listCareerSiteJobs } from "@/lib/career-site";
 import { shortDate } from "@/lib/format";
 import { importCareerJobsSeedAction } from "@/app/admin/career-job-actions";
 import CareerJobOpenToggle from "@/components/admin/CareerJobOpenToggle";
+import CareerJobQuickEdit from "@/components/admin/CareerJobQuickEdit";
 
 export const metadata = { title: "Career Jobs" };
 
@@ -131,6 +132,9 @@ async function JobsTab({ searchParams: sp }: { searchParams: Awaited<PageProps<"
               </Link>
               <span className={`admin-badge ${j.open ? "bg-green-50 text-green-700" : "bg-black/5 text-[#777]"}`}>{j.open ? "Open" : "Closed"}</span>
               <CareerJobOpenToggle id={j.id} open={j.open} />
+              <CareerJobQuickEdit
+                values={{ id: j.id, type: j.type, department: j.department, location: j.location, salaryRange: j.salaryRange, workDays: j.workDays }}
+              />
               <Link href={`/admin/career-jobs/${j.id}/`} className="admin-btn-secondary !py-1 text-[13px]">
                 Edit
               </Link>

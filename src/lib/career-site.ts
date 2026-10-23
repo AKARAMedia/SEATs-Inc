@@ -28,6 +28,8 @@ export async function listCareerSiteJobs({
       type: jobs.type,
       department: jobs.department,
       location: jobs.location,
+      salaryRange: jobs.salaryRange,
+      workDays: jobs.workDays,
       open: jobs.open,
       applications: sql<number>`(select count(*)::int from ${jobApplications} where ${jobApplications.jobId} = ${jobs.id})`,
       newApplications: sql<number>`(select count(*)::int from ${jobApplications} where ${jobApplications.jobId} = ${jobs.id} and ${jobApplications.status} = 'new')`,

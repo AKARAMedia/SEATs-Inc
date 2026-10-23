@@ -2,8 +2,7 @@
 
 import { startTransition, useActionState, useRef } from "react";
 import { saveCareerJobAction } from "@/app/admin/career-job-actions";
-import { JOB_TYPES } from "@/db/schema";
-import { CAREER_DEPARTMENTS } from "@/lib/career-departments";
+import { CAREER_DEPARTMENTS, CAREER_JOB_TYPES } from "@/lib/career-departments";
 import RichTextEditor from "./RichTextEditor";
 import { FieldError, FormError } from "./ui/Field";
 import { useUnsavedChanges } from "./ui/useUnsavedChanges";
@@ -21,9 +20,6 @@ export type CareerJobValues = {
   closesAt: string; // yyyy-MM-ddTHH:mm Cambodia time, or ""
   open: boolean;
 };
-
-// The career site also posts freelance work, which the main-site list doesn't have
-const CAREER_JOB_TYPES: readonly string[] = [...JOB_TYPES, "Freelance"];
 
 export default function CareerJobForm({ values }: { values: CareerJobValues }) {
   const [state, action, pending] = useActionState(saveCareerJobAction, undefined);
