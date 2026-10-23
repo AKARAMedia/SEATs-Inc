@@ -169,7 +169,7 @@ export default async function DashboardPage() {
               <ul className="divide-y divide-black/5">
                 {d.recentMessages.map((m) => (
                   <li key={m.id}>
-                    <Link href={`/admin/messages/${m.id}/`} className="flex items-start gap-3 px-5 py-3 hover:bg-[#f7f9fb]">
+                    <Link href={`/admin/messages/${m.id}/`} prefetch={false} className="flex items-start gap-3 px-5 py-3 hover:bg-[#f7f9fb]">
                       <span className={`mt-2 size-2 shrink-0 rounded-full ${m.readAt ? "" : "bg-primary"}`} />
                       <span className="min-w-0 flex-1">
                         <span className={`block truncate text-[14px] ${m.readAt ? "text-[#444]" : "font-bold text-[#111]"}`}>
@@ -199,7 +199,7 @@ export default async function DashboardPage() {
           <ul className="divide-y divide-black/5">
             {d.recentPosts.map((p) => (
               <li key={p.id}>
-                <Link href={`/admin/posts/${p.id}/`} className="flex items-center gap-3 px-5 py-3 hover:bg-[#f7f9fb]">
+                <Link href={`/admin/posts/${p.id}/`} prefetch={false} className="flex items-center gap-3 px-5 py-3 hover:bg-[#f7f9fb]">
                   <span className="min-w-0 flex-1 truncate text-[14px] text-[#333]">{p.titleEn}</span>
                   <span className={`admin-badge ${p.published ? "bg-primary/10 text-primary" : "bg-black/5 text-[#777]"}`}>{p.published ? "Published" : "Draft"}</span>
                   <time className="w-[70px] shrink-0 text-right text-[12px] text-[#999]">{shortDate(p.updatedAt)}</time>

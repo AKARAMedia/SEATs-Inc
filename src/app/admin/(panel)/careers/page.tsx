@@ -81,7 +81,7 @@ async function JobsTab() {
         const state = !j.open ? ["Closed", "bg-black/5 text-[#777]"] : ["Open", "bg-green-50 text-green-700"];
         return (
           <li key={j.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
-            <Link href={`/admin/careers/jobs/${j.id}/`} className="min-w-0 flex-1 basis-[260px]">
+            <Link href={`/admin/careers/jobs/${j.id}/`} prefetch={false} className="min-w-0 flex-1 basis-[260px]">
               <span className="block truncate font-medium text-[#222] hover:text-primary">{j.titleEn}</span>
               <span className="block text-[12px] text-[#999]">
                 {[j.type, j.department, j.location].filter(Boolean).join(" · ")}
@@ -89,13 +89,13 @@ async function JobsTab() {
                 {!j.titleJa && " · no Japanese title"}
               </span>
             </Link>
-            <Link href={`/admin/careers/?tab=applications&job=${j.id}`} className="text-[13px] text-primary hover:underline">
+            <Link href={`/admin/careers/?tab=applications&job=${j.id}`} prefetch={false} className="text-[13px] text-primary hover:underline">
               {Number(total)} application{Number(total) === 1 ? "" : "s"}
               {Number(fresh) > 0 && <span className="ml-1 rounded-full bg-red-600 px-1.5 text-[11px] text-white">{Number(fresh)} new</span>}
             </Link>
             <span className={`admin-badge ${state[1]}`}>{state[0]}</span>
             <JobOpenToggle id={j.id} open={j.open} />
-            <Link href={`/admin/careers/jobs/${j.id}/`} className="admin-btn-secondary !py-1 text-[13px]">
+            <Link href={`/admin/careers/jobs/${j.id}/`} prefetch={false} className="admin-btn-secondary !py-1 text-[13px]">
               Edit
             </Link>
           </li>
@@ -163,7 +163,7 @@ async function ApplicationsTab({ status, job }: { status: string; job: number })
         <ul className="admin-card divide-y divide-black/5">
           {rows.map((a) => (
             <li key={a.id}>
-              <Link href={`/admin/careers/applications/${a.id}/`} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-[#f7f9fb]">
+              <Link href={`/admin/careers/applications/${a.id}/`} prefetch={false} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-[#f7f9fb]">
                 <span className={`size-2 shrink-0 rounded-full ${a.status === "new" ? "bg-red-600" : ""}`} />
                 <span className="min-w-0 flex-1 basis-[220px]">
                   <span className={`block truncate ${a.status === "new" ? "font-bold text-[#111]" : "font-medium text-[#333]"}`}>{a.name}</span>

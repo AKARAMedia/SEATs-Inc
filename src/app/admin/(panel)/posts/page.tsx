@@ -80,7 +80,7 @@ export default async function AdminPostsPage({ searchParams }: PageProps<"/admin
                   )}
                 </td>
                 <td className="max-w-[460px] px-4 py-2.5">
-                  <Link href={`/admin/posts/${p.id}/`} className="font-semibold text-[#222] hover:text-primary">
+                  <Link href={`/admin/posts/${p.id}/`} prefetch={false} className="font-semibold text-[#222] hover:text-primary">
                     {p.titleEn}
                   </Link>
                   {p.titleJa && <div className="truncate text-[12px] text-[#888]">{p.titleJa}</div>}

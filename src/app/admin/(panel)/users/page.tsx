@@ -31,7 +31,7 @@ export default async function UsersPage() {
       <ul className="admin-card divide-y divide-black/5">
         {users.map((u) => (
           <li key={u.id}>
-            <Link href={`/admin/users/${u.id}/`} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-[#fafbfc]">
+            <Link href={`/admin/users/${u.id}/`} prefetch={false} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-[#fafbfc]">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-black/5 text-[14px] font-semibold text-[#555]">
                 {(u.name || u.email).slice(0, 1).toUpperCase()}
               </span>

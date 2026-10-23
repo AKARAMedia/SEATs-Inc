@@ -51,9 +51,22 @@ export async function listNews(lang: Lang, opts: { page?: number; category?: str
         )
       : undefined,
   );
+  // Cards only ever show title/excerpt/image (see NewsCard.tsx) — skip the (often large) body
+  // columns here so listing up to 1000 posts doesn't transfer and serialize their full HTML.
   const [rows, [{ total }]] = await Promise.all([
     db
-      .select()
+      .select({
+        slug: posts.slug,
+        titleEn: posts.titleEn,
+        titleJa: posts.titleJa,
+        excerptEn: posts.excerptEn,
+        excerptJa: posts.excerptJa,
+        imageUrl: posts.imageUrl,
+        publishedAt: posts.publishedAt,
+        categorySlug: categories.slug,
+        categoryNameEn: categories.nameEn,
+        categoryNameJa: categories.nameJa,
+      })
       .from(posts)
       .leftJoin(categories, eq(posts.categoryId, categories.id))
       .where(where)
@@ -62,8 +75,17 @@ export async function listNews(lang: Lang, opts: { page?: number; category?: str
       .offset((page - 1) * limit),
     db.select({ total: count() }).from(posts).leftJoin(categories, eq(posts.categoryId, categories.id)).where(where),
   ]);
+  const ja = lang === "ja";
   return {
-    items: rows.map((r) => localize(r.posts, r.categories, lang)),
+    items: rows.map((r): NewsItem => ({
+      slug: r.slug,
+      title: (ja && r.titleJa) || r.titleEn,
+      excerpt: (ja && r.excerptJa) || r.excerptEn,
+      body: "", // not needed for list views; fetch the single post (getNews) for full body
+      imageUrl: r.imageUrl,
+      publishedAt: r.publishedAt.toISOString(),
+      category: r.categorySlug ? { slug: r.categorySlug, name: (ja ? r.categoryNameJa : r.categoryNameEn) ?? "" } : null,
+    })),
     total,
     page,
     pages: Math.max(1, Math.ceil(total / limit)),
