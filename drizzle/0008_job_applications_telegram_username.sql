@@ -1,0 +1,1 @@
+ALTER TABLE "job_applications" ADD COLUMN "telegram_username" text DEFAULT '' NOT NULL;

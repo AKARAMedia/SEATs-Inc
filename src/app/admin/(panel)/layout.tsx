@@ -12,11 +12,20 @@ import { ConfirmHost } from "@/components/admin/ui/confirm";
 
 async function Sidebar() {
   const { name, email, role } = await requireAdmin();
-  const [unread, applications] = await Promise.all([
+  const [unread, applications, careerApplications] = await Promise.all([
     can(role, "messages") ? unreadMessageCount() : 0,
-    can(role, "careers") ? newApplicationCount() : 0,
+    can(role, "careers") ? newApplicationCount("main") : 0,
+    can(role, "careers") ? newApplicationCount("career") : 0,
   ]);
-  return <AdminSidebar user={{ name, email, role }} unread={unread} applications={applications} logout={logoutAction} />;
+  return (
+    <AdminSidebar
+      user={{ name, email, role }}
+      unread={unread}
+      applications={applications}
+      careerApplications={careerApplications}
+      logout={logoutAction}
+    />
+  );
 }
 
 async function MaintenanceBanner() {

@@ -305,6 +305,8 @@ export const jobApplications = pgTable(
     name: text("name").notNull(),
     email: text("email").notNull(),
     phone: text("phone").notNull().default(""),
+    // Required only for seatsinc-career.com applications (src/app/api/career-jobs/apply); empty for the main site's form.
+    telegramUsername: text("telegram_username").notNull().default(""),
     message: text("message").notNull().default(""),
     lang: text("lang").notNull().default("en"),
     status: text("status").$type<ApplicationStatus>().notNull().default("new"),
