@@ -23,7 +23,7 @@ export default function Pagination({ page, pages, href }: { page: number; pages:
   const off = `${base} pointer-events-none bg-white text-[#bbb] ring-1 ring-black/5`;
   return (
     <nav className="flex flex-wrap items-center justify-center gap-1" aria-label="Pagination">
-      <Link href={href(page - 1)} aria-label="Previous page" aria-disabled={page <= 1} className={page <= 1 ? off : idle}>
+      <Link href={href(page - 1)} prefetch={false} aria-label="Previous page" aria-disabled={page <= 1} className={page <= 1 ? off : idle}>
         ‹
       </Link>
       {pageItems(page, pages).map((n, i) =>
@@ -35,6 +35,7 @@ export default function Pagination({ page, pages, href }: { page: number; pages:
           <Link
             key={n}
             href={href(n)}
+            prefetch={false}
             aria-current={n === page ? "page" : undefined}
             className={n === page ? `${base} bg-primary font-semibold text-white` : idle}
           >
@@ -42,7 +43,7 @@ export default function Pagination({ page, pages, href }: { page: number; pages:
           </Link>
         ),
       )}
-      <Link href={href(page + 1)} aria-label="Next page" aria-disabled={page >= pages} className={page >= pages ? off : idle}>
+      <Link href={href(page + 1)} prefetch={false} aria-label="Next page" aria-disabled={page >= pages} className={page >= pages ? off : idle}>
         ›
       </Link>
     </nav>

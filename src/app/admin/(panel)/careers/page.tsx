@@ -136,11 +136,11 @@ async function ApplicationsTab({ status, job }: { status: string; job: number })
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-2">
         <nav className="flex flex-wrap gap-1 rounded-lg bg-white p-1 ring-1 ring-black/5 text-[13px]" aria-label="Filter by status">
-          <Link href={qs({ status: "" })} className={`rounded-md px-3 py-1.5 font-semibold ${!valid ? "bg-primary text-white" : "text-[#555] hover:bg-black/5"}`}>
+          <Link href={qs({ status: "" })} prefetch={false} className={`rounded-md px-3 py-1.5 font-semibold ${!valid ? "bg-primary text-white" : "text-[#555] hover:bg-black/5"}`}>
             All <span className={!valid ? "text-white/80" : "text-[#999]"}>{all}</span>
           </Link>
           {APPLICATION_STATUSES.map((s) => (
-            <Link key={s} href={qs({ status: s })} className={`rounded-md px-3 py-1.5 font-semibold ${valid === s ? "bg-primary text-white" : "text-[#555] hover:bg-black/5"}`}>
+            <Link key={s} href={qs({ status: s })} prefetch={false} className={`rounded-md px-3 py-1.5 font-semibold ${valid === s ? "bg-primary text-white" : "text-[#555] hover:bg-black/5"}`}>
               {STATUS_LABELS[s].label} <span className={valid === s ? "text-white/80" : "text-[#999]"}>{n(s)}</span>
             </Link>
           ))}
