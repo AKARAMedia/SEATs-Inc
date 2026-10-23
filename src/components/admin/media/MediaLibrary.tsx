@@ -2,35 +2,68 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { deleteMediaAction, saveAltAction } from "@/app/admin/media-actions";
-import type { MediaItem, MediaUse } from "@/lib/media-library";
+import type { MediaItem, MediaListFilter, MediaUse } from "@/lib/media-library";
+import { MEDIA_PAGE_SIZES } from "@/lib/media-paging";
 import { confirmDialog } from "../ui/confirm";
+import PageSizeSelect from "../ui/PageSizeSelect";
+import Pagination from "../ui/Pagination";
 import { toast } from "../ui/toast";
 import { uploadImageWithSize } from "../upload";
-import MediaGrid, { filterMedia, fmtSize, type MediaFilter } from "./MediaGrid";
+import MediaGrid, { fmtSize } from "./MediaGrid";
 
-type Filter = MediaFilter | "unused";
+type Filter = MediaListFilter;
+type Counts = Record<Filter, number>;
 
-export default function MediaLibrary({ items, usage }: { items: MediaItem[]; usage: Record<string, MediaUse[]> }) {
+type Props = {
+  items: MediaItem[];
+  usage: Record<string, MediaUse[]>;
+  counts: Counts;
+  total: number;
+  page: number;
+  pages: number;
+  q: string;
+  filter: Filter;
+  limit: number;
+};
+
+export default function MediaLibrary({ items, usage, counts, total, page, pages, q: urlQ, filter, limit }: Props) {
   const router = useRouter();
-  const [q, setQ] = useState("");
-  const [filter, setFilter] = useState<Filter>("all");
+  const [q, setQ] = useState(urlQ);
   const [sel, setSel] = useState<MediaItem | null>(null);
+  const [selKey, setSelKey] = useState("");
+  const [navigating, nav] = useTransition();
   const [alt, setAlt] = useState("");
   const [uploading, setUploading] = useState<{ done: number; total: number } | null>(null);
   const [drag, setDrag] = useState(false);
   const [pending, start] = useTransition();
   const fileRef = useRef<HTMLInputElement>(null);
 
+  // Usage is only loaded for the images on the current page, so a selection from another page is dropped
+  const viewKey = `${urlQ}|${filter}|${page}|${limit}`;
+  if (selKey !== viewKey) {
+    setSelKey(viewKey);
+    setSel(null);
+  }
+
   const uses = (m: MediaItem) => usage[m.url] ?? [];
-  const shown = filter === "unused" ? filterMedia(items, q, "upload").filter((m) => !uses(m).length) : filterMedia(items, q, filter);
-  const counts = {
-    all: items.length,
-    upload: items.filter((m) => m.source === "upload").length,
-    site: items.filter((m) => m.source === "site").length,
-    unused: items.filter((m) => m.source === "upload" && !uses(m).length).length,
+
+  /** Page, limit and filters live in the URL; changing any filter goes back to page 1. */
+  const params = (over: { q?: string; filter?: Filter; limit?: number; page?: number } = {}) => {
+    const o = { q: urlQ, filter, limit, page: 1, ...over };
+    return { ...(o.q && { q: o.q }), ...(o.filter !== "all" && { filter: o.filter }), limit: String(o.limit), page: String(o.page) };
   };
+  const go = (over: Parameters<typeof params>[0]) => nav(() => router.push(`/admin/media/?${new URLSearchParams(params(over))}`));
+
+  // Search as you type, after a short pause
+  useEffect(() => {
+    const next = q.trim();
+    if (next === urlQ) return;
+    const t = setTimeout(() => nav(() => router.push(`/admin/media/?${new URLSearchParams(params({ q: next }))}`)), 300);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only a change to the typed text should schedule a search
+  }, [q]);
 
   const select = (m: MediaItem) => {
     setSel(m);
@@ -54,7 +87,7 @@ export default function MediaLibrary({ items, usage }: { items: MediaItem[]; usa
     setUploading(null);
     if (fileRef.current) fileRef.current.value = "";
     if (list.length - failed) toast(`${list.length - failed} image${list.length - failed > 1 ? "s" : ""} uploaded.`);
-    setFilter("upload");
+    go({ filter: "upload" });
     router.refresh();
   }
 
@@ -93,7 +126,7 @@ export default function MediaLibrary({ items, usage }: { items: MediaItem[]; usa
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by file name or description…" className="admin-input !w-72 max-w-full" aria-label="Search images" />
           <div className="flex flex-wrap rounded-lg bg-white p-1 ring-1 ring-black/5 text-[13px]">
             {tabs.map(([k, l]) => (
-              <button key={k} type="button" onClick={() => setFilter(k)} className={`rounded-md px-3 py-1.5 font-semibold ${filter === k ? "bg-primary text-white" : "text-[#555] hover:bg-black/5"}`}>
+              <button key={k} type="button" onClick={() => go({ filter: k })} className={`rounded-md px-3 py-1.5 font-semibold ${filter === k ? "bg-primary text-white" : "text-[#555] hover:bg-black/5"}`}>
                 {l} <span className={filter === k ? "text-white/80" : "text-[#999]"}>{counts[k]}</span>
               </button>
             ))}
@@ -104,10 +137,10 @@ export default function MediaLibrary({ items, usage }: { items: MediaItem[]; usa
           </button>
         </div>
         <p className="text-[12px] text-[#999]">Tip: drag photos from your computer anywhere onto this page to upload several at once. Large photos are resized automatically.</p>
-        <div className="admin-card p-3">
-          {shown.length ? (
+        <div className={`admin-card p-3 transition-opacity ${navigating ? "opacity-60" : ""}`}>
+          {items.length ? (
             <MediaGrid
-              items={shown}
+              items={items}
               selected={sel?.url}
               onSelect={select}
               badge={(m) =>
@@ -118,6 +151,11 @@ export default function MediaLibrary({ items, usage }: { items: MediaItem[]; usa
           ) : (
             <p className="py-12 text-center text-[#999]">{filter === "unused" ? "No unused uploads. 👍" : "No images match."}</p>
           )}
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          <Pagination page={page} pages={pages} href={(n) => `/admin/media/?${new URLSearchParams(params({ page: n }))}`} />
+          <PageSizeSelect sizes={MEDIA_PAGE_SIZES} value={limit} params={{ ...(urlQ && { q: urlQ }), ...(filter !== "all" && { filter }) }} />
+          <span className="text-[12px] text-[#999]">{total} image{total === 1 ? "" : "s"}</span>
         </div>
       </div>
 

@@ -354,3 +354,18 @@ export function MaintenanceForm({ value }: { value: Settings["maintenance"] }) {
     </Shell>
   );
 }
+
+export function CareerHrContactForm({ value }: { value: Settings["careerHrContact"] }) {
+  return (
+    <Shell group="careerHrContact" note="Shown on every seatsinc-career.com job detail page. No photo is shown, by design.">
+      {(s) => (
+        <div className="grid gap-4 md:grid-cols-2">
+          <Text state={s} name="name" label="Name" defaultValue={value.name} />
+          <Text state={s} type="email" name="email" label="Email" defaultValue={value.email} />
+          <Text state={s} name="phone" label="Phone" defaultValue={value.phone} />
+          <Text state={s} name="address" label="Address" defaultValue={value.address} />
+        </div>
+      )}
+    </Shell>
+  );
+}

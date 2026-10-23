@@ -1,12 +1,12 @@
 import "server-only";
-import { and, asc, count, desc, eq, gt, isNull, or } from "drizzle-orm";
+import { and, asc, count, desc, eq } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { jobApplications, jobs, type ApplicationStatus } from "@/db/schema";
 import type { Lang } from "@/lib/i18n";
 
 export const CAREERS_TAG = "careers";
 
-export type PublicJob = { slug: string; title: string; department: string; location: string; type: string; description: string; closesAt: string | null };
+export type PublicJob = { slug: string; title: string; department: string; location: string; type: string; description: string; postedAt: string };
 
 function localize(j: typeof jobs.$inferSelect, lang: Lang): PublicJob {
   const ja = lang === "ja";
@@ -17,12 +17,12 @@ function localize(j: typeof jobs.$inferSelect, lang: Lang): PublicJob {
     location: j.location,
     type: j.type,
     description: (ja && j.descriptionJa) || j.descriptionEn,
-    closesAt: j.closesAt?.toISOString() ?? null,
+    postedAt: j.createdAt.toISOString(),
   };
 }
 
-/** Open and not past its closing date. */
-const accepting = () => and(eq(jobs.open, true), or(isNull(jobs.closesAt), gt(jobs.closesAt, new Date())));
+/** Open and belongs to this site (not the seatsinc-career.com jobs). */
+const accepting = () => and(eq(jobs.site, "main"), eq(jobs.open, true));
 
 export async function listOpenJobs(lang: Lang): Promise<PublicJob[]> {
   await ready();

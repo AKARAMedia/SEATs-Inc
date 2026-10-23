@@ -6,6 +6,7 @@ import { and, eq, ne } from "drizzle-orm";
 import { z } from "zod";
 import { db, ready } from "@/db";
 import { APPLICATION_STATUSES, JOB_TYPES, jobApplications, jobs, translationItems } from "@/db/schema";
+import { toLocalInput } from "@/lib/admin-data";
 import { requireAdmin } from "@/lib/auth";
 import { logActivity } from "@/lib/activity";
 import { CAREERS_TAG } from "@/lib/careers";
@@ -22,7 +23,7 @@ const JobInput = z.object({
   descriptionEn: z.string().default(""),
   descriptionJa: z.string().default(""),
   slug: z.string().trim().max(120).default(""),
-  closesAt: z.string().default(""),
+  postedAt: z.string().regex(/^(\d{4}-\d{2}-\d{2})?$/, "Invalid date").default(""),
 });
 
 export async function saveJobAction(_: FormState, fd: FormData): Promise<FormState> {
@@ -42,13 +43,15 @@ export async function saveJobAction(_: FormState, fd: FormData): Promise<FormSta
     .from(jobs)
     .where(id ? and(eq(jobs.slug, slug), ne(jobs.id, id)) : eq(jobs.slug, slug));
   if (clash) return { error: "Another job already uses this URL.", fieldErrors: { slug: "Already in use" } };
-  const closesAt = d.closesAt ? new Date(d.closesAt.length === 16 ? `${d.closesAt}:00+07:00` : d.closesAt) : null;
-  if (closesAt && Number.isNaN(closesAt.getTime())) return { error: "Invalid closing date.", fieldErrors: { closesAt: "Invalid date" } };
+  const { postedAt, ...rest } = d;
+  const posted = postedAt ? new Date(`${postedAt}T00:00:00+07:00`) : null;
+  if (posted && Number.isNaN(posted.getTime())) return { error: "Invalid posted date.", fieldErrors: { postedAt: "Invalid date" } };
 
   const values = {
-    ...d,
+    ...rest,
+    site: "main" as const,
     slug,
-    closesAt,
+    closesAt: null, // closing dates are no longer used; clear any old value so the job stays listed
     open: fd.get("open") === "on",
     descriptionEn: sanitizeBody(d.descriptionEn),
     descriptionJa: sanitizeBody(d.descriptionJa),
@@ -56,13 +59,16 @@ export async function saveJobAction(_: FormState, fd: FormData): Promise<FormSta
   };
   let jobId = id;
   if (id) {
-    const [prev] = await db.select().from(jobs).where(eq(jobs.id, id));
-    await db.update(jobs).set(values).where(eq(jobs.id, id));
-    if (prev && (prev.titleJa !== values.titleJa || htmlText(prev.descriptionJa) !== htmlText(values.descriptionJa))) {
+    const [prev] = await db.select().from(jobs).where(and(eq(jobs.id, id), eq(jobs.site, "main")));
+    if (!prev) return { error: "Job not found." };
+    // Only move the posted date when it was actually changed, so saving doesn't reset the time of day
+    const moved = posted && toLocalInput(prev.createdAt).slice(0, 10) !== postedAt;
+    await db.update(jobs).set(moved ? { ...values, createdAt: posted } : values).where(eq(jobs.id, id));
+    if (prev.titleJa !== values.titleJa || htmlText(prev.descriptionJa) !== htmlText(values.descriptionJa)) {
       await db.delete(translationItems).where(eq(translationItems.key, `job:${id}`));
     }
   } else {
-    [{ id: jobId }] = await db.insert(jobs).values(values).returning({ id: jobs.id });
+    [{ id: jobId }] = await db.insert(jobs).values(posted ? { ...values, createdAt: posted } : values).returning({ id: jobs.id });
   }
   await logActivity(who, id ? "job.update" : "job.create", { type: "job", id: jobId, summary: d.titleEn });
   updateTag(CAREERS_TAG);
@@ -72,7 +78,11 @@ export async function saveJobAction(_: FormState, fd: FormData): Promise<FormSta
 export async function setJobOpenAction(id: number, open: boolean) {
   const who = await requireAdmin("careers");
   await ready();
-  const [row] = await db.update(jobs).set({ open, updatedAt: new Date() }).where(eq(jobs.id, id)).returning({ title: jobs.titleEn });
+  const [row] = await db
+    .update(jobs)
+    .set({ open, updatedAt: new Date() })
+    .where(and(eq(jobs.id, id), eq(jobs.site, "main")))
+    .returning({ title: jobs.titleEn });
   await logActivity(who, open ? "job.open" : "job.close", { type: "job", id, summary: row?.title ?? "" });
   updateTag(CAREERS_TAG);
   refresh();
@@ -83,7 +93,10 @@ export async function deleteJobAction(fd: FormData) {
   await ready();
   const id = Number(fd.get("id"));
   // Applications are kept (job title is stored on each application)
-  const [row] = await db.delete(jobs).where(eq(jobs.id, id)).returning({ title: jobs.titleEn });
+  const [row] = await db
+    .delete(jobs)
+    .where(and(eq(jobs.id, id), eq(jobs.site, "main")))
+    .returning({ title: jobs.titleEn });
   await db.delete(translationItems).where(eq(translationItems.key, `job:${id}`));
   if (row) await logActivity(who, "job.delete", { type: "job", id, summary: row.title });
   updateTag(CAREERS_TAG);
