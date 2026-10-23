@@ -41,7 +41,7 @@ export default function UserForm({ values, isSelf }: { values: Values; isSelf?: 
 
       <fieldset>
         <legend className="admin-label">Role</legend>
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {(Object.keys(ROLE_LABELS) as Role[]).map((r) => (
             <label
               key={r}

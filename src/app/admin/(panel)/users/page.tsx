@@ -5,7 +5,12 @@ import { ROLE_LABELS } from "@/lib/permissions";
 
 export const metadata = { title: "Users" };
 
-const ROLE_STYLE = { admin: "bg-primary/10 text-primary", editor: "bg-violet-50 text-violet-700", translator: "bg-amber-50 text-amber-700" };
+const ROLE_STYLE = {
+  admin: "bg-primary/10 text-primary",
+  editor: "bg-violet-50 text-violet-700",
+  translator: "bg-amber-50 text-amber-700",
+  hr: "bg-emerald-50 text-emerald-700",
+};
 
 export default async function UsersPage() {
   const [users, me] = await Promise.all([adminUsersList(), getSession()]);
