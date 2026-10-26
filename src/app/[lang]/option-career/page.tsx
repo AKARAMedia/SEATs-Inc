@@ -7,6 +7,11 @@ import { listOpenJobs } from "@/lib/careers";
 import { href } from "@/lib/i18n";
 import Link from "next/link";
 import { isLang } from "@/lib/i18n";
+import { RECRUIT_HERO_IMAGE } from "@/content/pages/option-career";
+import RecruitCtaButtons from "@/components/sections/RecruitCtaButtons";
+import WhyJoinUs from "@/components/sections/WhyJoinUs";
+import OurBusinesses from "@/components/sections/OurBusinesses";
+import MeetOurMembers from "@/components/sections/MeetOurMembers";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"], display: "swap" });
 
@@ -18,8 +23,6 @@ export default async function Page({ params }: PageProps<"/[lang]/option-career"
   // Editable in admin → Pages
   const [{ CAREER }, openJobs] = await Promise.all([getPage("option-career"), listOpenJobs(lang)]);
   const c = CAREER;
-  const [cambodian, japanese] = c.buttons;
-  const btn = "inline-flex items-center justify-center bg-[#0080cc] text-[#f5f5f5] hover:bg-accent hover:text-white";
 
   return (
     <div className="relative overflow-hidden" style={{ "--font-montserrat": montserrat.style.fontFamily } as React.CSSProperties}>
@@ -39,39 +42,30 @@ export default async function Page({ params }: PageProps<"/[lang]/option-career"
         className="pointer-events-none absolute right-[-73px] top-[14px] hidden h-auto w-[272px] desktop:block"
       />
 
-      <div className="container-site relative flex flex-col items-center pb-[60px] pt-[67px] desktop:block desktop:pb-[56px] desktop:pt-[239px]">
-        <Image
-          src={c.images.hero.src}
-          alt="Join S.E.A.T.S Inc."
-          width={c.images.hero.width}
-          height={c.images.hero.height}
-          priority
-          sizes="(min-width: 1025px) 384px, 230px"
-          className="h-auto w-[230px] desktop:absolute desktop:left-[767px] desktop:top-[180px] desktop:w-[384px]"
-        />
+      <div className="container-site relative grid gap-10 pb-[60px] pt-[67px] desktop:grid-cols-2 desktop:items-center desktop:gap-16 desktop:pb-[80px] desktop:pt-[120px]">
+        <div className="relative order-2 aspect-[16/9] w-full overflow-hidden rounded-2xl shadow-lg desktop:order-1">
+          <Image
+            src={RECRUIT_HERO_IMAGE.src}
+            alt="S.E.A.T.S Inc. team"
+            fill
+            priority
+            sizes="(min-width: 1025px) 50vw, 100vw"
+            className="object-cover"
+          />
+        </div>
 
-        <div className="w-full text-center desktop:-ml-[10px] desktop:w-[667px]">
+        <div className="order-1 w-full text-center desktop:order-2 desktop:text-left">
           <p
-            className={`${montserrat.className} mt-[30px] text-[32px] font-bold leading-[1.4] text-[#0080cc] desktop:mt-0 desktop:text-left desktop:text-[90px] desktop:leading-[100px]`}
+            className={`${montserrat.className} text-[32px] font-bold leading-[1.4] text-[#0080cc] desktop:text-[56px] desktop:leading-[1.1]`}
           >
             <span className="mr-[30px] desktop:mr-0 desktop:block">{c.heading.join}</span>
-            <span className="mr-[30px] text-[#abcd05] desktop:mr-[45px]">{c.heading.our}</span>
+            <span className="mr-[30px] text-[#abcd05] desktop:mr-[20px]">{c.heading.our}</span>
             <span>{c.heading.team}</span>
           </p>
-          <p className="mt-[25px] text-[16px] leading-[1.6] desktop:mt-[41px]">{c.text[lang]}</p>
+          <p className="mt-[25px] text-[16px] leading-[1.6]">{c.text[lang]}</p>
 
-          <div className="mt-[35px] flex flex-col items-center gap-[25px] desktop:mt-[85px] desktop:flex-row desktop:gap-[47px] desktop:pl-[109px]">
-            <a
-              href={cambodian.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${btn} h-[26px] w-[236px] font-[family-name:var(--font-montserrat)] text-[16px] desktop:h-[29px] desktop:w-[188px] desktop:font-sans desktop:text-[13px]`}
-            >
-              {cambodian.label}
-            </a>
-            <a href={japanese.href} className={`${btn} ${montserrat.className} h-[26px] w-[236px] text-[16px] desktop:h-[32px] desktop:w-[216px]`}>
-              {japanese.label}
-            </a>
+          <div className="mt-[35px] flex justify-center desktop:mt-[45px] desktop:justify-start">
+            <RecruitCtaButtons lang={lang} size="lg" />
           </div>
         </div>
       </div>
@@ -102,6 +96,16 @@ export default async function Page({ params }: PageProps<"/[lang]/option-career"
           </ul>
         </section>
       )}
+
+      <WhyJoinUs lang={lang} />
+      <OurBusinesses lang={lang} />
+      <MeetOurMembers lang={lang} />
+
+      <section className="py-16 tablet:py-20">
+        <div className="container-site flex justify-center">
+          <RecruitCtaButtons lang={lang} size="md" />
+        </div>
+      </section>
     </div>
   );
 }

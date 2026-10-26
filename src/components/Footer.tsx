@@ -9,9 +9,9 @@ const link = "text-white/90 hover:text-white";
 export default function Footer({ lang, company }: { lang: Lang; company: Settings["company"] }) {
   const f = FOOTER;
   return (
-    <footer className="bg-footer text-[16px] leading-[1.6] text-white/80">
+    <footer className="bg-footer text-[16px] leading-[1.6] text-white/90">
       <div className="mx-auto max-w-[1192px] px-[15px] pt-[50px]">
-        <div className="grid gap-y-6 tablet:grid-cols-2 desktop:grid-cols-[268px_169px_268px_1fr] desktop:gap-x-[30px]">
+        <div className="grid gap-y-6 tablet:grid-cols-2 tablet:gap-x-8 desktop:grid-cols-[268px_169px_268px_1fr] desktop:gap-x-[30px]">
           <div>
             <h5 className="mb-5 text-[16px] font-bold leading-[1.4] text-white">{f.about.title[lang]}</h5>
             <p>
