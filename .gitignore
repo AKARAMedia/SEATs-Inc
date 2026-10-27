@@ -46,6 +46,7 @@ next-env.d.ts
 /qa
 /public/uploads
 !.env.example
+!.env.deploy.example
 
 # Cloudflare (OpenNext)
 /.open-next/

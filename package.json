@@ -16,7 +16,7 @@
     "qa:screens": "node scripts/screenshot.mjs",
     "cf:build": "cross-env CLOUDFLARE_BUILD=1 opennextjs-cloudflare build",
     "cf:preview": "npm run cf:build && opennextjs-cloudflare preview",
-    "cf:deploy": "npm run cf:build && opennextjs-cloudflare deploy"
+    "cf:deploy": "npm run cf:build && dotenvx run -f .env.deploy -- opennextjs-cloudflare deploy"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.8",
