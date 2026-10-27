@@ -11,8 +11,16 @@ const legacy: Record<string, string> = LEGACY_SLUGS;
 // URL scheme mirrors the old WordPress/TranslatePress site:
 //   /overview/      -> English (internally /en/overview)
 //   /ja/overview/   -> Japanese
+// Automated vulnerability/exploit scanners constantly probe WordPress-style paths that don't
+// exist on this Next.js site. Without this, each one still falls through to the full [lang]
+// layout render (DB settings lookup, fonts, etc.) at real CPU cost — observed ~500ms+ CPU per
+// hit in Workers logs. Bail out with a bare 404 before any of that runs.
+const BOT_PROBE = /\.(php|asp|aspx|jsp|cgi|env)$|^\/(wp-admin|wp-content|wp-includes|wp-login|xmlrpc\.php|cgi-bin)(\/|$)/i;
+
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  if (BOT_PROBE.test(pathname)) return new NextResponse("Not found", { status: 404 });
 
   if (pathname.startsWith("/admin")) {
     if (pathname.replace(/\/$/, "") === "/admin/login") return NextResponse.next();
@@ -68,5 +76,8 @@ function safeDecode(s: string) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next|media|uploads|favicon.ico|icon.png|robots.txt|sitemap.xml|.*\\.[a-z0-9]+$).*)"],
+  // No longer excludes dotted paths (e.g. "*.php") — those never match a real static asset
+  // (which Cloudflare serves without invoking the Worker at all) so they'd otherwise fall
+  // through to a full, expensive Next.js render just to 404. Let BOT_PROBE catch them cheaply.
+  matcher: ["/((?!api|_next|media|uploads|favicon.ico|icon.png|robots.txt|sitemap.xml).*)"],
 };
