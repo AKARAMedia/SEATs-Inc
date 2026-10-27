@@ -6,7 +6,7 @@ import { categories, posts, type Category, type Post } from "@/db/schema";
 import type { Lang } from "@/lib/i18n";
 
 export const NEWS_TAG = "news";
-export const PAGE_SIZE = 12;
+export const PAGE_SIZE = 9;
 
 export type NewsItem = {
   slug: string;

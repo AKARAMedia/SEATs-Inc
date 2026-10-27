@@ -20,7 +20,7 @@ export default async function NewsEventPage({ params, searchParams }: PageProps<
   const sp = await searchParams;
   const q = typeof sp.s === "string" ? sp.s.trim() : "";
   const page = Math.max(1, Number(sp.page) || 1);
-  // 12 posts per page (PAGE_SIZE in lib/news.ts), server-paginated — avoids fetching/rendering
+  // PAGE_SIZE posts per page (lib/news.ts), server-paginated — avoids fetching/rendering
   // every published post on every request.
   const { items, pages } = await listNews(lang, { q: q || undefined, page });
   const pageHref = (n: number) => href(lang, `/news-event/${n > 1 || q ? `?${new URLSearchParams({ ...(q && { s: q }), ...(n > 1 && { page: String(n) }) })}` : ""}`);
