@@ -98,37 +98,3 @@ export const OUR_BUSINESSES: {
     href: "/pisa-food-retail/",
   },
 ];
-
-// Names/roles/quotes copied verbatim from the sibling SEATs-Inc-Career site's real employee
-// interviews (its INTERVIEWS array) — real people, real quotes. Paired here with neutral
-// activity photos (not their original poster-style graphics, which have baked-in text/decor
-// that wouldn't fit a clean redesign) from this repo's own overview.ts IN_ACTION set.
-export const MEET_OUR_MEMBERS = [
-  {
-    name: "Phatya Seng",
-    role: "Sales Promotion Supervisor",
-    photo: { src: "/media/2025/03/photo_2_2025-03-19_10-32-19.jpg", width: 1280, height: 721 },
-    quote:
-      "10 years in, my biggest challenge has been adapting as the company grows: team structures shift, roles blur and workloads rise. It built my problem-solving, communication and ownership. I stay for the chance to grow, take on new responsibilities and help teammates reach their goals.",
-  },
-  {
-    name: "Linda Ny",
-    role: "Operation Control",
-    photo: { src: "/media/2025/07/Container-e1751446909896.jpg", width: 1976, height: 1100 },
-    quote:
-      "4.5 years and still going strong. Juggling orders, payments, deliveries and last-minute issues is messy but never boring; it keeps me thinking fast and organized. What keeps me here is the team energy: we support each other, communicate openly and solve problems together.",
-  },
-  {
-    name: "Kazuhiro Okuda",
-    role: "General Manager, Agri-Business",
-    photo: { src: "/media/2025/06/photo_2025-06-19_09-19-32-e1750824385905.jpg", width: 1280, height: 720 },
-    quote: "Our dedicated General Manager in Agri-Business, and a key part of our growth since day one. Stay tuned for his inspiring journey.",
-  },
-  {
-    name: "Poch Bunthy",
-    role: "General Manager, NOVA Marketing",
-    photo: { src: "/media/2025/06/photo_2025-06-19_09-19-27-e1750824586482.jpg", width: 1280, height: 720 },
-    quote:
-      "Our visionary General Manager, shaping Nova Marketing's journey since day one. His dedication and leadership are at the heart of our success. Stay tuned for his story.",
-  },
-] as const;

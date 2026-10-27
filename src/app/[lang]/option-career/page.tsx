@@ -11,7 +11,6 @@ import { RECRUIT_HERO_IMAGE } from "@/content/pages/option-career";
 import RecruitCtaButtons from "@/components/sections/RecruitCtaButtons";
 import WhyJoinUs from "@/components/sections/WhyJoinUs";
 import OurBusinesses from "@/components/sections/OurBusinesses";
-import MeetOurMembers from "@/components/sections/MeetOurMembers";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"], display: "swap" });
 
@@ -99,7 +98,6 @@ export default async function Page({ params }: PageProps<"/[lang]/option-career"
 
       <WhyJoinUs lang={lang} />
       <OurBusinesses lang={lang} />
-      <MeetOurMembers lang={lang} />
 
       <section className="py-16 tablet:py-20">
         <div className="container-site flex justify-center">
