@@ -68,6 +68,33 @@ export async function saveCareerJobAction(_: FormState, fd: FormData): Promise<F
   redirect(`/admin/career-jobs/${jobId}/?flash=${id ? "saved" : "jobCreated"}`);
 }
 
+const QuickEditInput = z.object({
+  type: z.string().trim().min(1).max(60),
+  department: z.string().trim().max(100).default(""),
+  location: z.string().trim().max(300).default(""),
+  salaryRange: z.string().trim().max(60).default(""),
+  workDays: z.string().trim().max(60).default(""),
+});
+
+export type QuickEditState = { error?: string } | undefined;
+
+/** Edits just the list-level fields from the Career Jobs list, without opening the full job editor. */
+export async function quickEditCareerJobAction(_: QuickEditState, fd: FormData): Promise<QuickEditState> {
+  const who = await requireAdmin("careers");
+  await ready();
+  const id = Number(fd.get("id"));
+  const parsed = QuickEditInput.safeParse(Object.fromEntries(fd));
+  if (!parsed.success) return { error: "Please check the highlighted fields." };
+  const [row] = await db
+    .update(jobs)
+    .set({ ...parsed.data, updatedAt: new Date() })
+    .where(and(eq(jobs.id, id), eq(jobs.site, "career")))
+    .returning({ title: jobs.titleEn });
+  if (!row) return { error: "Job not found." };
+  await logActivity(who, "job.update", { type: "job", id, summary: `${row.title} (career site, quick edit)` });
+  refresh();
+}
+
 export async function setCareerJobOpenAction(id: number, open: boolean) {
   const who = await requireAdmin("careers");
   await ready();

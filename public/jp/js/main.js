@@ -76,45 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
 
-  // ----- Facebook Page timeline (official Page Plugin, no SDK) -----
-  // The plugin renders at the width given in its URL, so keep that in step
-  // with the container or the timeline is clipped on narrow screens.
-  var fbFrame = document.querySelector('.fb-feed-frame');
-
-  if (fbFrame) {
-    var fbIframe = fbFrame.querySelector('.fb-feed-iframe');
-    var fbPageUrl = fbIframe.getAttribute('data-page-url');
-    var fbWidth = 0;
-    var fbTimer;
-
-    var sizeFbTimeline = function () {
-      // The Page Plugin only supports 180-500px.
-      // Measure the iframe itself: the frame's clientWidth includes its padding.
-      var w = Math.max(180, Math.min(500, Math.floor(fbIframe.clientWidth)));
-      if (w === fbWidth) return;
-      fbWidth = w;
-
-      fbIframe.src = 'https://www.facebook.com/plugins/page.php' +
-        '?href=' + encodeURIComponent(fbPageUrl) +
-        '&tabs=timeline' +
-        '&width=' + w +
-        '&height=620' +
-        '&small_header=false' +
-        '&adapt_container_width=true' +
-        '&hide_cover=false' +
-        '&show_facepile=true' +
-        '&locale=ja_JP';
-    };
-
-    sizeFbTimeline();
-
-    window.addEventListener('resize', function () {
-      clearTimeout(fbTimer);
-      fbTimer = setTimeout(sizeFbTimeline, 250);
-    });
-  }
-
-
   // ----- Floating bonus button (FAB) -----
   // Links to https://seats-inc.com/jp/#contact. When the form is on this
   // same page, scroll to it smoothly instead of reloading the page.

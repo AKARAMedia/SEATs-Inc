@@ -36,9 +36,14 @@ export async function getOpenJob(lang: Lang, slug: string) {
   return row ? { id: row.id, ...localize(row, lang) } : null;
 }
 
-export async function newApplicationCount() {
+/** New applications for a given job site, so the main Careers and Career Jobs sidebar badges don't mix. */
+export async function newApplicationCount(site: "main" | "career" = "main") {
   await ready();
-  const [{ n }] = await db.select({ n: count() }).from(jobApplications).where(eq(jobApplications.status, "new"));
+  const [{ n }] = await db
+    .select({ n: count() })
+    .from(jobApplications)
+    .innerJoin(jobs, eq(jobApplications.jobId, jobs.id))
+    .where(and(eq(jobs.site, site), eq(jobApplications.status, "new")));
   return n;
 }
 

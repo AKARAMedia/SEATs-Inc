@@ -5,7 +5,12 @@ import { ROLE_LABELS } from "@/lib/permissions";
 
 export const metadata = { title: "Users" };
 
-const ROLE_STYLE = { admin: "bg-primary/10 text-primary", editor: "bg-violet-50 text-violet-700", translator: "bg-amber-50 text-amber-700" };
+const ROLE_STYLE = {
+  admin: "bg-primary/10 text-primary",
+  editor: "bg-violet-50 text-violet-700",
+  translator: "bg-amber-50 text-amber-700",
+  hr: "bg-emerald-50 text-emerald-700",
+};
 
 export default async function UsersPage() {
   const [users, me] = await Promise.all([adminUsersList(), getSession()]);
@@ -26,7 +31,7 @@ export default async function UsersPage() {
       <ul className="admin-card divide-y divide-black/5">
         {users.map((u) => (
           <li key={u.id}>
-            <Link href={`/admin/users/${u.id}/`} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-[#fafbfc]">
+            <Link href={`/admin/users/${u.id}/`} prefetch={false} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 hover:bg-[#fafbfc]">
               <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-black/5 text-[14px] font-semibold text-[#555]">
                 {(u.name || u.email).slice(0, 1).toUpperCase()}
               </span>

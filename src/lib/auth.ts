@@ -12,7 +12,7 @@ import { adminSessions, adminUsers, loginAttempts, type Role } from "@/db/schema
 import { SESSION_COOKIE, sessionKey } from "./session-key";
 import { can, type Perm } from "./permissions";
 
-const MAX_AGE = 60 * 60 * 12; // 12h
+const MAX_AGE = 60 * 60 * 24 * 30; // 30d
 const LOCK_WINDOW_MS = 15 * 60 * 1000;
 const MAX_FAILS_PER_EMAIL = 5;
 const MAX_FAILS_PER_IP = 20;

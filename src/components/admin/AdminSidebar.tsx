@@ -8,7 +8,7 @@ import type { Role } from "@/db/schema";
 import { can, ROLE_LABELS, type Perm } from "@/lib/permissions";
 import { Icon, type IconName } from "./ui/icons";
 
-type Item = { href: string; label: string; icon: IconName; perm?: Perm; badge?: "unread" | "applications"; match: (p: string) => boolean };
+type Item = { href: string; label: string; icon: IconName; perm?: Perm; badge?: "unread" | "applications" | "careerApplications"; match: (p: string) => boolean };
 
 const SECTIONS: { title: string; items: Item[] }[] = [
   {
@@ -35,7 +35,16 @@ const SECTIONS: { title: string; items: Item[] }[] = [
   },
   {
     title: "Career Site",
-    items: [{ href: "/admin/career-jobs/", label: "Career Jobs", icon: "briefcase", perm: "careers", match: (p) => p.startsWith("/admin/career-jobs") }],
+    items: [
+      {
+        href: "/admin/career-jobs/",
+        label: "Career Jobs",
+        icon: "briefcase",
+        perm: "careers",
+        badge: "careerApplications",
+        match: (p) => p.startsWith("/admin/career-jobs"),
+      },
+    ],
   },
   {
     title: "System",
@@ -49,7 +58,20 @@ const SECTIONS: { title: string; items: Item[] }[] = [
 
 type User = { name: string; email: string; role: Role };
 
-function NavLinks({ role, pathname, unread, applications }: { role: Role; pathname: string; unread: number; applications: number }) {
+function NavLinks({
+  role,
+  pathname,
+  unread,
+  applications,
+  careerApplications,
+}: {
+  role: Role;
+  pathname: string;
+  unread: number;
+  applications: number;
+  careerApplications: number;
+}) {
+  const badgeValue = { unread, applications, careerApplications };
   return (
     <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4">
       {SECTIONS.map((s) => {
@@ -64,6 +86,7 @@ function NavLinks({ role, pathname, unread, applications }: { role: Role; pathna
                 <Link
                   key={i.href}
                   href={i.href}
+                  prefetch={false}
                   aria-current={active ? "page" : undefined}
                   className={`flex items-center gap-3 rounded-md px-3 py-2 text-[14px] font-medium ${
                     active ? "bg-primary/10 text-primary" : "text-[#4a5561] hover:bg-black/[0.04] hover:text-[#222]"
@@ -71,9 +94,9 @@ function NavLinks({ role, pathname, unread, applications }: { role: Role; pathna
                 >
                   <Icon name={i.icon} />
                   <span className="flex-1">{i.label}</span>
-                  {i.badge && (i.badge === "unread" ? unread : applications) > 0 && (
-                    <span className="min-w-5 rounded-full bg-red-600 px-1.5 text-center text-[11px] font-bold leading-5 text-white" aria-label={`${i.badge === "unread" ? unread : applications} new`}>
-                      {Math.min(99, i.badge === "unread" ? unread : applications)}
+                  {i.badge && badgeValue[i.badge] > 0 && (
+                    <span className="min-w-5 rounded-full bg-red-600 px-1.5 text-center text-[11px] font-bold leading-5 text-white" aria-label={`${badgeValue[i.badge]} new`}>
+                      {Math.min(99, badgeValue[i.badge])}
                     </span>
                   )}
                 </Link>
@@ -116,7 +139,19 @@ function UserBox({ user, pathname, logout }: { user: User; pathname: string; log
 }
 
 /** Fixed sidebar on desktop; top bar with a slide-out drawer below 1024px. */
-export default function AdminSidebar({ user, unread, applications, logout }: { user: User; unread: number; applications: number; logout: () => Promise<void> }) {
+export default function AdminSidebar({
+  user,
+  unread,
+  applications,
+  careerApplications,
+  logout,
+}: {
+  user: User;
+  unread: number;
+  applications: number;
+  careerApplications: number;
+  logout: () => Promise<void>;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
@@ -177,7 +212,7 @@ export default function AdminSidebar({ user, unread, applications, logout }: { u
             <Icon name="close" className="size-5" />
           </button>
         </div>
-        <NavLinks role={user.role} pathname={pathname} unread={unread} applications={applications} />
+        <NavLinks role={user.role} pathname={pathname} unread={unread} applications={applications} careerApplications={careerApplications} />
         <UserBox user={user} pathname={pathname} logout={logout} />
       </aside>
     </>

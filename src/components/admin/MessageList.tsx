@@ -100,7 +100,7 @@ export default function MessageList({ rows, archivedView, back }: { rows: Messag
                 aria-label={`Select message from ${m.name}`}
               />
               <span className={`mt-2 size-2 shrink-0 rounded-full ${unread ? "bg-primary" : ""}`} title={unread ? "Unread" : undefined} />
-              <Link href={`/admin/messages/${m.id}/`} className="min-w-0 flex-1">
+              <Link href={`/admin/messages/${m.id}/`} prefetch={false} className="min-w-0 flex-1">
                 <span className="flex items-baseline gap-2">
                   <span className={`truncate text-[14px] ${unread ? "font-bold text-[#111]" : "font-medium text-[#444]"}`}>{m.name}</span>
                   {company && <span className="hidden truncate text-[13px] text-[#888] sm:inline">· {company}</span>}

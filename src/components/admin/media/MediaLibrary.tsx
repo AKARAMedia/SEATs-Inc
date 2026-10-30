@@ -207,7 +207,7 @@ export default function MediaLibrary({ items, usage, counts, total, page, pages,
                 <ul className="space-y-1 text-[13px]">
                   {uses(sel).map((u) => (
                     <li key={u.label}>
-                      <Link href={u.href} className="text-primary hover:underline">
+                      <Link href={u.href} prefetch={false} className="text-primary hover:underline">
                         {u.label}
                       </Link>
                     </li>

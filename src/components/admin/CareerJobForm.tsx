@@ -2,7 +2,7 @@
 
 import { startTransition, useActionState, useRef } from "react";
 import { saveCareerJobAction } from "@/app/admin/career-job-actions";
-import { JOB_TYPES } from "@/db/schema";
+import { CAREER_DEPARTMENTS, CAREER_JOB_TYPES } from "@/lib/career-departments";
 import RichTextEditor from "./RichTextEditor";
 import { FieldError, FormError } from "./ui/Field";
 import { useUnsavedChanges } from "./ui/useUnsavedChanges";
@@ -21,11 +21,6 @@ export type CareerJobValues = {
   open: boolean;
 };
 
-const DEPARTMENTS = ["NOVA Marketing", "Lokajapanesefoodsbeverage", "SEATS Inc", "SEATS Farm", "PISA Food Retail", "SELECT STORE SORA"];
-
-// The career site also posts freelance work, which the main-site list doesn't have
-const CAREER_JOB_TYPES: readonly string[] = [...JOB_TYPES, "Freelance"];
-
 export default function CareerJobForm({ values }: { values: CareerJobValues }) {
   const [state, action, pending] = useActionState(saveCareerJobAction, undefined);
   const ref = useRef<HTMLFormElement>(null);
@@ -34,7 +29,7 @@ export default function CareerJobForm({ values }: { values: CareerJobValues }) {
   const types = CAREER_JOB_TYPES.includes(values.type) ? CAREER_JOB_TYPES : [...CAREER_JOB_TYPES, values.type];
 
   // A department typed before this was a dropdown stays selectable so saving doesn't clear it
-  const departments = !values.department || DEPARTMENTS.includes(values.department) ? DEPARTMENTS : [...DEPARTMENTS, values.department];
+  const departments = !values.department || CAREER_DEPARTMENTS.includes(values.department) ? CAREER_DEPARTMENTS : [...CAREER_DEPARTMENTS, values.department];
 
   return (
     <form

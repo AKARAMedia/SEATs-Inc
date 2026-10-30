@@ -152,7 +152,7 @@ export default async function ActivityPage({ searchParams }: PageProps<"/admin/a
                       <strong className="font-semibold text-[#222]">{r.userName}</strong> <span className="text-[#555]">{ACTIONS[r.action] ?? r.action}</span>{" "}
                       {r.summary &&
                         (link ? (
-                          <Link href={link} className="text-primary hover:underline">
+                          <Link href={link} prefetch={false} className="text-primary hover:underline">
                             {r.summary}
                           </Link>
                         ) : (

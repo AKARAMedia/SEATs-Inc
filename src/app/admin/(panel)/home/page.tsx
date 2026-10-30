@@ -40,6 +40,7 @@ export default async function HomePageAdmin({ searchParams }: PageProps<"/admin/
           <Link
             key={t.key}
             href={`/admin/home/${t.key === "hero" ? "" : `?tab=${t.key}`}`}
+            prefetch={false}
             aria-current={t.key === tab.key ? "page" : undefined}
             className={`-mb-px shrink-0 whitespace-nowrap border-b-2 px-3 py-2.5 text-[14px] font-semibold ${
               t.key === tab.key ? "border-primary text-primary" : "border-transparent text-[#666] hover:text-[#222]"

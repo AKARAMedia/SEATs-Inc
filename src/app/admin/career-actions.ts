@@ -127,8 +127,14 @@ export async function deleteApplicationAction(fd: FormData) {
   const who = await requireAdmin("careers");
   await ready();
   const id = Number(fd.get("id"));
+  const [existing] = await db
+    .select({ jobSite: jobs.site })
+    .from(jobApplications)
+    .leftJoin(jobs, eq(jobApplications.jobId, jobs.id))
+    .where(eq(jobApplications.id, id));
   // Deleting the application also deletes its CV (cascade)
   const [row] = await db.delete(jobApplications).where(eq(jobApplications.id, id)).returning({ name: jobApplications.name });
   if (row) await logActivity(who, "application.delete", { type: "application", summary: row.name });
-  redirect("/admin/careers/?tab=applications&flash=applicationDeleted");
+  const base = existing?.jobSite === "career" ? "/admin/career-jobs" : "/admin/careers";
+  redirect(`${base}/?tab=applications&flash=applicationDeleted`);
 }

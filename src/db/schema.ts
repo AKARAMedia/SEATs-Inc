@@ -37,7 +37,7 @@ export const posts = pgTable(
   (t) => [uniqueIndex("posts_slug_idx").on(t.slug), index("posts_published_at_idx").on(t.publishedAt)],
 );
 
-export const ROLES = ["admin", "editor", "translator"] as const;
+export const ROLES = ["admin", "editor", "translator", "hr"] as const;
 export type Role = (typeof ROLES)[number];
 
 export const adminUsers = pgTable("admin_users", {
@@ -305,6 +305,8 @@ export const jobApplications = pgTable(
     name: text("name").notNull(),
     email: text("email").notNull(),
     phone: text("phone").notNull().default(""),
+    // Required only for seatsinc-career.com applications (src/app/api/career-jobs/apply); empty for the main site's form.
+    telegramUsername: text("telegram_username").notNull().default(""),
     message: text("message").notNull().default(""),
     lang: text("lang").notNull().default("en"),
     status: text("status").$type<ApplicationStatus>().notNull().default("new"),
