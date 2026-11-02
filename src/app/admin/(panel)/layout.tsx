@@ -7,6 +7,7 @@ import { getSettings } from "@/lib/settings";
 import Link from "next/link";
 import { logoutAction } from "../actions";
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import PublishStatus from "@/components/admin/PublishStatus";
 import { FlashToast, Toaster } from "@/components/admin/ui/toast";
 import { ConfirmHost } from "@/components/admin/ui/confirm";
 
@@ -50,6 +51,7 @@ export default function PanelLayout({ children }: LayoutProps<"/admin">) {
       <Suspense>
         <MaintenanceBanner />
       </Suspense>
+      <PublishStatus />
       <main className="mx-auto max-w-[1400px] px-4 py-6 lg:px-8">
         <Suspense fallback={<p className="text-[#888]">Loading…</p>}>{children}</Suspense>
       </main>

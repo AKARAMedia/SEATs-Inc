@@ -1,6 +1,7 @@
 "use server";
 
-import { refresh, updateTag } from "next/cache";
+import { refresh } from "next/cache";
+import { publishChange } from "@/lib/rebuild";
 import { eq, max } from "drizzle-orm";
 import { z } from "zod";
 import { db, ready } from "@/db";
@@ -73,7 +74,7 @@ async function nameOf(kind: Kind, id: number) {
 async function done(kind: Kind, action: string, summary: string) {
   const who = await requireAdmin("content");
   await logActivity(who, `home.${action}`, { type: kind, summary: `${LABEL[kind]}: ${summary}` });
-  updateTag(HOME_TAG);
+  publishChange(HOME_TAG);
   refresh();
 }
 

@@ -21,6 +21,9 @@ const nextConfig: NextConfig = {
     ...(!process.env.DATABASE_URL && { cpus: 1 }),
   },
   images: {
+    // Serve images as-is. Optimized ones go through /_next/image, which runs the Worker for every image
+    // (and the Free plan's 10 ms CPU limit can't afford that); plain URLs are static files or CDN hits.
+    unoptimized: true,
     remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
   },
   async redirects() {
@@ -40,7 +43,6 @@ const nextConfig: NextConfig = {
       { source: "/category/:path*", destination: "/news-event/", permanent: true },
       { source: "/ja/category/:path*", destination: "/ja/news-event/", permanent: true },
       { source: "/author/:path*", destination: "/news-event/", permanent: true },
-      { source: "/news-event/page/:n/", destination: "/news-event/", permanent: true },
       // Old hot-linked uploads keep working
       { source: "/wp-content/uploads/:path*", destination: "/media/:path*", permanent: true },
     ];

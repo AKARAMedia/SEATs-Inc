@@ -3,10 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import ApplyForm from "@/components/sections/ApplyForm";
-import { getOpenJob } from "@/lib/careers";
-import { href, isLang } from "@/lib/i18n";
+import { getOpenJob, listOpenJobs } from "@/lib/careers";
+import { href, isLang, LANGS } from "@/lib/i18n";
 
 // A job post with its application form. Jobs are managed in admin → Careers.
+
+// Every open job is prerendered at build time, in both languages (see scripts/export-static.ts)
+export async function generateStaticParams() {
+  const jobs = await listOpenJobs("en");
+  return LANGS.flatMap((lang) => jobs.map((j) => ({ lang, slug: j.slug })));
+}
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/careers/[slug]">): Promise<Metadata> {
   const { lang, slug } = await params;

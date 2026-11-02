@@ -4,9 +4,10 @@ import { and, count, desc, eq, ilike, lte, or } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { categories, posts, type Category, type Post } from "@/db/schema";
 import type { Lang } from "@/lib/i18n";
+import { PAGE_SIZE } from "./news-shared";
 
 export const NEWS_TAG = "news";
-export const PAGE_SIZE = 9;
+export { PAGE_SIZE };
 
 export type NewsItem = {
   slug: string;

@@ -6,7 +6,7 @@ import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
-import { and, asc, count, eq, gt, lt, ne } from "drizzle-orm";
+import { and, asc, count, eq, gt, lt, ne, sql } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { adminSessions, adminUsers, loginAttempts, type Role } from "@/db/schema";
 import { SESSION_COOKIE, sessionKey } from "./session-key";
@@ -16,15 +16,42 @@ const MAX_AGE = 60 * 60 * 24 * 30; // 30d
 const LOCK_WINDOW_MS = 15 * 60 * 1000;
 const MAX_FAILS_PER_EMAIL = 5;
 const MAX_FAILS_PER_IP = 20;
-const DUMMY_HASH = "$2a$10$invalidinvalidinvalidinvalidinvalidinvalidinvalidinva";
+// A real cost-12 hash of a random string nobody knows, so an unknown email takes as long to check as a wrong password
+const DUMMY_HASH = "$2a$12$bsI008kx53qzPez/gPRPP.qyeq8HfD2sy5TYZ8rqvS0yh1NFp/DoC";
 
 export type Session = { id: number; email: string; name: string; role: Role; sid: string };
 
+// bcrypt cost 12 in JavaScript takes hundreds of ms of CPU, but a Cloudflare Worker on the Free plan gets
+// 10 ms per request, so signing in would always fail with error 1102. With Postgres (Neon) the hashing
+// runs inside the database instead (pgcrypto, migration 0009); local dev (PGlite) and any database
+// without the extension use bcryptjs.
+const hashInDb = () => !!process.env.DATABASE_URL;
+// pgcrypto only knows the $2a$ prefix; bcryptjs writes $2b$. Same algorithm for passwords under 255 bytes.
+const forPg = (hash: string) => hash.replace(/^\$2b\$/, "$2a$");
+
 export async function hashPassword(password: string) {
+  if (hashInDb()) {
+    try {
+      const res = await db.execute(sql`select crypt(${password}, gen_salt('bf', 12)) as hash`);
+      const hash = (res.rows as { hash?: unknown }[])[0]?.hash;
+      if (typeof hash === "string" && hash.startsWith("$2a$")) return hash;
+    } catch (e) {
+      console.error("[auth] database hashing unavailable, using bcryptjs:", e);
+    }
+  }
   return bcrypt.hash(password, 12);
 }
 
 export async function verifyPassword(password: string, hash: string) {
+  if (hashInDb()) {
+    try {
+      const h = forPg(hash);
+      const res = await db.execute(sql`select crypt(${password}, ${h}) = ${h} as ok`);
+      return (res.rows as { ok?: unknown }[])[0]?.ok === true;
+    } catch (e) {
+      console.error("[auth] database hashing unavailable, using bcryptjs:", e);
+    }
+  }
   return bcrypt.compare(password, hash);
 }
 

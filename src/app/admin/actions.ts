@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { updateTag } from "next/cache";
+import { publishChange } from "@/lib/rebuild";
 import { and, eq, ne } from "drizzle-orm";
 import { z } from "zod";
 import { db, ready } from "@/db";
@@ -105,7 +105,7 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
       })
       .where(eq(posts.id, t.data.id));
     await afterPostChange(t.data.id, prev, session, "post.translate", "Japanese edited");
-    updateTag(NEWS_TAG);
+    publishChange(NEWS_TAG);
     redirect(`/admin/posts/${t.data.id}/?flash=saved`);
   }
 
@@ -159,7 +159,7 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
     [{ id }] = await db.insert(posts).values(values).returning({ id: posts.id });
   }
   await afterPostChange(id!, prev, session, d.id ? "post.update" : "post.create");
-  updateTag(NEWS_TAG);
+  publishChange(NEWS_TAG);
   redirect(`/admin/posts/${id}/?flash=${d.id ? "saved" : "created"}`);
 }
 
@@ -173,7 +173,7 @@ export async function deletePostAction(formData: FormData) {
     // Versions are kept, so a deleted post can still be recovered from the database if needed
     if (row) await logActivity(who, "post.delete", { type: "post", id, summary: row.titleEn });
   }
-  updateTag(NEWS_TAG);
+  publishChange(NEWS_TAG);
   redirect("/admin/posts/?flash=deleted");
 }
 
@@ -187,7 +187,7 @@ export async function togglePublishAction(formData: FormData) {
     await db.update(posts).set({ published, updatedAt: new Date() }).where(eq(posts.id, id));
     await afterPostChange(id, prev, who, published ? "post.publish" : "post.unpublish");
   }
-  updateTag(NEWS_TAG);
+  publishChange(NEWS_TAG);
 }
 
 /** Put a post back to how it was in an earlier version (the current state is kept as a version too). */
@@ -220,6 +220,6 @@ export async function restorePostVersionAction(formData: FormData) {
     })
     .where(eq(posts.id, id));
   await afterPostChange(id, prev, who, "post.restore", `Restored version from ${new Date(v.createdAt).toLocaleString("en-GB", { timeZone: "Asia/Phnom_Penh" })}`);
-  updateTag(NEWS_TAG);
+  publishChange(NEWS_TAG);
   redirect(`/admin/posts/${id}/?flash=restored`);
 }

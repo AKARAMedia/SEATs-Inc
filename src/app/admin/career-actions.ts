@@ -1,7 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { refresh, updateTag } from "next/cache";
+import { refresh } from "next/cache";
+import { publishChange } from "@/lib/rebuild";
 import { and, eq, ne } from "drizzle-orm";
 import { z } from "zod";
 import { db, ready } from "@/db";
@@ -71,7 +72,7 @@ export async function saveJobAction(_: FormState, fd: FormData): Promise<FormSta
     [{ id: jobId }] = await db.insert(jobs).values(posted ? { ...values, createdAt: posted } : values).returning({ id: jobs.id });
   }
   await logActivity(who, id ? "job.update" : "job.create", { type: "job", id: jobId, summary: d.titleEn });
-  updateTag(CAREERS_TAG);
+  publishChange(CAREERS_TAG);
   redirect(`/admin/careers/jobs/${jobId}/?flash=${id ? "saved" : "jobCreated"}`);
 }
 
@@ -84,7 +85,7 @@ export async function setJobOpenAction(id: number, open: boolean) {
     .where(and(eq(jobs.id, id), eq(jobs.site, "main")))
     .returning({ title: jobs.titleEn });
   await logActivity(who, open ? "job.open" : "job.close", { type: "job", id, summary: row?.title ?? "" });
-  updateTag(CAREERS_TAG);
+  publishChange(CAREERS_TAG);
   refresh();
 }
 
@@ -99,7 +100,7 @@ export async function deleteJobAction(fd: FormData) {
     .returning({ title: jobs.titleEn });
   await db.delete(translationItems).where(eq(translationItems.key, `job:${id}`));
   if (row) await logActivity(who, "job.delete", { type: "job", id, summary: row.title });
-  updateTag(CAREERS_TAG);
+  publishChange(CAREERS_TAG);
   redirect("/admin/careers/?flash=jobDeleted");
 }
 

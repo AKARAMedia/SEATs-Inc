@@ -1,5 +1,5 @@
 import "server-only";
-import { updateTag } from "next/cache";
+import { publishChange } from "@/lib/rebuild";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { pages, translationItems } from "@/db/schema";
@@ -22,5 +22,5 @@ export async function storePage(key: PageKey, value: unknown, who: Session, note
     .onConflictDoUpdate({ target: pages.key, set: { value, updatedBy, updatedAt: new Date() } });
   await saveVersion(`page:${key}`, value, who, note);
   if (jaOf(before.value) !== jaOf(value)) await db.delete(translationItems).where(eq(translationItems.key, `page:${key}`));
-  updateTag(PAGES_TAG);
+  publishChange(PAGES_TAG);
 }
