@@ -12,7 +12,7 @@ import RecruitCtaButtons from "@/components/sections/RecruitCtaButtons";
 import WhyJoinUs from "@/components/sections/WhyJoinUs";
 import OurBusinesses from "@/components/sections/OurBusinesses";
 
-const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"], display: "swap" });
+const montserrat = Montserrat({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = { title: "Option Career" };
 

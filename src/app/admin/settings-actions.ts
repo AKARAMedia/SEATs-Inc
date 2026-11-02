@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { updateTag } from "next/cache";
+import { publishChange } from "@/lib/rebuild";
 import { db, ready } from "@/db";
 import { siteSettings, translationItems } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
@@ -52,7 +52,7 @@ async function store(group: SettingsGroup, value: unknown) {
   if (TRANSLATED.includes(group) && jaText(prev?.value ? parseGroup(group, prev.value) : parseGroup(group, undefined)) !== jaText(value)) {
     await db.delete(translationItems).where(eq(translationItems.key, `settings:${group}`));
   }
-  updateTag(SETTINGS_TAG);
+  publishChange(SETTINGS_TAG);
 }
 
 export async function saveSettingsAction(_: FormState, fd: FormData): Promise<FormState> {
@@ -93,7 +93,7 @@ export async function saveSettingsAction(_: FormState, fd: FormData): Promise<Fo
   await store(group, parsed.data);
   await saveVersion(`settings:${group}`, parsed.data, who);
   await logActivity(who, "settings.update", { type: "settings", id: group, summary: TAB_NAMES[group] });
-  if (group === "home") updateTag(HOME_TAG);
+  if (group === "home") publishChange(HOME_TAG);
   const back = String(fd.get("_back") ?? "");
   redirect(back.startsWith("/admin/") ? `${back}${back.includes("?") ? "&" : "?"}flash=settingsSaved` : `/admin/settings/?tab=${group}&flash=settingsSaved`);
 }

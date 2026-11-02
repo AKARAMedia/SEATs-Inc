@@ -64,6 +64,13 @@
       "when": 1792738876630,
       "tag": "0008_job_applications_telegram_username",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793600234977,
+      "tag": "0009_pgcrypto",
+      "breakpoints": true
     }
   ]
 }

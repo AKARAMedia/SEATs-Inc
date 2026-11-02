@@ -45,6 +45,38 @@ Useful scripts:
 | `npm run export:live` | Re-export pages/posts/media from the live WordPress site into `content-export/` + `public/media/` |
 | `npm run qa:screens -- <baseUrl> <outDir> [paths…]` | Full-page desktop (1440) + mobile (390) screenshots for pixel comparison |
 
+## Deploying (Cloudflare Workers, Free plan)
+
+The Free plan gives a Worker only **10 ms of CPU per request** (error 1102 "Worker exceeded CPU time limit"
+otherwise), far too little to render Next.js pages on demand. So the public site is **static**:
+
+- `npm run cf:build` runs `next build`, which prerenders every public page from the database, then
+  `scripts/export-static.ts` copies that HTML (plus `/uploads/` images and `news-index.json`) into the Worker's
+  static assets. Cloudflare serves matching files *without running the Worker at all*.
+- The Worker only handles what can't be static: `/admin`, `/api/*` (forms, page-view tracking) and unknown URLs.
+- Images are served as-is (`images.unoptimized`), because `/_next/image` would run the Worker for every image.
+- Every News & Event page is prerendered (`/news-event/`, `/news-event/page/2/`, ...). Search (`?s=`) runs in the browser
+  from `/news-index.json` and matches title and excerpt.
+- Admin sign-in checks passwords inside Postgres (`pgcrypto`, migration 0009) because bcrypt in JavaScript needs far more
+  than 10 ms of CPU. Local dev (PGlite) uses bcryptjs.
+
+**Admin edits go live after a rebuild** (about 2-3 minutes; the admin shows a banner while it runs). Saving in the admin calls `requestRebuild()`
+(`src/lib/rebuild.ts`), which triggers `.github/workflows/deploy.yml` (migrate, build, deploy). The workflow also
+runs every 6 hours so posts scheduled for a future date appear, and from the Actions tab ("Run workflow").
+`npm run cf:deploy` still does the same thing from a local machine.
+
+One-time setup:
+
+1. GitHub repo -> Settings -> Secrets and variables -> Actions -> add `DATABASE_URL` (the Neon string the Worker uses),
+   `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` (same values as `.env.deploy`).
+2. Create a fine-grained personal access token (https://github.com/settings/personal-access-tokens): this repo only,
+   permissions **Contents: Read and write** (to trigger the rebuild) and **Actions: Read** (so the admin can show
+   "Publishing…" / "Your changes are live" / "Publish failed" while it runs).
+3. Give the Worker that token: `npx wrangler secret put GITHUB_DISPATCH_TOKEN`.
+   (Optional `GITHUB_REPO=owner/name` if the repo is renamed; the default is `AKARAMedia/SEATs-Inc`.)
+
+The workflow builds the `main` branch, so merge changes there for them to be included.
+
 ## Deploying (Vercel)
 
 1. Import the GitHub repo `websitecreationakara-debug/SEATs-Inc` into Vercel (framework: Next.js, root directory: repo root).

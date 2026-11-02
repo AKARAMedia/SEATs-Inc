@@ -14,7 +14,7 @@
     "db:import-career-jobs": "tsx scripts/import-career-jobs.ts",
     "export:live": "python -I scripts/export-live-site.py",
     "qa:screens": "node scripts/screenshot.mjs",
-    "cf:build": "cross-env CLOUDFLARE_BUILD=1 opennextjs-cloudflare build",
+    "cf:build": "cross-env CLOUDFLARE_BUILD=1 opennextjs-cloudflare build && tsx scripts/export-static.ts",
     "cf:preview": "npm run cf:build && opennextjs-cloudflare preview",
     "cf:deploy": "npm run cf:build && dotenvx run -f .env.deploy -- opennextjs-cloudflare deploy"
   },

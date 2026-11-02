@@ -1,5 +1,5 @@
 import "server-only";
-import { updateTag } from "next/cache";
+import { publishChange } from "@/lib/rebuild";
 import { asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { categories, glossary, jobs, posts, siteSettings, translationItems, translationMemory } from "@/db/schema";
@@ -82,7 +82,7 @@ function postSource(p: typeof posts.$inferSelect): Source {
       await db.update(posts).set(values).where(eq(posts.id, p.id));
       await ensureBaseline(`post:${p.id}`, cur);
       await saveVersion(`post:${p.id}`, { ...cur, ...values }, who, "Japanese published from Translation Center");
-      updateTag(NEWS_TAG);
+      publishChange(NEWS_TAG);
     },
   };
 }
@@ -105,7 +105,7 @@ function settingsSource(def: (typeof SETTINGS_FIELDS)[number], value: Record<str
         .values({ key: def.group, value: next })
         .onConflictDoUpdate({ target: siteSettings.key, set: { value: next, updatedAt: new Date() } });
       await saveVersion(`settings:${def.group}`, next, who, "Japanese published from Translation Center");
-      updateTag(SETTINGS_TAG);
+      publishChange(SETTINGS_TAG);
     },
   };
 }
@@ -121,7 +121,7 @@ function categoriesSource(cats: (typeof categories.$inferSelect)[]): Source {
         const ja = t[`cat:${c.id}`]?.[0];
         if (ja !== undefined) await db.update(categories).set({ nameJa: ja }).where(eq(categories.id, c.id));
       }
-      updateTag(NEWS_TAG);
+      publishChange(NEWS_TAG);
     },
   };
 }
@@ -144,7 +144,7 @@ function jobSource(j: typeof jobs.$inferSelect): Source {
         .update(jobs)
         .set({ titleJa: t.title?.[0] ?? "", descriptionJa: sanitizeBody(assembleHtml(cur.descriptionEn, t.body ?? [])), updatedAt: new Date() })
         .where(eq(jobs.id, j.id));
-      updateTag(CAREERS_TAG);
+      publishChange(CAREERS_TAG);
     },
   };
 }
