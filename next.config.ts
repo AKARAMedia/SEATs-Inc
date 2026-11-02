@@ -4,6 +4,17 @@ import type { NextConfig } from "next";
 const cloudflare = process.env.CLOUDFLARE_BUILD === "1";
 const CLOUDFLARE_STUBS = "./src/db/cloudflare-stubs.ts";
 
+// Public pages are prerendered from the database during the build, so the build needs the connection
+// string too (not just the running Worker). Without this check it fails later with the cryptic
+// "Not available on Cloudflare Workers" from the stubbed local database.
+if (cloudflare && !process.env.DATABASE_URL) {
+  throw new Error(
+    "DATABASE_URL is not set for this build. The Cloudflare build prerenders every public page from the database. " +
+      "Add DATABASE_URL as a build variable/secret (Workers Builds: Settings -> Build -> Variables and secrets; " +
+      "GitHub Actions: repository secret; local: .env.local).",
+  );
+}
+
 const nextConfig: NextConfig = {
   // Lets a test server run beside `npm run dev` without sharing build output (pair with PGLITE_DIR)
   ...(process.env.NEXT_DIST_DIR && { distDir: process.env.NEXT_DIST_DIR }),
