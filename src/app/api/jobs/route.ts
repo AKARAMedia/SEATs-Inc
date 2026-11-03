@@ -1,11 +1,13 @@
-import { and, asc, desc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { JOB_SITES, jobs, type JobSite } from "@/db/schema";
 
 // Public, read-only job feed for other websites (e.g. seatsinc-career.com).
-//   GET /api/jobs/                -> open career-site jobs
-//   GET /api/jobs/?site=main      -> open jobs for seats-inc.com
+//   GET /api/jobs/                -> career-site jobs (open and closed — see `open` on each job)
+//   GET /api/jobs/?site=main      -> jobs for seats-inc.com
 //   GET /api/jobs/?lang=ja        -> Japanese title/description where translated
+// Closed jobs are included (not dropped) so the public listing can show a closed position instead
+//   of it just disappearing — open jobs are sorted first, closed ones after.
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
@@ -25,8 +27,8 @@ export async function GET(req: Request) {
   const rows = await db
     .select()
     .from(jobs)
-    .where(and(eq(jobs.site, site), eq(jobs.open, true)))
-    .orderBy(asc(jobs.sortOrder), desc(jobs.createdAt));
+    .where(eq(jobs.site, site))
+    .orderBy(desc(jobs.open), asc(jobs.sortOrder), desc(jobs.createdAt));
 
   const data = rows.map((j) => ({
     id: j.id,
@@ -38,6 +40,7 @@ export async function GET(req: Request) {
     salaryRange: j.salaryRange,
     workDays: j.workDays,
     descriptionHtml: (ja && j.descriptionJa) || j.descriptionEn,
+    open: j.open,
     postedAt: j.createdAt.toISOString(),
     updatedAt: j.updatedAt.toISOString(),
   }));
