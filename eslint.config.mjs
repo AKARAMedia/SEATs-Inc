@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // opennextjs-cloudflare's build output (gitignored, see .gitignore) — a minified bundle, not
+    //   source. Missing from here let ESLint try to parse it as source, which OOM'd on its longest file.
+    ".open-next/**",
     // Static assets (e.g. the standalone /jp landing page) aren't part of the Next.js app.
     "public/**",
   ]),
