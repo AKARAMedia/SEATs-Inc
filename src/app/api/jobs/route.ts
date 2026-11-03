@@ -7,7 +7,10 @@ import { JOB_SITES, jobs, type JobSite } from "@/db/schema";
 //   GET /api/jobs/?site=main      -> jobs for seats-inc.com
 //   GET /api/jobs/?lang=ja        -> Japanese title/description where translated
 // Closed jobs are included (not dropped) so the public listing can show a closed position instead
-//   of it just disappearing — open jobs are sorted first, closed ones after.
+//   of it just disappearing. Sort order is unaffected by open/closed (2026-11-03: an earlier version
+//   sorted open jobs first, which pushed a newly-closed job to the very last page — effectively
+//   invisible again, defeating the point of keeping it listed) — a job keeps its normal position
+//   whether open or closed.
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
@@ -28,7 +31,7 @@ export async function GET(req: Request) {
     .select()
     .from(jobs)
     .where(eq(jobs.site, site))
-    .orderBy(desc(jobs.open), asc(jobs.sortOrder), desc(jobs.createdAt));
+    .orderBy(asc(jobs.sortOrder), desc(jobs.createdAt));
 
   const data = rows.map((j) => ({
     id: j.id,
