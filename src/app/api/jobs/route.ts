@@ -2,6 +2,12 @@ import { asc, desc, eq } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { JOB_SITES, jobs, type JobSite } from "@/db/schema";
 
+// This route is hit very frequently by other sites polling for job listings, and a Cache-Control
+// response header alone isn't enough to get it cached at Cloudflare's edge for a Worker-owned custom
+// domain - without this, every single poll ran a live DB query. `revalidate` puts it through the same
+// ISR cache Next.js already uses for pages, so repeat requests within the window are served from cache.
+export const revalidate = 300;
+
 // Public, read-only job feed for other websites (e.g. seatsinc-career.com).
 //   GET /api/jobs/                -> career-site jobs (open and closed — see `open` on each job)
 //   GET /api/jobs/?site=main      -> jobs for seats-inc.com
