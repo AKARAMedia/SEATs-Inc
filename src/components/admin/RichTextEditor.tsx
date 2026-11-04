@@ -10,7 +10,7 @@ import { useState } from "react";
 import { uploadImage } from "./upload";
 import MediaPicker from "./media/MediaPicker";
 
-type Props = { name: string; defaultValue: string; placeholder?: string; lang: "en" | "ja" };
+type Props = { name: string; defaultValue: string; onChange?: (html: string) => void; placeholder?: string; lang: "en" | "ja" };
 
 function Btn({ onClick, active, label, children }: { onClick: () => void; active?: boolean; label: string; children: React.ReactNode }) {
   return (
@@ -88,7 +88,7 @@ function Toolbar({ editor, onImage, uploading }: { editor: Editor; onImage: () =
   );
 }
 
-export default function RichTextEditor({ name, defaultValue, placeholder, lang }: Props) {
+export default function RichTextEditor({ name, defaultValue, onChange, placeholder, lang }: Props) {
   const [html, setHtml] = useState(defaultValue);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -105,7 +105,11 @@ export default function RichTextEditor({ name, defaultValue, placeholder, lang }
     ],
     content: defaultValue,
     editorProps: { attributes: { class: "prose-seats", lang } },
-    onUpdate: ({ editor }) => setHtml(editor.isEmpty ? "" : editor.getHTML()),
+    onUpdate: ({ editor }) => {
+      const next = editor.isEmpty ? "" : editor.getHTML();
+      setHtml(next);
+      onChange?.(next);
+    },
   });
 
   async function onFiles(files: FileList | null) {

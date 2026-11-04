@@ -10,7 +10,6 @@ import { ensureBaseline, getVersion, logActivity, saveVersion } from "@/lib/acti
 import type { Session } from "@/lib/auth";
 import { htmlText } from "@/lib/translation/text";
 import { login, logout, requireAdmin } from "@/lib/auth";
-import { can } from "@/lib/permissions";
 import { NEWS_TAG } from "@/lib/news";
 import { sanitizeBody, slugify, stripTags } from "@/lib/sanitize";
 
@@ -35,14 +34,15 @@ export async function logoutAction() {
 
 // ---------- posts ----------
 
-const PostInput = z.object({
+// English fields + the shared (language-agnostic) ones. Split from Japanese below so saving one
+// language sanitizes and writes only that language's body - saving both together in one request was
+// enough CPU work (sanitizing two full rich-text bodies) to risk Cloudflare's free-plan 10ms per-request
+// limit (error 1102) on image-heavy posts.
+const EnglishInput = z.object({
   id: z.coerce.number().int().positive().optional(),
   titleEn: z.string().trim().min(1, "English title is required").max(300),
-  titleJa: z.string().trim().max(300).default(""),
   excerptEn: z.string().trim().max(1000).default(""),
-  excerptJa: z.string().trim().max(1000).default(""),
   bodyEn: z.string().default(""),
-  bodyJa: z.string().default(""),
   slug: z.string().trim().max(120).default(""),
   categoryId: z.coerce.number().int().positive().nullable().catch(null),
   imageUrl: z
@@ -54,7 +54,7 @@ const PostInput = z.object({
   published: z.boolean(),
 });
 
-const TranslationInput = z.object({
+const JapaneseInput = z.object({
   id: z.coerce.number().int().positive(),
   titleJa: z.string().trim().max(300).default(""),
   excerptJa: z.string().trim().max(1000).default(""),
@@ -84,36 +84,14 @@ async function getPost(id: number | undefined) {
   return row;
 }
 
-export async function savePostAction(_: FormState, formData: FormData): Promise<FormState> {
-  const session = await requireAdmin("viewPosts");
+export async function saveEnglishAction(_: FormState, formData: FormData): Promise<FormState> {
+  const session = await requireAdmin("editPosts");
   await ready();
-  const raw = Object.fromEntries(formData);
-
-  // Translators may only change the Japanese fields of an existing post
-  if (!can(session.role, "editPosts")) {
-    const t = TranslationInput.safeParse(raw);
-    if (!t.success) return { error: "Invalid input." };
-    const bodyJa = sanitizeBody(t.data.bodyJa);
-    const prev = await getPost(t.data.id);
-    await db
-      .update(posts)
-      .set({
-        titleJa: t.data.titleJa,
-        excerptJa: t.data.excerptJa || stripTags(bodyJa).slice(0, 120),
-        bodyJa,
-        updatedAt: new Date(),
-      })
-      .where(eq(posts.id, t.data.id));
-    await afterPostChange(t.data.id, prev, session, "post.translate", "Japanese edited");
-    publishChange(NEWS_TAG, prev?.slug);
-    redirect(`/admin/posts/${t.data.id}/?flash=saved`);
-  }
-
-  const parsed = PostInput.safeParse({
-    ...raw,
-    id: raw.id || undefined,
-    categoryId: raw.categoryId || null,
-    published: raw.published === "on",
+  const parsed = EnglishInput.safeParse({
+    ...Object.fromEntries(formData),
+    id: formData.get("id") || undefined,
+    categoryId: formData.get("categoryId") || null,
+    published: formData.get("published") === "on",
   });
   if (!parsed.success) {
     const fieldErrors: Record<string, string> = {};
@@ -134,16 +112,12 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
   if (Number.isNaN(publishedAt.getTime())) return { fieldErrors: { publishedAt: "Invalid date" }, error: "Invalid date." };
 
   const bodyEn = sanitizeBody(d.bodyEn);
-  const bodyJa = sanitizeBody(d.bodyJa);
   const values = {
     slug,
     titleEn: d.titleEn,
-    titleJa: d.titleJa,
-    // Auto-fill excerpts from the body when left blank
+    // Auto-fill the excerpt from the body when left blank
     excerptEn: d.excerptEn || stripTags(bodyEn).slice(0, 300),
-    excerptJa: d.excerptJa || stripTags(bodyJa).slice(0, 120),
     bodyEn,
-    bodyJa,
     categoryId: d.categoryId,
     imageUrl: d.imageUrl || null,
     publishedAt,
@@ -161,6 +135,28 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
   await afterPostChange(id!, prev, session, d.id ? "post.update" : "post.create");
   publishChange(NEWS_TAG, [slug, prev?.slug]);
   redirect(`/admin/posts/${id}/?flash=${d.id ? "saved" : "created"}`);
+}
+
+/** Japanese-only save: also what translators use, since they may only ever touch these fields. */
+export async function saveJapaneseAction(_: FormState, formData: FormData): Promise<FormState> {
+  const session = await requireAdmin("viewPosts");
+  await ready();
+  const t = JapaneseInput.safeParse(Object.fromEntries(formData));
+  if (!t.success) return { error: "Invalid input." };
+  const bodyJa = sanitizeBody(t.data.bodyJa);
+  const prev = await getPost(t.data.id);
+  await db
+    .update(posts)
+    .set({
+      titleJa: t.data.titleJa,
+      excerptJa: t.data.excerptJa || stripTags(bodyJa).slice(0, 120),
+      bodyJa,
+      updatedAt: new Date(),
+    })
+    .where(eq(posts.id, t.data.id));
+  await afterPostChange(t.data.id, prev, session, "post.translate", "Japanese edited");
+  publishChange(NEWS_TAG, prev?.slug);
+  redirect(`/admin/posts/${t.data.id}/?flash=saved`);
 }
 
 /** Duplicates a post as a new unpublished draft, so it can be used as a starting point for a new one. */
