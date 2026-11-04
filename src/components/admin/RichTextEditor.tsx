@@ -10,7 +10,16 @@ import { useState } from "react";
 import { uploadImage } from "./upload";
 import MediaPicker from "./media/MediaPicker";
 
-type Props = { name: string; defaultValue: string; onChange?: (html: string) => void; placeholder?: string; lang: "en" | "ja" };
+type Props = {
+  name: string;
+  defaultValue: string;
+  onChange?: (html: string) => void;
+  // Called whenever an image is inserted here, so the other language's body (not mounted while its
+  // tab is inactive) can get the same image appended without a second upload.
+  onImageInserted?: (src: string, alt: string) => void;
+  placeholder?: string;
+  lang: "en" | "ja";
+};
 
 function Btn({ onClick, active, label, children }: { onClick: () => void; active?: boolean; label: string; children: React.ReactNode }) {
   return (
@@ -44,6 +53,7 @@ function Toolbar({ editor, onImage, uploading }: { editor: Editor; onImage: () =
       quote: e.isActive("blockquote"),
       link: e.isActive("link"),
       center: e.isActive({ textAlign: "center" }),
+      image: e.isActive("image"),
     }),
   })!;
   const chain = () => editor.chain().focus();
@@ -72,6 +82,11 @@ function Toolbar({ editor, onImage, uploading }: { editor: Editor; onImage: () =
         🔗
       </Btn>
       <Btn label="Insert image" onClick={onImage}>{uploading ? "…" : "🖼"}</Btn>
+      {s.image && (
+        <Btn label="Remove selected image" onClick={() => chain().deleteSelection().run()}>
+          🗑
+        </Btn>
+      )}
       <Btn
         label="Embed YouTube video"
         onClick={() => {
@@ -88,7 +103,7 @@ function Toolbar({ editor, onImage, uploading }: { editor: Editor; onImage: () =
   );
 }
 
-export default function RichTextEditor({ name, defaultValue, onChange, placeholder, lang }: Props) {
+export default function RichTextEditor({ name, defaultValue, onChange, onImageInserted, placeholder, lang }: Props) {
   const [html, setHtml] = useState(defaultValue);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -120,6 +135,7 @@ export default function RichTextEditor({ name, defaultValue, onChange, placehold
       for (const f of Array.from(files)) {
         const src = await uploadImage(f);
         editor.chain().focus().setImage({ src, alt: "" }).run();
+        onImageInserted?.(src, "");
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Upload failed");
@@ -145,7 +161,10 @@ export default function RichTextEditor({ name, defaultValue, onChange, placehold
         open={picking}
         title="Insert an image"
         onClose={() => setPicking(false)}
-        onPick={(p) => editor?.chain().focus().setImage({ src: p.url, alt: p.alt }).run()}
+        onPick={(p) => {
+          editor?.chain().focus().setImage({ src: p.url, alt: p.alt }).run();
+          onImageInserted?.(p.url, p.alt);
+        }}
       />
       {error && <p className="bg-red-50 px-3 py-1.5 text-[12px] text-red-700">{error}</p>}
       <div className="max-h-[640px] overflow-y-auto">

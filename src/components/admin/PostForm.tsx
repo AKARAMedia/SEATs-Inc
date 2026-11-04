@@ -120,6 +120,11 @@ export default function PostForm({ values, categories, mode = "full" }: { values
   // A new, never-saved post has no id yet - Japanese can't be saved until English creates the post.
   const canTabToJa = translateOnly || Boolean(values.id);
 
+  // An image inserted in one language is appended (not at the cursor, since that body's editor isn't
+  // mounted while its tab is inactive) to the other language's body too, so it only has to be uploaded
+  // once instead of twice.
+  const appendImage = (html: string, src: string, alt: string) => `${html}<img src="${src}" alt="${alt.replace(/"/g, "&quot;")}">`;
+
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -160,7 +165,14 @@ export default function PostForm({ values, categories, mode = "full" }: { values
       </label>
       <div>
         <span className="admin-label">Body</span>
-        <RichTextEditor name="bodyEn" defaultValue={bodyEn} onChange={setBodyEn} lang="en" placeholder="Write the post…" />
+        <RichTextEditor
+          name="bodyEn"
+          defaultValue={bodyEn}
+          onChange={setBodyEn}
+          onImageInserted={(src, alt) => setBodyJa((h) => appendImage(h, src, alt))}
+          lang="en"
+          placeholder="Write the post…"
+        />
       </div>
     </section>
   );
@@ -189,7 +201,14 @@ export default function PostForm({ values, categories, mode = "full" }: { values
       </label>
       <div>
         <span className="admin-label">本文 (Body)</span>
-        <RichTextEditor name="bodyJa" defaultValue={bodyJa} onChange={setBodyJa} lang="ja" placeholder="本文を入力…" />
+        <RichTextEditor
+          name="bodyJa"
+          defaultValue={bodyJa}
+          onChange={setBodyJa}
+          onImageInserted={(src, alt) => setBodyEn((h) => appendImage(h, src, alt))}
+          lang="ja"
+          placeholder="本文を入力…"
+        />
       </div>
     </section>
   );
