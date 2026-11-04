@@ -5,7 +5,7 @@ import { ConfirmForm } from "@/components/admin/ui/confirm";
 import { adminCategories, adminGetPost, toLocalInput } from "@/lib/admin-data";
 import { requireAdmin } from "@/lib/auth";
 import { can } from "@/lib/permissions";
-import { deletePostAction, restorePostVersionAction } from "@/app/admin/actions";
+import { clonePostAction, deletePostAction, restorePostVersionAction } from "@/app/admin/actions";
 import VersionList from "@/components/admin/VersionList";
 import { Icon } from "@/components/admin/ui/icons";
 import { listVersions } from "@/lib/activity";
@@ -53,6 +53,14 @@ export default async function EditPostPage({ params }: PageProps<"/admin/posts/[
         <Link href={`/admin/translate/post-${post.id}/`} className="admin-btn-secondary">
           <Icon name="translate" className="size-4" /> Translate
         </Link>
+        {canEdit && (
+          <form action={clonePostAction}>
+            <input type="hidden" name="id" value={post.id} />
+            <button type="submit" className="admin-btn-secondary">
+              <Icon name="copy" className="size-4" /> Clone
+            </button>
+          </form>
+        )}
         {canEdit && (
           <ConfirmForm
             action={deletePostAction}

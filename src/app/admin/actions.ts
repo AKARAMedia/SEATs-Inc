@@ -163,6 +163,40 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
   redirect(`/admin/posts/${id}/?flash=${d.id ? "saved" : "created"}`);
 }
 
+/** Duplicates a post as a new unpublished draft, so it can be used as a starting point for a new one. */
+export async function clonePostAction(formData: FormData) {
+  const who = await requireAdmin("editPosts");
+  await ready();
+  const id = Number(formData.get("id"));
+  const source = await getPost(id);
+  if (!source) redirect("/admin/posts/");
+
+  let slug = slugify(`${source.slug}-copy`);
+  for (let n = 2; (await db.select({ id: posts.id }).from(posts).where(eq(posts.slug, slug))).length; n++) {
+    slug = slugify(`${source.slug}-copy-${n}`);
+  }
+
+  const [{ id: newId }] = await db
+    .insert(posts)
+    .values({
+      slug,
+      titleEn: source.titleEn,
+      titleJa: source.titleJa,
+      excerptEn: source.excerptEn,
+      excerptJa: source.excerptJa,
+      bodyEn: source.bodyEn,
+      bodyJa: source.bodyJa,
+      categoryId: source.categoryId,
+      imageUrl: source.imageUrl,
+      publishedAt: new Date(),
+      published: false,
+    })
+    .returning({ id: posts.id });
+
+  await afterPostChange(newId, undefined, who, "post.clone", `Cloned from "${source.titleEn}"`);
+  redirect(`/admin/posts/${newId}/?flash=created`);
+}
+
 export async function deletePostAction(formData: FormData) {
   const who = await requireAdmin("editPosts");
   await ready();
