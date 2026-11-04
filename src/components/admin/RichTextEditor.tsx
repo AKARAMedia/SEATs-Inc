@@ -39,7 +39,17 @@ function Btn({ onClick, active, label, children }: { onClick: () => void; active
   );
 }
 
-function Toolbar({ editor, onImage, uploading }: { editor: Editor; onImage: () => void; uploading: boolean }) {
+function Toolbar({
+  editor,
+  onImage,
+  onReplaceImage,
+  uploading,
+}: {
+  editor: Editor;
+  onImage: () => void;
+  onReplaceImage: () => void;
+  uploading: boolean;
+}) {
   const s = useEditorState({
     editor,
     selector: ({ editor: e }) => ({
@@ -83,9 +93,14 @@ function Toolbar({ editor, onImage, uploading }: { editor: Editor; onImage: () =
       </Btn>
       <Btn label="Insert image" onClick={onImage}>{uploading ? "…" : "🖼"}</Btn>
       {s.image && (
-        <Btn label="Remove selected image" onClick={() => chain().deleteSelection().run()}>
-          🗑
-        </Btn>
+        <>
+          <Btn label="Replace selected image" onClick={onReplaceImage}>
+            🔁
+          </Btn>
+          <Btn label="Remove selected image" onClick={() => chain().deleteSelection().run()}>
+            🗑
+          </Btn>
+        </>
       )}
       <Btn
         label="Embed YouTube video"
@@ -107,7 +122,7 @@ export default function RichTextEditor({ name, defaultValue, onChange, onImageIn
   const [html, setHtml] = useState(defaultValue);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [picking, setPicking] = useState(false);
+  const [picking, setPicking] = useState<"insert" | "replace" | null>(null);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -156,14 +171,18 @@ export default function RichTextEditor({ name, defaultValue, onChange, onImageIn
       }}
     >
       <input type="hidden" name={name} value={html} />
-      {editor && <Toolbar editor={editor} onImage={() => setPicking(true)} uploading={uploading} />}
+      {editor && <Toolbar editor={editor} onImage={() => setPicking("insert")} onReplaceImage={() => setPicking("replace")} uploading={uploading} />}
       <MediaPicker
-        open={picking}
-        title="Insert an image"
-        onClose={() => setPicking(false)}
+        open={picking !== null}
+        title={picking === "replace" ? "Replace this image" : "Insert an image"}
+        onClose={() => setPicking(null)}
         onPick={(p) => {
-          editor?.chain().focus().setImage({ src: p.url, alt: p.alt }).run();
-          onImageInserted?.(p.url, p.alt);
+          if (picking === "replace") {
+            editor?.chain().focus().updateAttributes("image", { src: p.url, alt: p.alt }).run();
+          } else {
+            editor?.chain().focus().setImage({ src: p.url, alt: p.alt }).run();
+            onImageInserted?.(p.url, p.alt);
+          }
         }}
       />
       {error && <p className="bg-red-50 px-3 py-1.5 text-[12px] text-red-700">{error}</p>}
