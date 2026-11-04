@@ -36,7 +36,11 @@ export async function GET(req: Request) {
   const cache = typeof caches !== "undefined" ? (caches as CacheStorage & { default: Cache }).default : null;
   const cacheKey = new Request(`https://cache.internal/api/jobs?site=${site}&lang=${ja ? "ja" : "en"}`);
   const cached = await cache?.match(cacheKey);
-  if (cached) return cached;
+  if (cached) {
+    const hit = new Response(cached.body, cached);
+    hit.headers.set("X-Debug-Cache", "HIT");
+    return hit;
+  }
 
   await ready();
   const rows = await db
@@ -62,7 +66,7 @@ export async function GET(req: Request) {
 
   const response = Response.json(
     { count: data.length, jobs: data },
-    { headers: { ...CORS, "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } },
+    { headers: { ...CORS, "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600", "X-Debug-Cache": cache ? "MISS" : "UNAVAILABLE" } },
   );
   await cache?.put(cacheKey, response.clone());
   return response;
