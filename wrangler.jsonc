@@ -25,6 +25,16 @@
     // next/image optimization, see https://opennext.js.org/cloudflare/howtos/image
     "binding": "IMAGES",
   },
+  "kv_namespaces": [
+    {
+      // Short-TTL cache for the public /api/jobs feed (polled very frequently by other sites). The
+      // Workers Cache API (caches.default) is scoped per colo/tier and gave inconsistent hits across
+      // the colos real traffic was landing on; KV is globally readable so a value written by one
+      // request is visible to the next request anywhere, not just nearby ones.
+      "binding": "JOBS_CACHE",
+      "id": "7ef304e0622b424592453914879eaab2",
+    },
+  ],
   // Keep the *.workers.dev address for testing alongside the real domain
   "workers_dev": true,
   // Custom Domains: Cloudflare creates the DNS records and certificates for these hostnames

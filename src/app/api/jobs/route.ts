@@ -1,3 +1,4 @@
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { asc, desc, eq } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { JOB_SITES, jobs, type JobSite } from "@/db/schema";
@@ -17,6 +18,23 @@ const CORS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+// Minimal surface of the KV binding this route actually uses, so the project doesn't need the full
+// @cloudflare/workers-types package just for this.
+type JobsKV = { get(key: string): Promise<string | null>; put(key: string, value: string, opts?: { expirationTtl?: number }): Promise<void> };
+
+// This feed is polled very frequently by other sites, from visitors spread across many different
+// regions/colos. Cloudflare's Cache API (caches.default) is scoped per colo/tier, which gave
+// inconsistent hits in practice - a request landing on a colo that hadn't seen a recent request still
+// ran a live DB query. KV is globally readable, so a value written by one request is visible to the
+// very next request anywhere, not just nearby ones.
+function jobsKv(): JobsKV | null {
+  try {
+    return (getCloudflareContext().env as unknown as { JOBS_CACHE?: JobsKV }).JOBS_CACHE ?? null;
+  } catch {
+    return null; // local dev (plain Node, no Cloudflare context) - nothing to cache against
+  }
+}
+
 export function OPTIONS() {
   return new Response(null, { status: 204, headers: CORS });
 }
@@ -25,22 +43,11 @@ export async function GET(req: Request) {
   const q = new URL(req.url).searchParams;
   const site = (JOB_SITES as readonly string[]).includes(q.get("site") ?? "") ? (q.get("site") as JobSite) : "career";
   const ja = q.get("lang") === "ja";
+  const cacheKey = `jobs:${site}:${ja ? "ja" : "en"}`;
 
-  // This feed is polled very frequently by other sites, often with a client-sent no-cache directive
-  // that would otherwise bypass Cloudflare's edge cache regardless of our own response headers - so
-  // caching is done explicitly here with the Workers Cache API instead of relying on HTTP semantics.
-  // Keyed on a normalized URL (just the params that affect the response) so HEAD requests (Next.js
-  // derives these from GET) and any extra client headers all hit the same cache entry.
-  // Only available in the Workers runtime (production) - `caches` doesn't exist under plain Node.js
-  // (local dev), where there's no edge cache to worry about anyway.
-  const cache = typeof caches !== "undefined" ? (caches as CacheStorage & { default: Cache }).default : null;
-  const cacheKey = new Request(`https://cache.internal/api/jobs?site=${site}&lang=${ja ? "ja" : "en"}`);
-  const cached = await cache?.match(cacheKey);
-  if (cached) {
-    const hit = new Response(cached.body, cached);
-    hit.headers.set("X-Debug-Cache", "HIT");
-    return hit;
-  }
+  const kv = jobsKv();
+  const cached = await kv?.get(cacheKey);
+  if (cached) return new Response(cached, { headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } });
 
   await ready();
   const rows = await db
@@ -64,10 +71,8 @@ export async function GET(req: Request) {
     updatedAt: j.updatedAt.toISOString(),
   }));
 
-  const response = Response.json(
-    { count: data.length, jobs: data },
-    { headers: { ...CORS, "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600", "X-Debug-Cache": cache ? "MISS" : "UNAVAILABLE" } },
-  );
-  await cache?.put(cacheKey, response.clone());
-  return response;
+  const body = JSON.stringify({ count: data.length, jobs: data });
+  await kv?.put(cacheKey, body, { expirationTtl: 300 });
+
+  return new Response(body, { headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } });
 }
