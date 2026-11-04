@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Script from "next/script";
 import { notFound } from "next/navigation";
 import HomeNews from "@/components/news/HomeNews";
+import FacebookFeed from "@/components/sections/FacebookFeed";
 import FancyText from "@/components/sections/FancyText";
 import HeroSlider from "@/components/sections/HeroSlider";
 import HomeSitemap from "@/components/sections/HomeSitemap";
@@ -112,8 +112,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <div className="mt-[10px] flex flex-col items-center">
           <h3 className="mb-4 text-[20px] font-bold text-heading">S.E.A.T.S Inc. Facebook</h3>
           <div className="h-[620px] w-full max-w-[500px] overflow-y-auto rounded-[5px] shadow-[0_0_3px_rgba(0,0,0,0.15)]">
-            <div className="sk-ww-facebook-page-posts" data-embed-id={SOCIABLEKIT_FACEBOOK_FEED_EMBED_ID} />
-            <Script src="https://widgets.sociablekit.com/facebook-page-posts/widget.js" strategy="lazyOnload" />
+            <FacebookFeed embedId={SOCIABLEKIT_FACEBOOK_FEED_EMBED_ID} />
           </div>
           <p className="mt-3">
             <a href={FACEBOOK_PAGE_URL} target="_blank" rel="noopener noreferrer" className="text-[14px] font-semibold text-primary hover:underline">
