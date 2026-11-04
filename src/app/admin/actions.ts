@@ -105,7 +105,7 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
       })
       .where(eq(posts.id, t.data.id));
     await afterPostChange(t.data.id, prev, session, "post.translate", "Japanese edited");
-    publishChange(NEWS_TAG);
+    publishChange(NEWS_TAG, prev?.slug);
     redirect(`/admin/posts/${t.data.id}/?flash=saved`);
   }
 
@@ -159,7 +159,7 @@ export async function savePostAction(_: FormState, formData: FormData): Promise<
     [{ id }] = await db.insert(posts).values(values).returning({ id: posts.id });
   }
   await afterPostChange(id!, prev, session, d.id ? "post.update" : "post.create");
-  publishChange(NEWS_TAG);
+  publishChange(NEWS_TAG, [slug, prev?.slug]);
   redirect(`/admin/posts/${id}/?flash=${d.id ? "saved" : "created"}`);
 }
 
@@ -206,8 +206,10 @@ export async function deletePostAction(formData: FormData) {
     await db.delete(translationItems).where(eq(translationItems.key, `post:${id}`));
     // Versions are kept, so a deleted post can still be recovered from the database if needed
     if (row) await logActivity(who, "post.delete", { type: "post", id, summary: row.titleEn });
+    publishChange(NEWS_TAG, row?.slug);
+  } else {
+    publishChange(NEWS_TAG);
   }
-  publishChange(NEWS_TAG);
   redirect("/admin/posts/?flash=deleted");
 }
 
@@ -220,8 +222,10 @@ export async function togglePublishAction(formData: FormData) {
     const prev = await getPost(id);
     await db.update(posts).set({ published, updatedAt: new Date() }).where(eq(posts.id, id));
     await afterPostChange(id, prev, who, published ? "post.publish" : "post.unpublish");
+    publishChange(NEWS_TAG, prev?.slug);
+  } else {
+    publishChange(NEWS_TAG);
   }
-  publishChange(NEWS_TAG);
 }
 
 /** Put a post back to how it was in an earlier version (the current state is kept as a version too). */
@@ -236,10 +240,11 @@ export async function restorePostVersionAction(formData: FormData) {
   const d = v.data as Post;
   // Keep the current slug if the old one is now used by another post
   const [clash] = await db.select({ id: posts.id }).from(posts).where(and(eq(posts.slug, d.slug), ne(posts.id, id)));
+  const restoredSlug = clash ? prev.slug : d.slug;
   await db
     .update(posts)
     .set({
-      slug: clash ? prev.slug : d.slug,
+      slug: restoredSlug,
       titleEn: d.titleEn,
       titleJa: d.titleJa,
       excerptEn: d.excerptEn,
@@ -254,6 +259,6 @@ export async function restorePostVersionAction(formData: FormData) {
     })
     .where(eq(posts.id, id));
   await afterPostChange(id, prev, who, "post.restore", `Restored version from ${new Date(v.createdAt).toLocaleString("en-GB", { timeZone: "Asia/Phnom_Penh" })}`);
-  publishChange(NEWS_TAG);
+  publishChange(NEWS_TAG, [restoredSlug, prev.slug]);
   redirect(`/admin/posts/${id}/?flash=restored`);
 }

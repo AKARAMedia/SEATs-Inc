@@ -1,5 +1,5 @@
 import "server-only";
-import { updateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { after } from "next/server";
 
 /**
@@ -35,8 +35,19 @@ export function requestRebuild() {
   }
 }
 
-/** updateTag() for admin actions that change public content: also schedules the rebuild that publishes it. */
-export function publishChange(tag: string) {
+/**
+ * updateTag() for admin actions that change public content: also schedules the rebuild that publishes
+ * it, and (when the content has its own public page, e.g. a post) drops that exact page from the
+ * Workers-level cache - Next's fetch-tag cache doesn't cover plain drizzle queries like this app's
+ * pages use, so without this a since-deleted/unpublished page can keep serving its last cached render
+ * indefinitely (Cache-Control is s-maxage=31536000) even after a full rebuild+redeploy.
+ */
+export function publishChange(tag: string, slugs?: string | (string | undefined)[]) {
   updateTag(tag);
+  for (const slug of [slugs].flat()) {
+    if (!slug) continue;
+    revalidatePath(`/${slug}/`);
+    revalidatePath(`/ja/${slug}/`);
+  }
   requestRebuild();
 }
