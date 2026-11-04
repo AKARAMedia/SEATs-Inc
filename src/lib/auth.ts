@@ -2,7 +2,7 @@ import "server-only";
 import { cache } from "react";
 import crypto from "node:crypto";
 import { cookies, headers } from "next/headers";
-import { connection } from "next/server";
+import { after, connection } from "next/server";
 import { redirect } from "next/navigation";
 import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
@@ -173,8 +173,11 @@ export const getSession = cache(async (): Promise<Session | null> => {
     .innerJoin(adminUsers, eq(adminSessions.userId, adminUsers.id))
     .where(eq(adminSessions.id, sid));
   if (!row || !row.active || row.expiresAt < new Date()) return null;
+  // Deferred: this write only keeps "last seen" fresh for the admin user list, so it doesn't need to
+  // block the response - and it's exactly the kind of request (first one after the session sat idle)
+  // most likely to land on a cold/sleeping database connection and risk the CPU limit.
   if (Date.now() - row.lastSeenAt.getTime() > 5 * 60 * 1000) {
-    await db.update(adminSessions).set({ lastSeenAt: new Date() }).where(eq(adminSessions.id, sid));
+    after(() => db.update(adminSessions).set({ lastSeenAt: new Date() }).where(eq(adminSessions.id, sid)));
   }
   return { id: row.id, email: row.email, name: row.name, role: row.role, sid };
 });
