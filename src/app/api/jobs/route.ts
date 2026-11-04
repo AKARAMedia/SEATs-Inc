@@ -2,12 +2,6 @@ import { asc, desc, eq } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { JOB_SITES, jobs, type JobSite } from "@/db/schema";
 
-// This route is hit very frequently by other sites polling for job listings, and a Cache-Control
-// response header alone isn't enough to get it cached at Cloudflare's edge for a Worker-owned custom
-// domain - without this, every single poll ran a live DB query. `revalidate` puts it through the same
-// ISR cache Next.js already uses for pages, so repeat requests within the window are served from cache.
-export const revalidate = 300;
-
 // Public, read-only job feed for other websites (e.g. seatsinc-career.com).
 //   GET /api/jobs/                -> career-site jobs (open and closed — see `open` on each job)
 //   GET /api/jobs/?site=main      -> jobs for seats-inc.com
@@ -32,6 +26,18 @@ export async function GET(req: Request) {
   const site = (JOB_SITES as readonly string[]).includes(q.get("site") ?? "") ? (q.get("site") as JobSite) : "career";
   const ja = q.get("lang") === "ja";
 
+  // This feed is polled very frequently by other sites, often with a client-sent no-cache directive
+  // that would otherwise bypass Cloudflare's edge cache regardless of our own response headers - so
+  // caching is done explicitly here with the Workers Cache API instead of relying on HTTP semantics.
+  // Keyed on a normalized URL (just the params that affect the response) so HEAD requests (Next.js
+  // derives these from GET) and any extra client headers all hit the same cache entry.
+  // Only available in the Workers runtime (production) - `caches` doesn't exist under plain Node.js
+  // (local dev), where there's no edge cache to worry about anyway.
+  const cache = typeof caches !== "undefined" ? (caches as CacheStorage & { default: Cache }).default : null;
+  const cacheKey = new Request(`https://cache.internal/api/jobs?site=${site}&lang=${ja ? "ja" : "en"}`);
+  const cached = await cache?.match(cacheKey);
+  if (cached) return cached;
+
   await ready();
   const rows = await db
     .select()
@@ -54,8 +60,10 @@ export async function GET(req: Request) {
     updatedAt: j.updatedAt.toISOString(),
   }));
 
-  return Response.json(
+  const response = Response.json(
     { count: data.length, jobs: data },
     { headers: { ...CORS, "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } },
   );
+  await cache?.put(cacheKey, response.clone());
+  return response;
 }
