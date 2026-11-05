@@ -20,15 +20,17 @@ export function ShadowBox({
   className = "",
   soft = false,
   as: Tag = "section",
+  id,
 }: {
   children: ReactNode;
   className?: string;
+  id?: string;
   /** -7px spread (cards / LOKA) instead of the -5px section shadow */
   soft?: boolean;
   as?: "section" | "div";
 }) {
   return (
-    <Tag className={`bg-white ${soft ? "shadow-[0_0_10px_-7px_rgba(0,0,0,0.5)]" : "shadow-[0_0_10px_-5px_rgba(0,0,0,0.5)]"} ${className}`}>
+    <Tag id={id} className={`bg-white ${soft ? "shadow-[0_0_10px_-7px_rgba(0,0,0,0.5)]" : "shadow-[0_0_10px_-5px_rgba(0,0,0,0.5)]"} ${className}`}>
       {children}
     </Tag>
   );

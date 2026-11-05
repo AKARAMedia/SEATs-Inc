@@ -19,7 +19,7 @@ function Current({ lang }: { lang: Lang }) {
   return (
     <button
       type="button"
-      className="flex h-10 items-center gap-1.5 text-[15px] font-semibold uppercase text-heading"
+      className="site-header-icon flex h-10 items-center gap-1.5 text-[15px] font-semibold uppercase text-heading"
       aria-haspopup="true"
     >
       <Image src={FLAG[lang]} alt="" width={18} height={12} unoptimized />

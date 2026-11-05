@@ -28,6 +28,16 @@
   html {
     -webkit-text-size-adjust: 100%;
   }
+  /* Animated in-page anchor scrolling (e.g. hero "Our Services"); reduced-motion users get an instant jump.
+     <html data-scroll-behavior="smooth"> keeps Next.js route changes instant. */
+  html {
+    scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
   body {
     background: #fff;
     color: var(--color-text);
@@ -362,3 +372,229 @@
   }
 }
 
+
+/* NOVA Marketing hero: entrance animation on page load (staggered via --d) */
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes hero-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(48px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes hero-zoom-out {
+  from {
+    transform: scale(1.14);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.hero-up,
+.hero-slide,
+.hero-fade,
+.hero-zoom {
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-delay: var(--d, 0s);
+}
+.hero-up {
+  animation-name: hero-fade-up;
+  animation-duration: 0.9s;
+}
+.hero-slide {
+  animation-name: hero-slide-left;
+  animation-duration: 1s;
+}
+.hero-fade {
+  animation-name: hero-fade;
+  animation-duration: 1.2s;
+}
+.hero-zoom {
+  animation-name: hero-zoom-out;
+  animation-duration: 2.4s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-up,
+  .hero-slide,
+  .hero-fade,
+  .hero-zoom {
+    animation: none;
+  }
+}
+
+/* Hero navbar: transparent over a full-bleed hero, frosted glass pill once scrolled
+   Opt-in per page: render <span data-hero-nav hidden /> (see the NOVA Marketing page). While that
+   marker is mounted the header is transparent at the top of the page and becomes a floating glass
+   pill after scrolling (Header sets data-stuck); it unmounts on navigation, so every other page
+   keeps the normal white bar. Unlayered, so it wins over Tailwind utilities. */
+body:has([data-hero-nav]) .site-header-spacer {
+  height: 0;
+}
+body:has([data-hero-nav]) .site-header {
+  background: transparent;
+  box-shadow: none;
+}
+body:has([data-hero-nav]) .site-header-bar {
+  height: 64px;
+  margin: 12px 12px 0;
+  padding-inline: 18px;
+  /* Top of page: no box at all, just the links floating on the banner */
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  background-color: rgba(22, 64, 112, 0);
+  -webkit-backdrop-filter: blur(0px) saturate(100%);
+  backdrop-filter: blur(0px) saturate(100%);
+  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0);
+  transition:
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    backdrop-filter 0.4s ease,
+    -webkit-backdrop-filter 0.4s ease;
+}
+/* Scrolled: frosted blue glass pill. Tinted (not clear) so the white text stays readable over white sections. */
+body:has([data-hero-nav]) .site-header[data-stuck="true"] .site-header-bar {
+  background-color: rgba(22, 64, 112, 0.78);
+  border-color: rgba(255, 255, 255, 0.28);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.5);
+}
+/* Smart sticky (like seatsinc-career.com): slide out of view while scrolling down, back in on scroll up.
+   Stays put while anything inside has keyboard focus (menus, links) so it never vanishes under the user. */
+body:has([data-hero-nav]) .site-header {
+  transition: transform 0.3s ease-out;
+}
+body:has([data-hero-nav]) .site-header[data-hidden="true"] {
+  transform: translateY(-150%);
+}
+body:has([data-hero-nav]) .site-header[data-hidden="true"]:has(:focus-visible) {
+  transform: none;
+}
+/* Recruit: white pill over the bare banner (matches the hero's "Get In Touch"), green again once scrolled */
+body:has([data-hero-nav]) .site-header[data-stuck="false"] .site-recruit {
+  background-color: #fff;
+  color: #06365f;
+}
+body:has([data-hero-nav]) .site-header[data-stuck="false"] .site-recruit:hover {
+  background-color: #d9f0ff;
+  color: #06365f;
+}
+@media (min-width: 1366px) {
+  body:has([data-hero-nav]) .site-header-bar {
+    margin: 16px 24px 0;
+    padding-inline: 32px;
+  }
+}
+/* Logo: the artwork is dark, so render it as a white mark on the glass */
+body:has([data-hero-nav]) .site-logo {
+  filter: brightness(0) invert(1);
+}
+body:has([data-hero-nav]) .site-nav-link,
+body:has([data-hero-nav]) .site-header-icon {
+  color: #fff;
+}
+body:has([data-hero-nav]) .site-nav-link:hover,
+body:has([data-hero-nav]) .site-header-icon:hover,
+body:has([data-hero-nav]) .group:hover > .site-nav-link {
+  color: rgba(255, 255, 255, 0.7);
+}
+body:has([data-hero-nav]) .site-nav-link[aria-current="page"] {
+  color: #7fd0ff;
+}
+
+/* Scroll-in entrance (see RevealOnView): .rv children stay hidden until their wrapper first scrolls into view.
+   Reuses hero-fade-up / hero-slide-left / hero-fade from the hero block above. */
+@keyframes rv-from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-70px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rv-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rv-wave {
+  from {
+    opacity: 0;
+    transform: scaleX(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.nova-reveal[data-state="pending"] .rv {
+  opacity: 0;
+}
+.rv-wave {
+  transform-box: fill-box;
+  transform-origin: 0% 50%;
+}
+.nova-reveal[data-state="in"] .rv {
+  animation-duration: 0.9s;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-delay: var(--d, 0s);
+}
+.nova-reveal[data-state="in"] .rv-up {
+  animation-name: hero-fade-up;
+}
+.nova-reveal[data-state="in"] .rv-slide {
+  animation-name: hero-slide-left;
+}
+.nova-reveal[data-state="in"] .rv-fade {
+  animation-name: hero-fade;
+  animation-duration: 1.4s;
+}
+.nova-reveal[data-state="in"] .rv-left {
+  animation-name: rv-from-left;
+  animation-duration: 1s;
+}
+.nova-reveal[data-state="in"] .rv-pop {
+  animation-name: rv-pop;
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.nova-reveal[data-state="in"] .rv-wave {
+  animation-name: rv-wave;
+  animation-duration: 1.1s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nova-reveal .rv {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
