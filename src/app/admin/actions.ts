@@ -10,6 +10,8 @@ import { ensureBaseline, getVersion, logActivity, saveVersion } from "@/lib/acti
 import type { Session } from "@/lib/auth";
 import { htmlText } from "@/lib/translation/text";
 import { login, logout, requireAdmin } from "@/lib/auth";
+import { can } from "@/lib/permissions";
+import { insertMirroredImages, parseMirrorImages } from "@/lib/image-mirror";
 import { NEWS_TAG } from "@/lib/news";
 import { sanitizeBody, slugify, stripTags } from "@/lib/sanitize";
 
@@ -127,10 +129,15 @@ export async function saveEnglishAction(_: FormState, formData: FormData): Promi
 
   let id = d.id;
   const prev = await getPost(id);
+  // Images inserted while editing English also go into the Japanese body (same block position, see image-mirror.ts)
+  const mirror = formData.get("mirrorImages");
+  // Only when a Japanese body already exists - images alone would stop the JP page falling back to English
+  const mirroredJa = stripTags(prev?.bodyJa ?? "") ? insertMirroredImages(prev?.bodyJa ?? "", parseMirrorImages(mirror)) : (prev?.bodyJa ?? "");
+  const jaPatch = mirroredJa !== (prev?.bodyJa ?? "") ? { bodyJa: mirroredJa } : {};
   if (id) {
-    await db.update(posts).set(values).where(eq(posts.id, id));
+    await db.update(posts).set({ ...values, ...jaPatch }).where(eq(posts.id, id));
   } else {
-    [{ id }] = await db.insert(posts).values(values).returning({ id: posts.id });
+    [{ id }] = await db.insert(posts).values({ ...values, ...jaPatch }).returning({ id: posts.id });
   }
   await afterPostChange(id!, prev, session, d.id ? "post.update" : "post.create");
   publishChange(NEWS_TAG, [slug, prev?.slug]);
@@ -145,12 +152,15 @@ export async function saveJapaneseAction(_: FormState, formData: FormData): Prom
   if (!t.success) return { error: "Invalid input." };
   const bodyJa = sanitizeBody(t.data.bodyJa);
   const prev = await getPost(t.data.id);
+  // Translators may only touch Japanese, so only editors mirror inserted images into the English body
+  const mirroredEn = can(session.role, "editPosts") ? insertMirroredImages(prev?.bodyEn ?? "", parseMirrorImages(formData.get("mirrorImages"))) : (prev?.bodyEn ?? "");
   await db
     .update(posts)
     .set({
       titleJa: t.data.titleJa,
       excerptJa: t.data.excerptJa || stripTags(bodyJa).slice(0, 120),
       bodyJa,
+      ...(mirroredEn !== (prev?.bodyEn ?? "") ? { bodyEn: mirroredEn } : {}),
       updatedAt: new Date(),
     })
     .where(eq(posts.id, t.data.id));

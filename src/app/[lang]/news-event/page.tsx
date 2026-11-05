@@ -10,7 +10,6 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/news-event
   const { lang } = await params;
   return {
     title: lang === "ja" ? "ニュース" : "News&Event",
-    alternates: { languages: { en: "/news-event/", ja: "/ja/news-event/" } },
   };
 }
 
@@ -23,7 +22,7 @@ export default async function NewsEventPage({ params }: PageProps<"/[lang]/news-
 
   return (
     <div className="mx-auto max-w-[1222px] px-[15px] pb-[60px] pt-10">
-      <NewsGuard lang={lang} />
+      <NewsGuard />
       <NewsList lang={lang}>
         <NewsStatic lang={lang} items={items} page={1} pages={pages} />
       </NewsList>

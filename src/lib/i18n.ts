@@ -5,10 +5,15 @@ export function isLang(v: string): v is Lang {
   return (LANGS as readonly string[]).includes(v);
 }
 
-/** Public URL for a path in a given language. `path` is unprefixed, e.g. "/overview/". */
-export function href(lang: Lang, path: string) {
-  const p = path.startsWith("/") ? path : `/${path}`;
-  return lang === "ja" ? `/ja${p}` : p;
+/** Cookie holding the visitor's language; middleware.ts picks the page language from it. */
+export const LANG_COOKIE = "seats-lang";
+
+/**
+ * Public URL for a path. Both languages share one URL (e.g. "/overview/"): the language comes from the
+ * visitor's cookie, not the path, so `lang` is accepted only to keep call sites unchanged.
+ */
+export function href(_lang: Lang, path: string) {
+  return path.startsWith("/") ? path : `/${path}`;
 }
 
 /** Pick the string for the current language from an EN/JA pair. */

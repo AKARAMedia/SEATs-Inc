@@ -22,7 +22,6 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/[slug]">):
     title: item.title,
     description: item.excerpt.slice(0, 160),
     openGraph: { title: item.title, images: item.imageUrl ? [item.imageUrl] : [], type: "article" },
-    alternates: { languages: Object.fromEntries(LANGS.map((l) => [l, l === "ja" ? `/ja/${slug}/` : `/${slug}/`])) },
   };
 }
 

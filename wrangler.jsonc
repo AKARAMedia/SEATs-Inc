@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "main": ".open-next/worker.js",
+  // worker/index.mjs wraps .open-next/worker.js to pick the English or Japanese static page by cookie
+  "main": "worker/index.mjs",
   "name": "seats-inc",
   "compatibility_date": "2026-10-15",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
@@ -9,9 +10,12 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS",
-    // Cloudflare serves a matching file here *without running the Worker* (free, no CPU limit). The
-    // build puts every prerendered public page (and /uploads/ images) in this directory, see
-    // scripts/export-static.ts. Don't set run_worker_first: it would send every page through the Worker.
+    // The build puts every prerendered public page (and /uploads/ images) in this directory, see
+    // scripts/export-static.ts. Files under /_next, /media, /uploads and /jp are served by Cloudflare
+    // *without running the Worker* (free, no CPU limit). Everything else runs worker/index.mjs first:
+    // English and Japanese share one URL, so the Worker picks the page file from the language cookie
+    // (a plain asset lookup, no rendering). Each page view therefore counts as one Worker request.
+    "run_worker_first": ["/*", "!/_next/*", "!/media/*", "!/uploads/*", "!/jp/*", "!/favicon.ico", "!/icon.png"],
   },
   "services": [
     {

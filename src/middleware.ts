@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 import { SESSION_COOKIE, sessionKey } from "@/lib/session-key";
+import { LANG_COOKIE } from "@/lib/i18n";
 import LEGACY_SLUGS from "@/content/legacy-redirects.json";
 
 const legacy: Record<string, string> = LEGACY_SLUGS;
@@ -8,9 +9,10 @@ const legacy: Record<string, string> = LEGACY_SLUGS;
 // Deliberately middleware.ts (Edge runtime) rather than Next 16's proxy.ts (Node.js runtime only):
 // the Node bundle adds ~2 MB to the Cloudflare Worker, which must stay under the size limit.
 
-// URL scheme mirrors the old WordPress/TranslatePress site:
-//   /overview/      -> English (internally /en/overview)
-//   /ja/overview/   -> Japanese
+// One URL per page for both languages: /overview/ is English or Japanese depending on the visitor's
+// language cookie (set by the language switcher, ?lang=ja|en). Internally the page is rendered from
+//   /en/overview  or  /ja/overview
+// Old /ja/... and /en/... links redirect to the clean URL and set the cookie.
 // Automated vulnerability/exploit scanners constantly probe WordPress-style paths that don't
 // exist on this Next.js site. Without this, each one still falls through to the full [lang]
 // layout render (DB settings lookup, fonts, etc.) at real CPU cost — observed ~500ms+ CPU per
@@ -31,10 +33,18 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // Language switcher: ?lang=ja|en saves the choice and returns to the same page without the parameter
+  const asked = req.nextUrl.searchParams.get("lang");
+  if (asked === "ja" || asked === "en") {
+    const url = req.nextUrl.clone();
+    url.searchParams.delete("lang");
+    return withLang(NextResponse.redirect(url, 307), asked);
+  }
+
   if (pathname === "/en" || pathname.startsWith("/en/")) {
     const url = req.nextUrl.clone();
     url.pathname = pathname.slice(3) || "/";
-    return NextResponse.redirect(url, 308);
+    return withLang(NextResponse.redirect(url, 307), "en");
   }
 
   // Old WordPress permalinks that used Japanese slugs -> new ASCII slugs
@@ -60,11 +70,25 @@ export async function middleware(req: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
-  if (pathname === "/ja" || pathname.startsWith("/ja/")) return NextResponse.next();
+  // Old Japanese URLs (/ja/overview/): same page at the clean URL, language remembered in the cookie
+  if (pathname === "/ja" || pathname.startsWith("/ja/")) {
+    const url = req.nextUrl.clone();
+    url.pathname = pathname.slice(3) || "/";
+    return withLang(NextResponse.redirect(url, 307), "ja");
+  }
 
+  const lang = req.cookies.get(LANG_COOKIE)?.value === "ja" ? "ja" : "en";
   const url = req.nextUrl.clone();
-  url.pathname = `/en${pathname}`;
-  return NextResponse.rewrite(url);
+  url.pathname = `/${lang}${pathname}`;
+  const res = NextResponse.rewrite(url);
+  // Same URL, different page per language: caches must not share it between cookies
+  res.headers.append("Vary", "Cookie");
+  return res;
+}
+
+function withLang(res: NextResponse, lang: "en" | "ja") {
+  res.cookies.set(LANG_COOKIE, lang, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
+  return res;
 }
 
 function safeDecode(s: string) {

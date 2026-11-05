@@ -6,8 +6,9 @@ import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Youtube from "@tiptap/extension-youtube";
 import { Placeholder } from "@tiptap/extensions";
-import { useState } from "react";
+import { useImperativeHandle, useState, type Ref } from "react";
 import { uploadImage } from "./upload";
+import { IMAGE_SHAPES, IMAGE_SIZES } from "@/lib/image-options";
 import MediaPicker from "./media/MediaPicker";
 
 type Props = {
@@ -15,11 +16,27 @@ type Props = {
   defaultValue: string;
   onChange?: (html: string) => void;
   // Called whenever an image is inserted here, so the other language's body (not mounted while its
-  // tab is inactive) can get the same image appended without a second upload.
-  onImageInserted?: (src: string, alt: string) => void;
+  // tab is inactive) can get the same image, at the same place, without a second upload.
+  onImageInserted?: (src: string, alt: string, html: string) => void;
   placeholder?: string;
   lang: "en" | "ja";
+  /** Lets the page add an image to the end of the body from outside the editor (the "Images in this post" panel). */
+  handleRef?: Ref<RichTextHandle>;
 };
+
+// Image with an optional crop shape and width, stored as data-shape / data-size on the <img>
+const attr = (name: string, data: string) => ({
+  default: null as string | null,
+  parseHTML: (el: HTMLElement) => el.getAttribute(data),
+  renderHTML: (a: Record<string, unknown>) => (a[name] ? { [data]: a[name] } : {}),
+});
+const ShapedImage = Image.extend({
+  addAttributes() {
+    return { ...this.parent?.(), shape: attr("shape", "data-shape"), size: attr("size", "data-size") };
+  },
+});
+
+export type RichTextHandle = { addImage: (src: string, alt: string) => void };
 
 function Btn({ onClick, active, label, children }: { onClick: () => void; active?: boolean; label: string; children: React.ReactNode }) {
   return (
@@ -64,6 +81,8 @@ function Toolbar({
       link: e.isActive("link"),
       center: e.isActive({ textAlign: "center" }),
       image: e.isActive("image"),
+      shape: (e.getAttributes("image").shape as string | null) ?? "",
+      size: (e.getAttributes("image").size as string | null) ?? "",
     }),
   })!;
   const chain = () => editor.chain().focus();
@@ -97,6 +116,34 @@ function Toolbar({
           <Btn label="Replace selected image" onClick={onReplaceImage}>
             🔁
           </Btn>
+          <select
+            aria-label="Image shape"
+            title="Image shape"
+            value={s.shape}
+            onChange={(e) => chain().updateAttributes("image", { shape: e.target.value || null }).run()}
+            className="h-8 rounded border border-black/15 bg-white px-1 text-[12px]"
+          >
+            <option value="">Original shape</option>
+            {IMAGE_SHAPES.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+          <select
+            aria-label="Image size"
+            title="Image size"
+            value={s.size}
+            onChange={(e) => chain().updateAttributes("image", { size: e.target.value || null }).run()}
+            className="h-8 rounded border border-black/15 bg-white px-1 text-[12px]"
+          >
+            <option value="">Full width</option>
+            {IMAGE_SIZES.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
           <Btn label="Remove selected image" onClick={() => chain().deleteSelection().run()}>
             🗑
           </Btn>
@@ -118,7 +165,7 @@ function Toolbar({
   );
 }
 
-export default function RichTextEditor({ name, defaultValue, onChange, onImageInserted, placeholder, lang }: Props) {
+export default function RichTextEditor({ name, defaultValue, onChange, onImageInserted, placeholder, lang, handleRef }: Props) {
   const [html, setHtml] = useState(defaultValue);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -128,7 +175,7 @@ export default function RichTextEditor({ name, defaultValue, onChange, onImageIn
     immediatelyRender: false,
     extensions: [
       StarterKit.configure({ link: { openOnClick: false, autolink: true } }),
-      Image.configure({ HTMLAttributes: { loading: "lazy" } }),
+      ShapedImage.configure({ HTMLAttributes: { loading: "lazy" } }),
       Youtube.configure({ nocookie: true, width: 640, height: 360 }),
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Placeholder.configure({ placeholder }),
@@ -142,6 +189,18 @@ export default function RichTextEditor({ name, defaultValue, onChange, onImageIn
     },
   });
 
+  useImperativeHandle(
+    handleRef,
+    () => ({
+      addImage(src, alt) {
+        if (!editor) return;
+        editor.chain().insertContentAt(editor.state.doc.content.size, { type: "image", attrs: { src, alt } }).run();
+        onImageInserted?.(src, alt, editor.getHTML());
+      },
+    }),
+    [editor, onImageInserted],
+  );
+
   async function onFiles(files: FileList | null) {
     if (!files?.length || !editor) return;
     setUploading(true);
@@ -150,7 +209,7 @@ export default function RichTextEditor({ name, defaultValue, onChange, onImageIn
       for (const f of Array.from(files)) {
         const src = await uploadImage(f);
         editor.chain().focus().setImage({ src, alt: "" }).run();
-        onImageInserted?.(src, "");
+        onImageInserted?.(src, "", editor.getHTML());
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Upload failed");
@@ -181,7 +240,7 @@ export default function RichTextEditor({ name, defaultValue, onChange, onImageIn
             editor?.chain().focus().updateAttributes("image", { src: p.url, alt: p.alt }).run();
           } else {
             editor?.chain().focus().setImage({ src: p.url, alt: p.alt }).run();
-            onImageInserted?.(p.url, p.alt);
+            if (editor) onImageInserted?.(p.url, p.alt, editor.getHTML());
           }
         }}
       />

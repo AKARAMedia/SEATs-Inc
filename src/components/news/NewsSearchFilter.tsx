@@ -21,7 +21,7 @@ export default function NewsSearchFilter({ lang, q, hasResults }: { lang: Lang; 
       <button
         type="button"
         className="text-primary underline hover:text-accent"
-        onClick={() => router.replace(lang === "ja" ? "/ja/news-event/" : "/news-event/")}
+        onClick={() => router.replace("/news-event/")}
       >
         {T.clear[lang]}
       </button>
