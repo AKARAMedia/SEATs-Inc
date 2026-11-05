@@ -40,7 +40,7 @@ export default async function LangLayout({ children, params }: LayoutProps<"/[la
   if (!isLang(lang)) notFound();
   const { company, social, maintenance } = await getSettings();
   return (
-    <html lang={lang} className={`${openSans.variable} ${roboto.variable} ${robotoSlab.variable}`}>
+    <html lang={lang} data-scroll-behavior="smooth" className={`${openSans.variable} ${roboto.variable} ${robotoSlab.variable}`}>
       <body className="flex min-h-screen flex-col antialiased">
         <Header lang={lang} socials={social.links} mapUrl={company.mapUrl} />
         <main className="flex-1">

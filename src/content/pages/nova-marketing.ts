@@ -7,8 +7,30 @@ const card = (src: string, en: string, ja: string, textEn: string, textJa: strin
 
 export const NOVA = {
   title: { en: "NOVA Marketing", ja: "NOVA Marketing" },
-  hero: { bg: "/media/2025/08/nova_banner-scaled.jpg", line1: "NOVA", line2: "MARKETING" },
+  hero: {
+    bg: "/media/2026/11/nova-team.png",
+    badge: { en: "Your growth partner in the digital world", ja: "デジタル分野での成長パートナー" },
+    line1: "NOVA",
+    line2: "MARKETING",
+    description: {
+      en: "NOVA Marketing helps brands grow online with digital marketing, media production, web development and management support, all under one team.",
+      ja: "NOVA Marketingは、デジタルマーケティング、メディア制作、Web開発、ビジネス管理支援をワンチームで提供し、ブランドのオンライン成長をサポートします。",
+    },
+    primaryCta: { en: "Get In Touch", ja: "お問い合わせ" },
+    secondaryCta: { en: "Our Services", ja: "事業内容" },
+    card: {
+      title: { en: "Best Solution Provider", ja: "最適なソリューション" },
+      text: { en: "Tailored strategies. Measurable results.", ja: "最適な戦略で、確かな成果を。" },
+    },
+    features: [
+      { label: { en: "Digital Marketing", ja: "デジタルマーケティング" }, text: { en: "Reach the right audience", ja: "最適な顧客へアプローチ" } },
+      { label: { en: "Media Creation", ja: "メディア制作" }, text: { en: "Videos, photos & graphics", ja: "動画・写真・グラフィック" } },
+      { label: { en: "Web Creation", ja: "Web制作" }, text: { en: "Fast, secure websites", ja: "安全で拡張性のあるサイト" } },
+      { label: { en: "Management Support", ja: "ビジネス管理支援" }, text: { en: "Streamline your workflow", ja: "業務の効率化をサポート" } },
+    ],
+  },
   overview: {
+    label: { en: "Launched May 2022", ja: "2022年5月スタート" },
     heading: { en: "Business Overview", ja: "概要" },
     intro: {
       en: "NOVA Marketing was launched in May 2022 as a new business initiative under S.E.A.T.S Inc., focusing on digital marketing. We currently operate three main services:",
