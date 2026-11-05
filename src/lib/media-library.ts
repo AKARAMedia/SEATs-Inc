@@ -18,7 +18,8 @@ export type MediaItem = {
   source: "upload" | "site";
 };
 
-export type MediaUse = { label: string; href: string };
+/** `kind: "post"` uses are removed automatically when the image is deleted; anything else blocks deleting. */
+export type MediaUse = { label: string; href: string; kind?: "post" };
 
 const siteItems: MediaItem[] = (SITE_MEDIA as { url: string; width: number; height: number; size: number }[])
   // Skip icons (flags etc.)
@@ -98,7 +99,7 @@ export async function mediaUsage(): Promise<Map<string, MediaUse[]>> {
   // <img> tags, so scan the serialized JSON for anything that looks like one of our own media URLs.
   const jsonUrlRe = /"(\/(?:media|uploads)\/[^"]+|https:\/\/[^"]+\.blob\.vercel-storage\.com\/[^"]+)"/g;
   for (const p of postRows) {
-    const use = { label: `News: ${p.title}`, href: `/admin/posts/${p.id}/` };
+    const use: MediaUse = { label: `News: ${p.title}`, href: `/admin/posts/${p.id}/`, kind: "post" };
     add(p.imageUrl, use);
     for (const m of `${p.bodyEn}${p.bodyJa}`.matchAll(imgSrc)) add(m[1], use);
   }

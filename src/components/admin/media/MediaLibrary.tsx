@@ -220,11 +220,13 @@ export default function MediaLibrary({ items, usage, counts, total, page, pages,
             {sel.source === "upload" && sel.id !== null && (
               <button
                 type="button"
-                disabled={pending || uses(sel).length > 0}
-                title={uses(sel).length ? "Remove the image from the places above first" : undefined}
+                disabled={pending || uses(sel).some((u) => u.kind !== "post")}
+                title={uses(sel).some((u) => u.kind !== "post") ? "Remove the image from the non-news places above first" : undefined}
                 className="admin-btn-secondary w-full justify-center !text-red-600 hover:!bg-red-50 disabled:opacity-40"
                 onClick={async () => {
-                  if (!(await confirmDialog({ title: "Delete this image?", message: `${sel.filename} will be permanently deleted.`, confirmLabel: "Delete", danger: true }))) return;
+                  if (!(await confirmDialog({ title: "Delete this image?", message: uses(sel).length
+                        ? `${sel.filename} will be permanently deleted and removed from ${uses(sel).length} news post${uses(sel).length > 1 ? "s" : ""} (featured image and body). This cannot be undone.`
+                        : `${sel.filename} will be permanently deleted.`, confirmLabel: "Delete", danger: true }))) return;
                   start(async () => {
                     const r = await deleteMediaAction(sel.id!);
                     if (r.ok) {
@@ -234,7 +236,7 @@ export default function MediaLibrary({ items, usage, counts, total, page, pages,
                   });
                 }}
               >
-                {uses(sel).length ? "In use — can't delete" : "Delete image"}
+                {uses(sel).some((u) => u.kind !== "post") ? "In use — can't delete" : uses(sel).length ? "Delete & remove from posts" : "Delete image"}
               </button>
             )}
           </div>

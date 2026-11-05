@@ -72,3 +72,19 @@ export function parseMirrorImages(raw: unknown): MirrorImage[] {
     return [];
   }
 }
+
+/** Removes every <img> with this src from a body (and the paragraph it leaves empty). */
+export function removeImageFromHtml(html: string, src: string): string {
+  const wanted = new Set([`src="${src}"`, `src="${esc(src)}"`]);
+  // Work on top-level blocks: drop an <img> block, or a paragraph whose only content is that image
+  const isTarget = (tag: string) => tag.startsWith("<img") && [...wanted].some((w) => tag.includes(w));
+  const stripImgs = (block: string) => block.replace(/<img\b[^>]*>/gi, (tag) => (isTarget(tag) ? "" : tag));
+  return topLevelBlocks(html)
+    .map((block) => {
+      const cleaned = stripImgs(block);
+      if (cleaned === block) return block;
+      // Nothing left but an empty wrapper (<p></p>, <figure></figure>)
+      return cleaned.replace(/<[^>]+>/g, "").trim() === "" && !/<img\b/i.test(cleaned) ? "" : cleaned;
+    })
+    .join("");
+}
