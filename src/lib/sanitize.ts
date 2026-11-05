@@ -1,4 +1,5 @@
 import sanitizeHtml from "sanitize-html";
+import { IMAGE_SHAPES, IMAGE_SIZES } from "./image-options";
 
 const IFRAME_HOSTS = ["www.youtube.com", "youtube.com", "www.youtube-nocookie.com", "www.facebook.com", "www.tiktok.com", "player.vimeo.com"];
 
@@ -11,7 +12,7 @@ export function sanitizeBody(html: string): string {
     ],
     allowedAttributes: {
       a: ["href", "target", "rel"],
-      img: ["src", "alt", "width", "height", "loading"],
+      img: ["src", "alt", "width", "height", "loading", "data-shape", "data-size"],
       iframe: ["src", "width", "height", "allow", "allowfullscreen", "frameborder", "title"],
       // TipTap YouTube node wrapper — needed so embeds survive re-editing
       div: ["data-youtube-video"],
@@ -34,7 +35,19 @@ export function sanitizeBody(html: string): string {
           ? { ...attribs, target: "_blank", rel: "noopener noreferrer" }
           : attribs,
       }),
-      img: (tag, attribs) => ({ tagName: "img", attribs: { ...attribs, loading: "lazy" } }),
+      img: (tag, attribs) => {
+        // Editor-chosen look of the image (see IMAGE_SHAPES / IMAGE_SIZES); anything else is dropped
+        const { "data-shape": shape, "data-size": size, ...rest } = attribs;
+        return {
+          tagName: "img",
+          attribs: {
+            ...rest,
+            loading: "lazy",
+            ...(IMAGE_SHAPES.some((x) => x.value === shape) && { "data-shape": shape }),
+            ...(IMAGE_SIZES.some((x) => x.value === size) && { "data-size": size }),
+          },
+        };
+      },
     },
   });
 }

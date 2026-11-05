@@ -14,7 +14,7 @@ export default function HomeNewsSearch({ lang }: { lang: Lang }) {
       className="flex w-[413px] max-w-full items-center border-l border-black/10 pl-3 max-[767px]:w-full max-[767px]:rounded-[5px] max-[767px]:border max-[767px]:pl-0"
       onSubmit={(e) => {
         e.preventDefault();
-        const base = lang === "ja" ? "/ja/news-event/" : "/news-event/";
+        const base = "/news-event/";
         router.push(q.trim() ? `${base}?s=${encodeURIComponent(q.trim())}` : base);
       }}
     >

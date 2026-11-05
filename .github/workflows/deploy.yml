@@ -1,7 +1,8 @@
 # Rebuilds the static public pages from the database and deploys the Worker to Cloudflare.
 #
 # The site runs on the Cloudflare Free plan (10 ms CPU per request), so public pages are prerendered
-# at build time and served as static files (see scripts/export-static.ts). That means content edits
+# at build time and served as static files (see scripts/export-static.ts; worker/index.mjs picks the
+# English or Japanese file by the visitor's language cookie). That means content edits
 # only go live after one of these runs:
 #   - repository_dispatch "content-updated": sent by the admin panel after every content save
 #     (src/lib/rebuild.ts, needs the GITHUB_DISPATCH_TOKEN secret on the Worker)

@@ -11,17 +11,21 @@ import MediaPicker, { type Picked } from "./media/MediaPicker";
 export default function ImageField({
   name,
   defaultValue,
+  value,
   onChange,
   aspect = "aspect-[4/3]",
   fit = "cover",
 }: {
   name: string;
   defaultValue: string;
+  /** Optional: control the image from outside (e.g. "set as featured" from the post's image list). */
+  value?: string;
   onChange?: (p: Picked | null) => void;
   aspect?: string;
   fit?: "cover" | "contain";
 }) {
-  const [url, setUrl] = useState(defaultValue);
+  const [inner, setUrl] = useState(defaultValue);
+  const url = value ?? inner;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [picking, setPicking] = useState(false);

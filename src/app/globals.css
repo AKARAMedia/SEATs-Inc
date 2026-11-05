@@ -130,6 +130,41 @@
     margin: 1em auto;
     border-radius: 4px;
   }
+  /* Image shape/size chosen in the post editor (data-shape / data-size) */
+  .prose-seats img[data-shape],
+  .prose-seats img[data-size] {
+    display: block;
+  }
+  .prose-seats img[data-shape] {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  .prose-seats img[data-shape="16-9"] {
+    aspect-ratio: 16 / 9;
+  }
+  .prose-seats img[data-shape="3-2"] {
+    aspect-ratio: 3 / 2;
+  }
+  .prose-seats img[data-shape="1-1"] {
+    aspect-ratio: 1 / 1;
+  }
+  .prose-seats img[data-shape="3-4"] {
+    aspect-ratio: 3 / 4;
+  }
+  .prose-seats img[data-shape="circle"] {
+    aspect-ratio: 1 / 1;
+    border-radius: 9999px;
+  }
+  .prose-seats img[data-size="s"] {
+    width: 33%;
+  }
+  .prose-seats img[data-size="m"] {
+    width: 60%;
+  }
+  .prose-seats img[data-size="l"] {
+    width: 85%;
+  }
   .prose-seats figure {
     margin: 1.5em 0;
   }

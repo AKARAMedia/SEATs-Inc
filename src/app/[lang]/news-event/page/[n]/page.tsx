@@ -19,7 +19,6 @@ export async function generateMetadata({ params }: PageProps<"/[lang]/news-event
   const { lang, n } = await params;
   return {
     title: `${lang === "ja" ? "ニュース" : "News&Event"} - ${lang === "ja" ? "ページ" : "Page"} ${n}`,
-    alternates: { languages: { en: `/news-event/page/${n}/`, ja: `/ja/news-event/page/${n}/` } },
   };
 }
 

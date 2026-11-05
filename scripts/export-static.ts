@@ -9,6 +9,10 @@
 // Images uploaded in the admin live in the database; they're written out as files too, so /uploads/...
 // is a static file instead of a Worker + database read per image.
 // Anything not exported here (admin, API routes, unknown URLs) still falls through to the Worker.
+//
+// English and Japanese share one URL in the browser (language cookie, see src/middleware.ts), so the
+// Worker (worker/index.mjs) picks between the two files above by cookie: Japanese visitors get the
+// /ja/... copy at the clean URL. Keep both copies exported.
 import fs from "node:fs";
 import path from "node:path";
 import { loadEnvConfig } from "@next/env";

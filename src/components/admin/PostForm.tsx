@@ -1,9 +1,13 @@
 "use client";
 
-import { startTransition, useActionState, useRef, useState, type FormEvent } from "react";
+import Link from "next/link";
+import { startTransition, useActionState, useMemo, useRef, useState, type FormEvent } from "react";
 import { saveEnglishAction, saveJapaneseAction, type FormState } from "@/app/admin/actions";
-import RichTextEditor from "./RichTextEditor";
+import RichTextEditor, { type RichTextHandle } from "./RichTextEditor";
+import MediaPicker from "./media/MediaPicker";
+import { uploadImage } from "./upload";
 import ImageField from "./ImageField";
+import { blockIndexOf, insertMirroredImages, type MirrorImage } from "@/lib/image-mirror";
 import { useUnsavedChanges } from "./ui/useUnsavedChanges";
 
 export type PostFormValues = {
@@ -22,6 +26,17 @@ export type PostFormValues = {
 };
 
 type Category = { id: number; nameEn: string };
+
+const IMG_SRC = /<img[^>]*?src="([^"]+)"/gi;
+
+/** Every distinct image used in the post's English and Japanese bodies, in order of appearance. */
+function bodyImages(...bodies: string[]) {
+  const seen = new Set<string>();
+  for (const html of bodies) {
+    for (const m of html.matchAll(IMG_SRC)) seen.add(m[1].replace(/&amp;/g, "&"));
+  }
+  return [...seen];
+}
 
 function Err({ state, field }: { state: FormState; field: string }) {
   const msg = state?.fieldErrors?.[field];
@@ -104,7 +119,7 @@ export default function PostForm({ values, categories, mode = "full" }: { values
   const translateOnly = mode === "translate";
   const [stateEn, actionEn, pendingEn] = useActionState(saveEnglishAction, undefined);
   const [stateJa, actionJa, pendingJa] = useActionState(saveJapaneseAction, undefined);
-  const [tab, setTab] = useState<"en" | "ja">(translateOnly ? "ja" : "en");
+  const [tab, setTab] = useState<"en" | "ja">(translateOnly ? "ja" : "en"); // editors never leave "en"
   const formRef = useRef<HTMLFormElement>(null);
   useUnsavedChanges(formRef);
 
@@ -117,13 +132,48 @@ export default function PostForm({ values, categories, mode = "full" }: { values
   const [excerptJa, setExcerptJa] = useState(values.excerptJa);
   const [bodyJa, setBodyJa] = useState(values.bodyJa);
 
-  // A new, never-saved post has no id yet - Japanese can't be saved until English creates the post.
-  const canTabToJa = translateOnly || Boolean(values.id);
 
-  // An image inserted in one language is appended (not at the cursor, since that body's editor isn't
-  // mounted while its tab is inactive) to the other language's body too, so it only has to be uploaded
-  // once instead of twice.
-  const appendImage = (html: string, src: string, alt: string) => `${html}<img src="${src}" alt="${alt.replace(/"/g, "&quot;")}">`;
+  // The same images are sent with the save (hidden "mirrorImages" field) so the server also writes them
+  // into the other language's body - the mirrored copy above only lives in this page's state.
+  const [mirrorFromEn, setMirrorFromEn] = useState<{ src: string; alt: string }[]>([]);
+  const [mirrorFromJa, setMirrorFromJa] = useState<{ src: string; alt: string }[]>([]);
+  // Position (top-level block index) is read from the final source body, so it matches what you see at save.
+  const sourceBody = tab === "en" ? bodyEn : bodyJa;
+  const mirrorList = tab === "en" ? mirrorFromEn : mirrorFromJa;
+  const mirrorImages: MirrorImage[] = useMemo(
+    () => (translateOnly ? [] : mirrorList.flatMap((i) => (blockIndexOf(sourceBody, i.src) >= 0 ? [{ ...i, at: blockIndexOf(sourceBody, i.src) }] : []))),
+    [translateOnly, mirrorList, sourceBody],
+  );
+  const mirrorInto = (set: (f: (h: string) => string) => void, add: (f: (l: { src: string; alt: string }[]) => { src: string; alt: string }[]) => void) =>
+    (src: string, alt: string, html: string) => {
+      const at = blockIndexOf(html, src);
+      set((h) => insertMirroredImages(h, [{ src, alt, at: at < 0 ? Number.MAX_SAFE_INTEGER : at }]));
+      add((l) => [...l, { src, alt }]);
+    };
+
+  // Featured image is lifted so images in the body can be picked as the featured image
+  const [featured, setFeatured] = useState(values.imageUrl);
+  // The active tab's editor (only one is mounted at a time) - the panel adds images through it
+  const editorRef = useRef<RichTextHandle>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [pickingImage, setPickingImage] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [addError, setAddError] = useState<string | null>(null);
+  async function addFiles(files: FileList | null) {
+    if (!files?.length) return;
+    setAdding(true);
+    setAddError(null);
+    try {
+      for (const f of Array.from(files)) editorRef.current?.addImage(await uploadImage(f), "");
+    } catch (e) {
+      setAddError(e instanceof Error ? e.message : "Upload failed");
+    } finally {
+      setAdding(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+  const hasJapanese = Boolean(values.titleJa.trim() || values.bodyJa.replace(/<[^>]*>/g, "").trim());
+  const usedImages = useMemo(() => bodyImages(bodyEn, bodyJa), [bodyEn, bodyJa]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -169,8 +219,9 @@ export default function PostForm({ values, categories, mode = "full" }: { values
           name="bodyEn"
           defaultValue={bodyEn}
           onChange={setBodyEn}
-          onImageInserted={(src, alt) => setBodyJa((h) => appendImage(h, src, alt))}
+          onImageInserted={mirrorInto(setBodyJa, setMirrorFromEn)}
           lang="en"
+          handleRef={editorRef}
           placeholder="Write the post…"
         />
       </div>
@@ -205,8 +256,9 @@ export default function PostForm({ values, categories, mode = "full" }: { values
           name="bodyJa"
           defaultValue={bodyJa}
           onChange={setBodyJa}
-          onImageInserted={(src, alt) => setBodyEn((h) => appendImage(h, src, alt))}
+          onImageInserted={mirrorInto(setBodyEn, setMirrorFromJa)}
           lang="ja"
+          handleRef={editorRef}
           placeholder="本文を入力…"
         />
       </div>
@@ -216,6 +268,7 @@ export default function PostForm({ values, categories, mode = "full" }: { values
   return (
     <form ref={formRef} className="space-y-4" onSubmit={handleSubmit}>
       {values.id && <input type="hidden" name="id" value={values.id} />}
+      {mirrorImages.length > 0 && <input type="hidden" name="mirrorImages" value={JSON.stringify(mirrorImages)} />}
 
       {(translateOnly ? stateJa : tab === "en" ? stateEn : stateJa)?.error && (
         <p role="alert" className="rounded-md bg-red-50 px-4 py-2.5 text-[13px] text-red-700 ring-1 ring-red-200">
@@ -259,25 +312,8 @@ export default function PostForm({ values, categories, mode = "full" }: { values
               </div>
             </>
           ) : (
-            <>
-              <div className="flex rounded-md bg-white p-1 ring-1 ring-black/5">
-                {(["en", "ja"] as const).map((l) => (
-                  <button
-                    key={l}
-                    type="button"
-                    disabled={l === "ja" && !canTabToJa}
-                    title={l === "ja" && !canTabToJa ? "Save English first to create the post" : undefined}
-                    onClick={() => setTab(l)}
-                    className={`flex-1 rounded px-3 py-1.5 text-[13px] font-semibold disabled:cursor-not-allowed disabled:opacity-40 ${
-                      tab === l ? "bg-primary text-white" : "text-[#555]"
-                    }`}
-                  >
-                    {l === "en" ? "English" : "日本語"}
-                  </button>
-                ))}
-              </div>
-              {tab === "en" ? enColumn : jaColumn}
-            </>
+            // Editors write English only; Japanese is added later through Translate
+            enColumn
           )}
         </div>
 
@@ -315,21 +351,77 @@ export default function PostForm({ values, categories, mode = "full" }: { values
                 <span className="mt-1 block text-[12px] text-[#999]">seats-inc.com/{values.slug || "…"}/</span>
                 <Err state={stateEn} field="slug" />
               </label>
-              {tab === "en" ? (
-                <button type="submit" disabled={pendingEn} className="admin-btn w-full">
-                  {pendingEn ? "Saving…" : values.id ? "Save English" : "Create post"}
-                </button>
+              <button type="submit" disabled={pendingEn} className="admin-btn w-full">
+                {pendingEn ? "Saving…" : values.id ? "Save" : "Create post"}
+              </button>
+            </div>
+
+            <div className="rounded-lg bg-white p-4 ring-1 ring-black/5">
+              <span className="admin-label">Japanese</span>
+              {values.id ? (
+                <>
+                  <p className={`mb-2 rounded-md px-3 py-2 text-[12px] ${hasJapanese ? "bg-green-50 text-green-800" : "bg-amber-50 text-amber-800"}`}>
+                    {hasJapanese ? "● Translated — the JP page shows the Japanese text." : "Not translated yet — the JP page shows the English text."}
+                  </p>
+                  <Link href={`/admin/translate/post-${values.id}/`} className="admin-btn-secondary w-full justify-center !py-1 text-[13px]">
+                    {hasJapanese ? "Edit Japanese translation" : "Translate to Japanese"}
+                  </Link>
+                </>
               ) : (
-                <button type="submit" disabled={pendingJa} className="admin-btn w-full">
-                  {pendingJa ? "Saving…" : "Save Japanese"}
-                </button>
+                <p className="text-[12px] text-[#999]">Save the post first, then use Translate to add Japanese.</p>
               )}
             </div>
 
             <div className="rounded-lg bg-white p-4 ring-1 ring-black/5">
               <span className="admin-label">Featured image</span>
-              <ImageField name="imageUrl" defaultValue={values.imageUrl} />
+              <ImageField name="imageUrl" defaultValue={values.imageUrl} value={featured} onChange={(p) => setFeatured(p?.url ?? "")} />
               <Err state={stateEn} field="imageUrl" />
+            </div>
+
+            <div className="rounded-lg bg-white p-4 ring-1 ring-black/5">
+              <span className="admin-label">Images in this post</span>
+              <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => addFiles(e.target.files)} />
+              <div className="mb-3 flex flex-wrap gap-2">
+                <button type="button" className="admin-btn-secondary !py-1 text-[13px]" disabled={adding} onClick={() => fileRef.current?.click()}>
+                  {adding ? "Uploading…" : "Upload"}
+                </button>
+                <button type="button" className="admin-btn-secondary !py-1 text-[13px]" disabled={adding} onClick={() => setPickingImage(true)}>
+                  Media library
+                </button>
+              </div>
+              {addError && <p className="mb-2 text-[12px] text-red-600">{addError}</p>}
+              <MediaPicker
+                open={pickingImage}
+                title="Add an image to this post"
+                onClose={() => setPickingImage(false)}
+                onPick={(p) => editorRef.current?.addImage(p.url, p.alt)}
+              />
+              {usedImages.length ? (
+                <>
+                  <ul className="grid grid-cols-3 gap-2">
+                    {usedImages.map((src) => (
+                      <li key={src}>
+                        <button
+                          type="button"
+                          onClick={() => setFeatured(src)}
+                          title={featured === src ? "Featured image" : "Use as featured image"}
+                          aria-pressed={featured === src}
+                          className={`relative block aspect-square w-full overflow-hidden rounded-md ring-2 ${featured === src ? "ring-primary" : "ring-transparent hover:ring-black/20"}`}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element -- uploaded/blob URLs preview */}
+                          <img src={src} alt="" className="h-full w-full object-cover" />
+                          {featured === src && (
+                            <span className="absolute inset-x-0 bottom-0 bg-primary/90 py-0.5 text-center text-[10px] font-semibold text-white">Featured</span>
+                          )}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-2 text-[12px] text-[#999]">Added images go to the end of the body (in both languages). Click a thumbnail to use it as the featured image.</p>
+                </>
+              ) : (
+                <p className="text-[12px] text-[#999]">Use Upload or Media library to add images to the body. They appear here.</p>
+              )}
             </div>
           </aside>
         )}
