@@ -1,11 +1,14 @@
 "use server";
 
 import { refresh } from "next/cache";
-import { eq } from "drizzle-orm";
+import { eq, or, sql } from "drizzle-orm";
 import { db, ready } from "@/db";
-import { media } from "@/db/schema";
+import { media, posts } from "@/db/schema";
 import { requireAdmin } from "@/lib/auth";
-import { logActivity } from "@/lib/activity";
+import { ensureBaseline, logActivity, saveVersion } from "@/lib/activity";
+import { removeImageFromHtml } from "@/lib/image-mirror";
+import { NEWS_TAG } from "@/lib/news";
+import { publishChange } from "@/lib/rebuild";
 import { listMedia, mediaUsage, type MediaItem } from "@/lib/media-library";
 import { deleteImage } from "@/lib/storage";
 
@@ -29,7 +32,29 @@ export async function deleteMediaAction(id: number): Promise<{ ok: true } | { ok
   const [row] = await db.select().from(media).where(eq(media.id, id));
   if (!row) return { ok: false, error: "Image not found." };
   const uses = (await mediaUsage()).get(row.url) ?? [];
-  if (uses.length) return { ok: false, error: `This image is still used in ${uses.length} place${uses.length > 1 ? "s" : ""}. Remove it there first.` };
+  // News posts are cleaned up automatically below; other places (brands, home page, settings, pages,
+  // careers) would break, so those still have to be changed first.
+  const blocking = uses.filter((u) => u.kind !== "post");
+  if (blocking.length) return { ok: false, error: `This image is still used in ${blocking.length} place${blocking.length > 1 ? "s" : ""} (${blocking.map((u) => u.label).join(", ")}). Remove it there first.` };
+
+  // Remove it from every news post (featured image and both bodies)
+  const affected = await db
+    .select()
+    .from(posts)
+    .where(or(eq(posts.imageUrl, row.url), sql`${posts.bodyEn} like ${"%" + row.url + "%"}`, sql`${posts.bodyJa} like ${"%" + row.url + "%"}`));
+  for (const p of affected) {
+    const values = {
+      imageUrl: p.imageUrl === row.url ? null : p.imageUrl,
+      bodyEn: removeImageFromHtml(p.bodyEn, row.url),
+      bodyJa: removeImageFromHtml(p.bodyJa, row.url),
+      updatedAt: new Date(),
+    };
+    await db.update(posts).set(values).where(eq(posts.id, p.id));
+    await ensureBaseline(`post:${p.id}`, p);
+    await saveVersion(`post:${p.id}`, { ...p, ...values }, who, `Image removed (${row.filename} deleted from the Media library)`);
+  }
+  if (affected.length) publishChange(NEWS_TAG);
+
   try {
     await deleteImage(row.url);
   } catch (e) {
