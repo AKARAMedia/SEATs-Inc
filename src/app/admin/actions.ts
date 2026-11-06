@@ -11,7 +11,7 @@ import type { Session } from "@/lib/auth";
 import { htmlText } from "@/lib/translation/text";
 import { login, logout, requireAdmin } from "@/lib/auth";
 import { can } from "@/lib/permissions";
-import { insertMirroredImages, parseMirrorImages } from "@/lib/image-mirror";
+import { insertMirroredImages, parseMirrorImages, removeDeletedImages } from "@/lib/image-mirror";
 import { NEWS_TAG } from "@/lib/news";
 import { sanitizeBody, slugify, stripTags } from "@/lib/sanitize";
 
@@ -131,8 +131,10 @@ export async function saveEnglishAction(_: FormState, formData: FormData): Promi
   const prev = await getPost(id);
   // Images inserted while editing English also go into the Japanese body (same block position, see image-mirror.ts)
   const mirror = formData.get("mirrorImages");
+  // Images deleted from the English body are deleted from the Japanese body too
+  const jaWithoutDeleted = removeDeletedImages(prev?.bodyJa ?? "", prev?.bodyEn ?? "", bodyEn);
   // Only when a Japanese body already exists - images alone would stop the JP page falling back to English
-  const mirroredJa = stripTags(prev?.bodyJa ?? "") ? insertMirroredImages(prev?.bodyJa ?? "", parseMirrorImages(mirror)) : (prev?.bodyJa ?? "");
+  const mirroredJa = stripTags(jaWithoutDeleted) ? insertMirroredImages(jaWithoutDeleted, parseMirrorImages(mirror)) : jaWithoutDeleted;
   const jaPatch = mirroredJa !== (prev?.bodyJa ?? "") ? { bodyJa: mirroredJa } : {};
   if (id) {
     await db.update(posts).set({ ...values, ...jaPatch }).where(eq(posts.id, id));
@@ -153,7 +155,11 @@ export async function saveJapaneseAction(_: FormState, formData: FormData): Prom
   const bodyJa = sanitizeBody(t.data.bodyJa);
   const prev = await getPost(t.data.id);
   // Translators may only touch Japanese, so only editors mirror inserted images into the English body
-  const mirroredEn = can(session.role, "editPosts") ? insertMirroredImages(prev?.bodyEn ?? "", parseMirrorImages(formData.get("mirrorImages"))) : (prev?.bodyEn ?? "");
+  // Likewise images deleted from the Japanese body leave the English body - unless the Japanese body is
+  // being emptied (that makes the JP page fall back to English and must not strip the English images)
+  const enWithoutDeleted =
+    can(session.role, "editPosts") && stripTags(bodyJa) ? removeDeletedImages(prev?.bodyEn ?? "", prev?.bodyJa ?? "", bodyJa) : (prev?.bodyEn ?? "");
+  const mirroredEn = can(session.role, "editPosts") ? insertMirroredImages(enWithoutDeleted, parseMirrorImages(formData.get("mirrorImages"))) : enWithoutDeleted;
   await db
     .update(posts)
     .set({

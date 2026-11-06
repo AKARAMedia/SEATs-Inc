@@ -73,6 +73,26 @@ export function parseMirrorImages(raw: unknown): MirrorImage[] {
   }
 }
 
+/** The src of every <img> in a body (entity-decoded, so the same URL always compares equal). */
+export function imageSrcs(html: string): string[] {
+  const found = new Set<string>();
+  // \s before src: don't mistake data-src for src
+  for (const m of html.matchAll(/<img\b[^>]*?\ssrc=(?:"([^"]*)"|'([^']*)')/gi)) found.add((m[1] ?? m[2]).replace(/&amp;/g, "&"));
+  return [...found];
+}
+
+/**
+ * Deleting an image in one language deletes it in the other: removes from `target` every image that
+ * `before` (the saved body) had and `after` (the body being saved) no longer has. Images that were never
+ * in `before` are left alone, so an image that only the other language has is not touched.
+ */
+export function removeDeletedImages(target: string, before: string, after: string): string {
+  const kept = new Set(imageSrcs(after));
+  let out = target;
+  for (const src of imageSrcs(before)) if (!kept.has(src)) out = removeImageFromHtml(out, src);
+  return out;
+}
+
 /** Removes every <img> with this src from a body (and the paragraph it leaves empty). */
 export function removeImageFromHtml(html: string, src: string): string {
   const wanted = new Set([`src="${src}"`, `src="${esc(src)}"`]);
