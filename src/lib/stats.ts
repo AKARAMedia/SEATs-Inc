@@ -6,6 +6,9 @@ import { pageViewsDaily, posts, visitorsDaily } from "@/db/schema";
 
 const BOT = /bot|crawl|spider|slurp|preview|facebookexternalhit|headless|lighthouse|monitor|curl|wget|python|axios|node-fetch/i;
 
+/** True for requests we never count (no user agent, or a crawler/monitor). Cheap: no DB, no body parsing. */
+export const isBot = (ua: string) => !ua || BOT.test(ua);
+
 /** Today (or `d`) as YYYY-MM-DD in Cambodia time. */
 export function cambodiaDay(d = new Date()) {
   return new Date(d.getTime() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
@@ -28,18 +31,30 @@ function normalize(raw: string) {
  * Count one page view. Visitors are counted with a salted hash of IP + browser that changes every
  * day, so nobody can be followed across days and no IP address is stored.
  */
-export async function recordPageView({ path, ip, ua }: { path: string; ip: string; ua: string }) {
+export async function recordPageView({ path, ip, ua, weight = 1 }: { path: string; ip: string; ua: string; weight?: number }) {
   const p = normalize(path);
-  if (!p || !ua || BOT.test(ua)) return;
+  if (!p || isBot(ua)) return;
   await ready();
   const day = cambodiaDay();
   const salt = process.env.SESSION_SECRET ?? "dev-salt";
   const hash = crypto.createHash("sha256").update(`${salt}|${day}|${ip}|${ua}`).digest("base64url").slice(0, 22);
-  await db
+  const viewQuery = db
     .insert(pageViewsDaily)
-    .values({ day, path: p, views: 1 })
-    .onConflictDoUpdate({ target: [pageViewsDaily.day, pageViewsDaily.path], set: { views: sql`${pageViewsDaily.views} + 1` } });
-  await db.insert(visitorsDaily).values({ day, hash }).onConflictDoNothing();
+    .values({ day, path: p, views: weight })
+    .onConflictDoUpdate({ target: [pageViewsDaily.day, pageViewsDaily.path], set: { views: sql`${pageViewsDaily.views} + ${weight}` } });
+  // A sampled visitor stands for `weight` visitors: one row each (suffixed hashes), so count(*) in
+  // dailyStats stays an estimate of the real total. Unsampled (weight 1) keeps the plain hash.
+  const visitorRows = weight > 1 ? Array.from({ length: weight }, (_, i) => ({ day, hash: `${hash}~${i}` })) : [{ day, hash }];
+  const visitorQuery = db.insert(visitorsDaily).values(visitorRows).onConflictDoNothing();
+  if (process.env.DATABASE_URL) {
+    // Neon HTTP: one request (and one transaction) for both writes instead of two round trips,
+    // each of which costs Worker CPU for the fetch, TLS and JSON handling.
+    await db.batch([viewQuery, visitorQuery]);
+  } else {
+    // Local PGlite has no batch(); sequential is fine there
+    await viewQuery;
+    await visitorQuery;
+  }
 }
 
 export type DayStat = { day: string; views: number; visitors: number };
