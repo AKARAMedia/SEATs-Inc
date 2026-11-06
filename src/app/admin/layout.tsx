@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
+import { SITE_ICONS } from "@/lib/site-icons";
 import "../globals.css";
 import "./admin.css";
 
@@ -11,6 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: { default: "Admin", template: "%s · S.E.A.T.S Admin" },
   robots: { index: false, follow: false },
+  icons: SITE_ICONS,
 };
 
 export default function AdminRootLayout({ children }: LayoutProps<"/admin">) {
