@@ -19,6 +19,27 @@ export function prepareArticleHtml(html: string): string {
     if (src) $(el).attr("data-full", originalImage(src));
   });
 
+  // Captions: an image with a caption (data-caption, set in the post editor) becomes
+  // <figure><img><figcaption>. The settings that place it among its neighbours (size, align, gap) move to
+  // the figure, so column layouts and floats keep working; the look of the picture itself stays on the img.
+  $("img[data-caption]").each((_, el) => {
+    const img = $(el);
+    const caption = (img.attr("data-caption") ?? "").trim();
+    img.removeAttr("data-caption");
+    // Already inside a figure or a paragraph (older imported posts): leave the markup as it is
+    if (!caption || img.parent("figure").length || img.parent("p").length) return;
+    const figure = $('<figure class="seats-figure"></figure>');
+    for (const name of ["data-size", "data-align", "data-gap"]) {
+      const value = img.attr(name);
+      if (value) {
+        figure.attr(name, value);
+        img.removeAttr(name);
+      }
+    }
+    img.replaceWith(figure);
+    figure.append(img).append($("<figcaption></figcaption>").text(caption));
+  });
+
   $(".wp-block-gallery, .gallery").each((_, gallery) => {
     const items = $(gallery)
       .children()

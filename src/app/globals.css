@@ -151,15 +151,48 @@
     margin: 1em auto;
     border-radius: 4px;
   }
-  /* Image shape/size chosen in the post editor (data-shape / data-size) */
+  /* Image looks chosen in the post editor, stored as data-* on the <img>: data-shape, data-size, data-align,
+     data-focus, data-radius, data-frame, data-gap (see IMAGE_LOOK_OPTIONS in src/lib/image-options.ts).
+     An image with a caption becomes a <figure class="seats-figure"> (src/lib/gallery.ts) that carries size,
+     align and gap, while its <img> keeps the rest. */
   .prose-seats img[data-shape],
-  .prose-seats img[data-size] {
+  .prose-seats img[data-size],
+  .prose-seats img[data-align] {
     display: block;
   }
   .prose-seats img[data-shape] {
     width: 100%;
     height: auto;
     object-fit: cover;
+  }
+  /* Which part of a cropped photo stays visible */
+  .prose-seats img[data-focus="top"] {
+    object-position: center top;
+  }
+  .prose-seats img[data-focus="bottom"] {
+    object-position: center bottom;
+  }
+  .prose-seats img[data-focus="left"] {
+    object-position: left center;
+  }
+  .prose-seats img[data-focus="right"] {
+    object-position: right center;
+  }
+  /* Corners (before the shapes, so Circle still wins) */
+  .prose-seats img[data-radius="none"] {
+    border-radius: 0;
+  }
+  .prose-seats img[data-radius="m"] {
+    border-radius: 12px;
+  }
+  .prose-seats img[data-radius="l"] {
+    border-radius: 28px;
+  }
+  .prose-seats img[data-frame="border"] {
+    border: 3px solid #e4e4e4;
+  }
+  .prose-seats img[data-frame="shadow"] {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
   }
   .prose-seats img[data-shape="16-9"] {
     aspect-ratio: 16 / 9;
@@ -177,22 +210,103 @@
     aspect-ratio: 1 / 1;
     border-radius: 9999px;
   }
-  .prose-seats img[data-size="s"] {
-    width: 33%;
-  }
-  .prose-seats img[data-size="m"] {
-    width: 60%;
-  }
-  .prose-seats img[data-size="l"] {
-    width: 85%;
-  }
+  /* A captioned image: the figure carries the layout, the img fills it */
   .prose-seats figure {
     margin: 1.5em 0;
   }
+  .prose-seats figure[data-size],
+  .prose-seats figure[data-align] {
+    margin: 1em auto;
+  }
+  .prose-seats figure.seats-figure img {
+    display: block;
+    margin: 0 auto;
+  }
+  .prose-seats figure.seats-figure[data-size] img,
+  .prose-seats figure.seats-figure[data-align] img {
+    width: 100%;
+  }
   .prose-seats figcaption {
+    margin-top: 6px;
     font-size: 14px;
     color: #888;
     text-align: center;
+  }
+  /* Position: left / right, or floated so the text wraps around the image (default width 45%, a size below
+     overrides it). Floats stack on top of each other on small screens. */
+  .prose-seats :is(img, figure)[data-align="left"] {
+    margin-left: 0;
+    margin-right: auto;
+  }
+  .prose-seats :is(img, figure)[data-align="right"] {
+    margin-left: auto;
+    margin-right: 0;
+  }
+  .prose-seats :is(img, figure)[data-align="float-left"] {
+    float: left;
+    width: 45%;
+    margin: 4px 24px 12px 0;
+  }
+  .prose-seats :is(img, figure)[data-align="float-right"] {
+    float: right;
+    width: 45%;
+    margin: 4px 0 12px 24px;
+  }
+  .prose-seats::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+  .prose-seats :is(h2, h3, h4) {
+    clear: both;
+  }
+  .prose-seats :is(img, figure)[data-size="s"] {
+    width: 33%;
+  }
+  .prose-seats :is(img, figure)[data-size="m"] {
+    width: 60%;
+  }
+  .prose-seats :is(img, figure)[data-size="l"] {
+    width: 85%;
+  }
+  /* Side by side: consecutive images with the same size share a row (2, 3 or 4 per row). Each one is an
+     inline-block a little under its share of the row (width + right margin < share), so a row never wraps
+     early. The gap between them is --seats-gap (default 6px, set by data-gap). Give them the same shape
+     (e.g. Landscape 3:2) to get tiles of equal height. */
+  .prose-seats :is(img, figure)[data-size="half"],
+  .prose-seats :is(img, figure)[data-size="third"],
+  .prose-seats :is(img, figure)[data-size="quarter"] {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 var(--seats-gap, 6px) calc(var(--seats-gap, 6px) + 6px) 0;
+  }
+  .prose-seats :is(img, figure)[data-size="half"] {
+    width: calc(50% - var(--seats-gap, 6px) - 1px);
+  }
+  .prose-seats :is(img, figure)[data-size="third"] {
+    width: calc(33.333% - var(--seats-gap, 6px) - 1px);
+  }
+  .prose-seats :is(img, figure)[data-size="quarter"] {
+    width: calc(25% - var(--seats-gap, 6px) - 1px);
+  }
+  .prose-seats :is(img, figure)[data-gap="none"] {
+    --seats-gap: 0px;
+  }
+  .prose-seats :is(img, figure)[data-gap="s"] {
+    --seats-gap: 3px;
+  }
+  .prose-seats :is(img, figure)[data-gap="m"] {
+    --seats-gap: 12px;
+  }
+  .prose-seats :is(img, figure)[data-gap="l"] {
+    --seats-gap: 24px;
+  }
+  @media (max-width: 600px) {
+    .prose-seats :is(img, figure)[data-align^="float"] {
+      float: none;
+      width: 100%;
+      margin: 1em 0;
+    }
   }
   .prose-seats iframe {
     max-width: 100%;

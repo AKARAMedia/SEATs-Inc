@@ -2,7 +2,7 @@
 // among the body's top-level blocks (paragraph, heading, list, image, ...). Plain string work, no DOM,
 // so the editor (browser) and the save actions (server) share it and it stays cheap on the server.
 
-import { IMAGE_SHAPES, IMAGE_SIZES } from "./image-options";
+import { IMAGE_LOOK_KEYS, isLookValue, type ImageLookKey } from "./image-options";
 
 const VOID = new Set(["img", "br", "hr", "input", "source", "col", "embed", "wbr", "area", "base", "link", "meta", "track"]);
 const TAG = /<(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^'">])*)>/g;
@@ -97,17 +97,24 @@ export function removeDeletedImages(target: string, before: string, after: strin
 
 const unesc = (v: string) => v.replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
 
-/** How an image looks: the editor's crop shape and width ("" = not set), see image-options.ts. */
-type Look = { shape: string; size: string };
+/** How an image looks: every look setting of the editor ("" = not set), see IMAGE_LOOK_OPTIONS. */
+type Look = Record<ImageLookKey, string>;
 const attrOf = (tag: string, name: string) => {
   const m = new RegExp(`\\s${name}=(?:"([^"]*)"|'([^']*)')`, "i").exec(tag);
   return m ? unesc(m[1] ?? m[2]) : "";
 };
 const lookOf = (tag: string): Look => {
-  const shape = attrOf(tag, "data-shape");
-  const size = attrOf(tag, "data-size");
-  return { shape: IMAGE_SHAPES.some((x) => x.value === shape) ? shape : "", size: IMAGE_SIZES.some((x) => x.value === size) ? size : "" };
+  const look = {} as Look;
+  for (const key of IMAGE_LOOK_KEYS) {
+    const value = attrOf(tag, `data-${key}`);
+    look[key] = isLookValue(key, value) ? value : "";
+  }
+  return look;
 };
+/** Just the look settings of an image record (which also carries src and alt). */
+const pickLook = (i: Look): Look => Object.fromEntries(IMAGE_LOOK_KEYS.map((k) => [k, i[k]])) as Look;
+const sameLook = (a: Look, b: Look) => IMAGE_LOOK_KEYS.every((k) => a[k] === b[k]);
+const LOOK_ATTRS = new RegExp(`\\sdata-(?:${IMAGE_LOOK_KEYS.join("|")})=(?:"[^"]*"|'[^']*')`, "gi");
 
 /** Every distinct <img> of a body (src and alt entity-decoded), in document order. */
 export function imageList(html: string): ({ src: string; alt: string } & Look)[] {
@@ -119,16 +126,15 @@ export function imageList(html: string): ({ src: string; alt: string } & Look)[]
   return [...found.values()];
 }
 
-/** Gives every <img> listed in `looks` that look (shape and width), leaving tags that already match alone. */
+/** Gives every <img> listed in `looks` that look (all settings), leaving tags that already match alone. */
 function setLooks(html: string, looks: Map<string, Look>): string {
   if (!looks.size) return html;
   return html.replace(/<img\b[^>]*>/gi, (tag) => {
     const want = looks.get(attrOf(tag, "src"));
     if (!want) return tag;
-    const have = lookOf(tag);
-    if (have.shape === want.shape && have.size === want.size) return tag;
-    const bare = tag.replace(/\sdata-(?:shape|size)=(?:"[^"]*"|'[^']*')/gi, "");
-    const extra = (want.shape ? ` data-shape="${esc(want.shape)}"` : "") + (want.size ? ` data-size="${esc(want.size)}"` : "");
+    if (sameLook(lookOf(tag), want)) return tag;
+    const bare = tag.replace(LOOK_ATTRS, "");
+    const extra = IMAGE_LOOK_KEYS.filter((k) => want[k]).map((k) => ` data-${k}="${esc(want[k])}"`).join("");
     return bare.replace(/\s*\/?>$/, (end) => `${extra}${end}`);
   });
 }
@@ -154,7 +160,7 @@ export function syncImagesTo(target: string, source: string): string {
     out,
     want.filter((i) => !have.has(i.src)).map((i) => ({ ...i, at: placeIn(source, i.src) })),
   );
-  return setLooks(out, new Map(want.map((i) => [i.src, { shape: i.shape, size: i.size }])));
+  return setLooks(out, new Map(want.map((i) => [i.src, pickLook(i)])));
 }
 
 /**
@@ -167,9 +173,9 @@ export function applyImageChanges(target: string, before: string, after: string)
   const had = new Map(imageList(before).map((i) => [i.src, i]));
   const now = imageList(after);
   const added = now.filter((i) => !had.has(i.src)).map((i) => ({ ...i, at: placeIn(after, i.src) }));
-  // New images arrive with their look too, and so do existing ones whose shape or width were changed
+  // New images arrive with their look too, and so do existing ones whose look was changed
   const restyled = new Map(
-    now.filter((i) => { const p = had.get(i.src); return !p || p.shape !== i.shape || p.size !== i.size; }).map((i) => [i.src, { shape: i.shape, size: i.size }]),
+    now.filter((i) => { const p = had.get(i.src); return !p || !sameLook(p, i); }).map((i) => [i.src, pickLook(i)]),
   );
   return setLooks(insertMirroredImages(removeDeletedImages(target, before, after), added), restyled);
 }
