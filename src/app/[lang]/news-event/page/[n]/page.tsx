@@ -1,19 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { isLang, LANGS } from "@/lib/i18n";
+import { isLang } from "@/lib/i18n";
 import { listNews } from "@/lib/news";
 import NewsStatic from "@/components/news/NewsStatic";
 
-// Pages 2..N of News & Event, each prerendered at build time (page 1 is ../../page.tsx).
-export async function generateStaticParams() {
-  const all = await Promise.all(
-    LANGS.map(async (lang) => {
-      const { pages } = await listNews(lang, { page: 1 });
-      return Array.from({ length: Math.max(0, pages - 1) }, (_, i) => ({ lang, n: String(i + 2) }));
-    }),
-  );
-  return all.flat();
-}
+// Pages 2..N of News & Event, rendered on request (page 1 is ../../page.tsx).
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/news-event/page/[n]">): Promise<Metadata> {
   const { lang, n } = await params;
