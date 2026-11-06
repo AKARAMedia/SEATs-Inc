@@ -11,9 +11,15 @@ const FLAG = { en: "/media/flags/en_US.png", ja: "/media/flags/ja.png" } as cons
 /**
  * Same page in the other language. Both languages share one URL, so this only asks middleware.ts to
  * save the language in a cookie (?lang=) and come straight back to the same page.
+ *
+ * The page is prerendered under its internal route (/ja/news-event, /en/news-event), so the pathname can
+ * carry that language prefix. It must not end up in the link: middleware.ts redirects /ja/... and /en/...
+ * to the clean URL and *saves that prefix's language in the cookie*, which would undo the language
+ * just chosen (a Japanese page's "English" link would land on Japanese again).
  */
 export function altPath(pathname: string, to: Lang) {
-  return `${pathname || "/"}?lang=${to}`;
+  const clean = (pathname || "/").replace(/^\/(?:ja|en)(?=\/|$)/, "") || "/";
+  return `${clean}?lang=${to}`;
 }
 
 function Current({ lang }: { lang: Lang }) {
