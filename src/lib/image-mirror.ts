@@ -93,6 +93,54 @@ export function removeDeletedImages(target: string, before: string, after: strin
   return out;
 }
 
+const unesc = (v: string) => v.replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+
+/** Every distinct <img> of a body as { src, alt } (both entity-decoded), in document order. */
+export function imageList(html: string): { src: string; alt: string }[] {
+  const found = new Map<string, string>();
+  for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
+    const src = /\ssrc=(?:"([^"]*)"|'([^']*)')/i.exec(m[0]);
+    if (!src) continue;
+    const alt = /\salt=(?:"([^"]*)"|'([^']*)')/i.exec(m[0]);
+    const key = unesc(src[1] ?? src[2]);
+    if (!found.has(key)) found.set(key, alt ? unesc(alt[1] ?? alt[2]) : "");
+  }
+  return [...found].map(([src, alt]) => ({ src, alt }));
+}
+
+/** Where (top-level block index) a body has this image, for placing the same image in the other language. */
+function placeIn(html: string, src: string) {
+  const at = blockIndexOf(html, src);
+  return at < 0 ? Number.MAX_SAFE_INTEGER : at;
+}
+
+/**
+ * Makes `target` use exactly the images of `source`: images only the target has are removed, images only
+ * the source has are added at the same block position. Text is never touched.
+ */
+export function syncImagesTo(target: string, source: string): string {
+  const want = imageList(source);
+  const wanted = new Set(want.map((i) => i.src));
+  let out = target;
+  for (const src of imageSrcs(target)) if (!wanted.has(src)) out = removeImageFromHtml(out, src);
+  const have = new Set(imageSrcs(out));
+  return insertMirroredImages(
+    out,
+    want.filter((i) => !have.has(i.src)).map((i) => ({ ...i, at: placeIn(source, i.src) })),
+  );
+}
+
+/**
+ * Carries the image edits made in one language over to the other body: images deleted in `after` (compared
+ * with the saved `before`) are removed from `target`, images newly added in `after` are inserted at the
+ * same block position. Images the edit did not touch are left as they are.
+ */
+export function applyImageChanges(target: string, before: string, after: string): string {
+  const had = new Set(imageSrcs(before));
+  const added = imageList(after).filter((i) => !had.has(i.src)).map((i) => ({ ...i, at: placeIn(after, i.src) }));
+  return insertMirroredImages(removeDeletedImages(target, before, after), added);
+}
+
 /** Removes every <img> with this src from a body (and the paragraph it leaves empty). */
 export function removeImageFromHtml(html: string, src: string): string {
   const wanted = new Set([`src="${src}"`, `src="${esc(src)}"`]);
