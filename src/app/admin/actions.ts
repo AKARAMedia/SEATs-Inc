@@ -11,7 +11,7 @@ import type { Session } from "@/lib/auth";
 import { htmlText } from "@/lib/translation/text";
 import { login, logout, requireAdmin } from "@/lib/auth";
 import { can } from "@/lib/permissions";
-import { insertMirroredImages, parseMirrorImages } from "@/lib/image-mirror";
+import { applyImageChanges, insertMirroredImages, parseMirrorImages, syncImagesTo } from "@/lib/image-mirror";
 import { NEWS_TAG } from "@/lib/news";
 import { sanitizeBody, slugify, stripTags } from "@/lib/sanitize";
 
@@ -129,10 +129,11 @@ export async function saveEnglishAction(_: FormState, formData: FormData): Promi
 
   let id = d.id;
   const prev = await getPost(id);
-  // Images inserted while editing English also go into the Japanese body (same block position, see image-mirror.ts)
-  const mirror = formData.get("mirrorImages");
-  // Only when a Japanese body already exists - images alone would stop the JP page falling back to English
-  const mirroredJa = stripTags(prev?.bodyJa ?? "") ? insertMirroredImages(prev?.bodyJa ?? "", parseMirrorImages(mirror)) : (prev?.bodyJa ?? "");
+  // English and Japanese always use the same images: the Japanese body is brought in line with the English
+  // one being saved (images added in English appear in Japanese at the same block position, images removed
+  // from English disappear from Japanese, see image-mirror.ts). Only when a Japanese body already exists -
+  // images alone would stop the JP page falling back to English.
+  const mirroredJa = stripTags(prev?.bodyJa ?? "") ? syncImagesTo(prev?.bodyJa ?? "", bodyEn) : (prev?.bodyJa ?? "");
   const jaPatch = mirroredJa !== (prev?.bodyJa ?? "") ? { bodyJa: mirroredJa } : {};
   if (id) {
     await db.update(posts).set({ ...values, ...jaPatch }).where(eq(posts.id, id));
@@ -150,10 +151,17 @@ export async function saveJapaneseAction(_: FormState, formData: FormData): Prom
   await ready();
   const t = JapaneseInput.safeParse(Object.fromEntries(formData));
   if (!t.success) return { error: "Invalid input." };
-  const bodyJa = sanitizeBody(t.data.bodyJa);
+  const submittedJa = sanitizeBody(t.data.bodyJa);
   const prev = await getPost(t.data.id);
-  // Translators may only touch Japanese, so only editors mirror inserted images into the English body
-  const mirroredEn = can(session.role, "editPosts") ? insertMirroredImages(prev?.bodyEn ?? "", parseMirrorImages(formData.get("mirrorImages"))) : (prev?.bodyEn ?? "");
+  // Translators may only touch Japanese, so only editors carry image edits into the English body. Image
+  // edits made in the Japanese body (deleted, or added - also by pasting/dragging) go into the English body,
+  // then the Japanese body is brought in line with it so both use the same images. Not when the Japanese
+  // body is being emptied (the JP page then falls back to English, which must not lose its images).
+  const syncImages = can(session.role, "editPosts") && !!stripTags(submittedJa);
+  const mirroredEn = syncImages
+    ? insertMirroredImages(applyImageChanges(prev?.bodyEn ?? "", prev?.bodyJa ?? "", submittedJa), parseMirrorImages(formData.get("mirrorImages")))
+    : (prev?.bodyEn ?? "");
+  const bodyJa = syncImages ? syncImagesTo(submittedJa, mirroredEn) : submittedJa;
   await db
     .update(posts)
     .set({
