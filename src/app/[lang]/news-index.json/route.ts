@@ -1,11 +1,9 @@
-import { LANGS, isLang } from "@/lib/i18n";
+import { isLang } from "@/lib/i18n";
 import { listNews } from "@/lib/news";
 
-// Lightweight index of every live post (no bodies), prerendered at build time as a static file.
-// The News & Event page loads it for pagination and search, since a static page can't query the database.
-export function generateStaticParams() {
-  return LANGS.map((lang) => ({ lang }));
-}
+// Lightweight index of every live post (no bodies), built from the database on request (worker/index.mjs
+// caches it briefly). The News & Event page loads it for pagination and search.
+export const dynamic = "force-dynamic";
 
 export async function GET(_req: Request, { params }: RouteContext<"/[lang]/news-index.json">) {
   const { lang } = await params;

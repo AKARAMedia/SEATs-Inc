@@ -1,12 +1,11 @@
-# Rebuilds the static public pages from the database and deploys the Worker to Cloudflare.
+# Builds and deploys the Worker to Cloudflare (a manual fallback: Cloudflare Workers Builds also deploys
+# every push to main).
 #
-# The site runs on the Cloudflare Free plan (10 ms CPU per request), so public pages are prerendered
-# at build time and served as static files (see scripts/export-static.ts; worker/index.mjs picks the
-# English or Japanese file by the visitor's language cookie). That means content edits
-# only go live after one of these runs:
-#   - repository_dispatch "content-updated": sent by the admin panel after every content save
-#     (src/lib/rebuild.ts, needs the GITHUB_DISPATCH_TOKEN secret on the Worker)
-#   - schedule: posts scheduled for a future date appear without anyone saving anything
+# Public pages are rendered from the database on request (Workers Paid plan) and kept in the edge cache
+# for about a minute (worker/index.mjs), so content edits show up on their own: this workflow is only
+# needed to deploy code changes. Triggers:
+#   - repository_dispatch "content-updated": no longer sent by the admin panel (kept for manual use)
+#   - schedule: a periodic redeploy, also refreshes the uploaded images exported at build time
 #   - workflow_dispatch: the "Run workflow" button in the Actions tab
 name: Build and deploy
 
