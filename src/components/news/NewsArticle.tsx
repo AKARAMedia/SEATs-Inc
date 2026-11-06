@@ -1,5 +1,7 @@
 import Image from "next/image";
-import type { Lang } from "@/lib/i18n";
+import Link from "next/link";
+import { ChevronRight } from "@/components/icons";
+import { href, t, type Lang } from "@/lib/i18n";
 import type { NewsItem } from "@/lib/news";
 import ArticleLightbox from "@/components/news/ArticleLightbox";
 import { prepareArticleHtml } from "@/lib/gallery";
@@ -19,6 +21,14 @@ export default function NewsArticle({ item, lang }: { item: NewsItem; lang: Lang
 
   return (
     <article className="mx-auto mb-10 max-w-[1222px] px-[15px] pt-10">
+      {/* Back to the list: a plain link, so it works without JavaScript and in both languages */}
+      <Link
+        href={href(lang, "/news-event/")}
+        className="btn-back mb-6"
+      >
+        <ChevronRight className="size-[9px] rotate-180" />
+        {t(lang, { en: "Back to News & Event", ja: "ニュース＆イベントに戻る" })}
+      </Link>
       <header className="text-center">
         {item.category && (
           <span className="mb-[23px] inline-block rounded-[3.33px] bg-primary px-2.5 text-[12px] font-semibold uppercase leading-[25px] text-white">

@@ -7,6 +7,7 @@ import CookieBanner from "@/components/CookieBanner";
 import PageTracker from "@/components/PageTracker";
 import { isLang } from "@/lib/i18n";
 import { getSettings } from "@/lib/settings";
+import { SITE_ICONS } from "@/lib/site-icons";
 import "../globals.css";
 
 const openSans = Open_Sans({ subsets: ["latin"], variable: "--font-open-sans", display: "swap" });
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   const description = isLang(lang) ? seo.description[lang] : seo.description.en;
   return {
     metadataBase: new URL(process.env.SITE_URL ?? "https://seats-inc.com"),
+    icons: SITE_ICONS,
     title: { default: seo.siteTitle, template: `%s - ${seo.siteTitle}` },
     description,
     openGraph: { siteName: seo.siteTitle, description, ...(seo.shareImage && { images: [seo.shareImage] }) },
