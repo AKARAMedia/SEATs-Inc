@@ -1,6 +1,24 @@
 import "server-only";
 import { revalidatePath, updateTag } from "next/cache";
 import { after } from "next/server";
+import { writeFileSync } from "node:fs";
+import path from "node:path";
+
+/**
+ * `npm run dev` shares the live database but has no way to rebuild the live site. So every content save
+ * on a developer machine rewrites this tiny tracked file: `git add .`, `git commit` and `git push`
+ * (then merging into main, which Cloudflare builds) always have a change to carry, and the build that
+ * follows reads the saved content from the database. Never runs on the live Worker.
+ */
+const CONTENT_MARKER = ".content-updated";
+function markContentUpdated() {
+  if (process.env.NODE_ENV !== "development") return;
+  try {
+    writeFileSync(path.join(process.cwd(), CONTENT_MARKER), `${new Date().toISOString()}\n`);
+  } catch {
+    // read-only or missing folder: the deploy just has to be triggered another way
+  }
+}
 
 /**
  * Public pages are static files built from the database (see scripts/export-static.ts), so an admin
@@ -12,6 +30,7 @@ import { after } from "next/server";
  * write"); without it (e.g. local dev) nothing is sent.
  */
 export function requestRebuild() {
+  markContentUpdated();
   const token = process.env.GITHUB_DISPATCH_TOKEN;
   if (!token) return;
   const repo = process.env.GITHUB_REPO ?? "AKARAMedia/SEATs-Inc";
