@@ -2,6 +2,8 @@
 // among the body's top-level blocks (paragraph, heading, list, image, ...). Plain string work, no DOM,
 // so the editor (browser) and the save actions (server) share it and it stays cheap on the server.
 
+import { IMAGE_SHAPES, IMAGE_SIZES } from "./image-options";
+
 const VOID = new Set(["img", "br", "hr", "input", "source", "col", "embed", "wbr", "area", "base", "link", "meta", "track"]);
 const TAG = /<(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^'">])*)>/g;
 
@@ -95,17 +97,40 @@ export function removeDeletedImages(target: string, before: string, after: strin
 
 const unesc = (v: string) => v.replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
 
-/** Every distinct <img> of a body as { src, alt } (both entity-decoded), in document order. */
-export function imageList(html: string): { src: string; alt: string }[] {
-  const found = new Map<string, string>();
+/** How an image looks: the editor's crop shape and width ("" = not set), see image-options.ts. */
+type Look = { shape: string; size: string };
+const attrOf = (tag: string, name: string) => {
+  const m = new RegExp(`\\s${name}=(?:"([^"]*)"|'([^']*)')`, "i").exec(tag);
+  return m ? unesc(m[1] ?? m[2]) : "";
+};
+const lookOf = (tag: string): Look => {
+  const shape = attrOf(tag, "data-shape");
+  const size = attrOf(tag, "data-size");
+  return { shape: IMAGE_SHAPES.some((x) => x.value === shape) ? shape : "", size: IMAGE_SIZES.some((x) => x.value === size) ? size : "" };
+};
+
+/** Every distinct <img> of a body (src and alt entity-decoded), in document order. */
+export function imageList(html: string): ({ src: string; alt: string } & Look)[] {
+  const found = new Map<string, { src: string; alt: string } & Look>();
   for (const m of html.matchAll(/<img\b[^>]*>/gi)) {
-    const src = /\ssrc=(?:"([^"]*)"|'([^']*)')/i.exec(m[0]);
-    if (!src) continue;
-    const alt = /\salt=(?:"([^"]*)"|'([^']*)')/i.exec(m[0]);
-    const key = unesc(src[1] ?? src[2]);
-    if (!found.has(key)) found.set(key, alt ? unesc(alt[1] ?? alt[2]) : "");
+    const src = attrOf(m[0], "src");
+    if (src && !found.has(src)) found.set(src, { src, alt: attrOf(m[0], "alt"), ...lookOf(m[0]) });
   }
-  return [...found].map(([src, alt]) => ({ src, alt }));
+  return [...found.values()];
+}
+
+/** Gives every <img> listed in `looks` that look (shape and width), leaving tags that already match alone. */
+function setLooks(html: string, looks: Map<string, Look>): string {
+  if (!looks.size) return html;
+  return html.replace(/<img\b[^>]*>/gi, (tag) => {
+    const want = looks.get(attrOf(tag, "src"));
+    if (!want) return tag;
+    const have = lookOf(tag);
+    if (have.shape === want.shape && have.size === want.size) return tag;
+    const bare = tag.replace(/\sdata-(?:shape|size)=(?:"[^"]*"|'[^']*')/gi, "");
+    const extra = (want.shape ? ` data-shape="${esc(want.shape)}"` : "") + (want.size ? ` data-size="${esc(want.size)}"` : "");
+    return bare.replace(/\s*\/?>$/, (end) => `${extra}${end}`);
+  });
 }
 
 /** Where (top-level block index) a body has this image, for placing the same image in the other language. */
@@ -115,8 +140,9 @@ function placeIn(html: string, src: string) {
 }
 
 /**
- * Makes `target` use exactly the images of `source`: images only the target has are removed, images only
- * the source has are added at the same block position. Text is never touched.
+ * Makes `target` use exactly the images of `source`, looking the same: images only the target has are
+ * removed, images only the source has are added at the same block position, and every image gets the
+ * source's shape and width. Text is never touched.
  */
 export function syncImagesTo(target: string, source: string): string {
   const want = imageList(source);
@@ -124,21 +150,28 @@ export function syncImagesTo(target: string, source: string): string {
   let out = target;
   for (const src of imageSrcs(target)) if (!wanted.has(src)) out = removeImageFromHtml(out, src);
   const have = new Set(imageSrcs(out));
-  return insertMirroredImages(
+  out = insertMirroredImages(
     out,
     want.filter((i) => !have.has(i.src)).map((i) => ({ ...i, at: placeIn(source, i.src) })),
   );
+  return setLooks(out, new Map(want.map((i) => [i.src, { shape: i.shape, size: i.size }])));
 }
 
 /**
  * Carries the image edits made in one language over to the other body: images deleted in `after` (compared
  * with the saved `before`) are removed from `target`, images newly added in `after` are inserted at the
- * same block position. Images the edit did not touch are left as they are.
+ * same block position, and images whose shape or width were changed get the new look. Images the edit did
+ * not touch are left as they are.
  */
 export function applyImageChanges(target: string, before: string, after: string): string {
-  const had = new Set(imageSrcs(before));
-  const added = imageList(after).filter((i) => !had.has(i.src)).map((i) => ({ ...i, at: placeIn(after, i.src) }));
-  return insertMirroredImages(removeDeletedImages(target, before, after), added);
+  const had = new Map(imageList(before).map((i) => [i.src, i]));
+  const now = imageList(after);
+  const added = now.filter((i) => !had.has(i.src)).map((i) => ({ ...i, at: placeIn(after, i.src) }));
+  // New images arrive with their look too, and so do existing ones whose shape or width were changed
+  const restyled = new Map(
+    now.filter((i) => { const p = had.get(i.src); return !p || p.shape !== i.shape || p.size !== i.size; }).map((i) => [i.src, { shape: i.shape, size: i.size }]),
+  );
+  return setLooks(insertMirroredImages(removeDeletedImages(target, before, after), added), restyled);
 }
 
 /** Removes every <img> with this src from a body (and the paragraph it leaves empty). */
