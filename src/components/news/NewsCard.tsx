@@ -27,7 +27,10 @@ export default function NewsCard({
   const url = href(lang, `/${item.slug}/`);
   return (
     <article className="relative isolate h-full px-[15px] after:absolute after:inset-x-0 after:top-[30%] after:-z-10 after:h-[70%] after:rounded-[5px] after:bg-[#f8f8fe] after:content-['']">
-      <div>
+      {/* The card is a column as tall as its row, and the text block grows to fill it: that pushes "Read More"
+          to the bottom, so the links line up across the cards whatever the title/excerpt lengths are. Inline
+          styles on purpose (they don't depend on Tailwind generating new classes). */}
+      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
         {/* Every image gets the same 4:3 frame and is cropped to fill it, so cards in a row line up
             whatever shape the uploaded photo has (wide, square, portrait). Inline styles on purpose: they
             don't depend on Tailwind generating new classes. */}
@@ -45,7 +48,7 @@ export default function NewsCard({
             />
           </Link>
         )}
-        <div className="pb-[25px] pl-[15px] pr-[10px]">
+        <div className="pb-[25px] pl-[15px] pr-[10px]" style={{ display: "flex", flexDirection: "column", flex: "1 1 auto" }}>
           <h2 className="mb-[15px] text-[14px] font-bold capitalize leading-[1.4] text-[#222]">
             <Link href={url} className="text-[#222] hover:text-accent">
               {item.title}
@@ -58,7 +61,11 @@ export default function NewsCard({
           {showExcerpt && (
             <>
               <p className="mb-5 mt-2 text-[13px] leading-[1.5] text-[#4d4d4d]">{trimExcerpt(item.excerpt, lang)}</p>
-              <Link href={url} className="text-[12px] font-medium leading-[1.6] text-[#000bec] hover:text-accent">
+              <Link
+                href={url}
+                className="text-[12px] font-medium leading-[1.6] text-[#000bec] hover:text-accent"
+                style={{ marginTop: "auto", alignSelf: "flex-start" }}
+              >
                 {READ_MORE[lang]}
               </Link>
             </>
