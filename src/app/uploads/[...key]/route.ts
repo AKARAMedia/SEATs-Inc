@@ -1,7 +1,8 @@
 import { loadUpload, uploadKey } from "@/lib/storage";
 
-// Serves admin-uploaded images stored in the database (Cloudflare Workers). In local dev the files
-// live in public/uploads/ and are served as static files before this route is reached.
+// Serves admin-uploaded images stored in the database (Cloudflare Workers, or local dev pointed at a
+// real database via DATABASE_URL). With the embedded local database the files live in public/uploads/
+// and are served as static files before this route is reached.
 export async function GET(_req: Request, { params }: RouteContext<"/uploads/[...key]">) {
   const key = uploadKey(`/uploads/${(await params).key.join("/")}`);
   const file = key ? await loadUpload(key) : null;

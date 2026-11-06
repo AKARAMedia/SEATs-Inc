@@ -17,8 +17,13 @@ export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024; // Vercel Functions accept requ
 // Upload keys look like news/2026/10/<uuid>.jpg and are served at /uploads/<key>
 const UPLOAD_KEY = /^news\/\d{4}\/\d{2}\/[0-9a-f-]{36}\.(?:jpg|png|webp|gif)$/;
 
-/** Cloudflare Workers have no filesystem: uploads are stored in the database there instead. */
-const uploadsInDb = () => globalThis.navigator?.userAgent === "Cloudflare-Workers";
+/**
+ * Uploads go into the database (upload_files) on Cloudflare Workers (no filesystem) and whenever a real
+ * database is configured (DATABASE_URL). The second case covers `npm run dev` pointed at the live database:
+ * saving the file only on that computer would leave the live post/media row pointing at an image that
+ * exists nowhere else. Files in public/uploads/ are only used with the embedded local database (PGlite).
+ */
+const uploadsInDb = () => globalThis.navigator?.userAgent === "Cloudflare-Workers" || !!process.env.DATABASE_URL;
 
 /** An image stored by saveImage() in the database, or null. */
 export async function loadUpload(key: string) {
@@ -61,7 +66,8 @@ export async function deleteImage(url: string) {
 
 /**
  * Store an uploaded image and return its public URL.
- * Vercel: Vercel Blob (requires BLOB_READ_WRITE_TOKEN). Cloudflare Workers: the database. Local dev: public/uploads/.
+ * Vercel: Vercel Blob (requires BLOB_READ_WRITE_TOKEN). Cloudflare Workers or any DATABASE_URL: the database.
+ * Local dev with the embedded database (no DATABASE_URL): public/uploads/.
  */
 export async function saveImage(file: File): Promise<string> {
   const ext = ALLOWED.get(file.type);
