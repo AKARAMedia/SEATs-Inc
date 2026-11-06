@@ -11,11 +11,14 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS",
     // The build puts every prerendered public page (and /uploads/ images) in this directory, see
-    // scripts/export-static.ts. Files under /_next, /media, /uploads and /jp are served by Cloudflare
+    // scripts/export-static.ts. Files under /_next, /media and /jp are served by Cloudflare
     // *without running the Worker* (free, no CPU limit). Everything else runs worker/index.mjs first:
     // English and Japanese share one URL, so the Worker picks the page file from the language cookie
     // (a plain asset lookup, no rendering). Each page view therefore counts as one Worker request.
-    "run_worker_first": ["/*", "!/_next/*", "!/media/*", "!/uploads/*", "!/jp/*", "!/favicon.ico", "!/icon.png"],
+    // /uploads/* also runs the Worker (one cheap asset lookup per image): an excluded path that has no
+    // static file is a plain 404 and never reaches the Worker, so an image uploaded since the last deploy
+    // would be broken in the admin until the next rebuild. The Worker falls back to the database for those.
+    "run_worker_first": ["/*", "!/_next/*", "!/media/*", "!/jp/*", "!/favicon.ico", "!/icon.png"],
   },
   "services": [
     {
