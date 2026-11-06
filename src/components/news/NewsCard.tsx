@@ -28,8 +28,11 @@ export default function NewsCard({
   return (
     <article className="relative isolate h-full px-[15px] after:absolute after:inset-x-0 after:top-[30%] after:-z-10 after:h-[70%] after:rounded-[5px] after:bg-[#f8f8fe] after:content-['']">
       <div>
+        {/* Every image gets the same 4:3 frame and is cropped to fill it, so cards in a row line up
+            whatever shape the uploaded photo has (wide, square, portrait). Inline styles on purpose: they
+            don't depend on Tailwind generating new classes. */}
         {item.imageUrl && (
-          <Link href={url} className="mb-[30px] block overflow-hidden rounded-[5px]" tabIndex={-1} aria-hidden>
+          <Link href={url} className="mb-[30px] block overflow-hidden rounded-[5px]" style={{ aspectRatio: "4 / 3" }} tabIndex={-1} aria-hidden>
             <Image
               src={item.imageUrl}
               alt=""
@@ -37,7 +40,8 @@ export default function NewsCard({
               height={531}
               priority={priority}
               sizes="(min-width: 1025px) 354px, (min-width: 768px) 45vw, 92vw"
-              className="h-auto w-full transition-transform duration-500 hover:scale-105"
+              className="h-full w-full transition-transform duration-500 hover:scale-105"
+              style={{ objectFit: "cover" }}
             />
           </Link>
         )}

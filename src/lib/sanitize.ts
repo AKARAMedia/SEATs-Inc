@@ -1,5 +1,8 @@
 import sanitizeHtml from "sanitize-html";
-import { IMAGE_SHAPES, IMAGE_SIZES } from "./image-options";
+import { IMAGE_LOOK_KEYS, isLookValue } from "./image-options";
+
+/** Longest image caption kept (characters). */
+const CAPTION_MAX = 300;
 
 const IFRAME_HOSTS = ["www.youtube.com", "youtube.com", "www.youtube-nocookie.com", "www.facebook.com", "www.tiktok.com", "player.vimeo.com"];
 
@@ -12,7 +15,7 @@ export function sanitizeBody(html: string): string {
     ],
     allowedAttributes: {
       a: ["href", "target", "rel"],
-      img: ["src", "alt", "width", "height", "loading", "data-shape", "data-size"],
+      img: ["src", "alt", "width", "height", "loading", "data-caption", ...IMAGE_LOOK_KEYS.map((k) => `data-${k}`)],
       iframe: ["src", "width", "height", "allow", "allowfullscreen", "frameborder", "title"],
       // TipTap YouTube node wrapper — needed so embeds survive re-editing
       div: ["data-youtube-video"],
@@ -36,16 +39,21 @@ export function sanitizeBody(html: string): string {
           : attribs,
       }),
       img: (tag, attribs) => {
-        // Editor-chosen look of the image (see IMAGE_SHAPES / IMAGE_SIZES); anything else is dropped
-        const { "data-shape": shape, "data-size": size, ...rest } = attribs;
+        // Editor-chosen look of the image (shape, size, align, focus, radius, frame, gap: see
+        // IMAGE_LOOK_OPTIONS) and its caption; anything else is dropped
+        const rest = { ...attribs };
+        const look: Record<string, string> = {};
+        for (const key of IMAGE_LOOK_KEYS) {
+          const name = `data-${key}`;
+          const value = rest[name];
+          delete rest[name];
+          if (isLookValue(key, value)) look[name] = value;
+        }
+        const caption = (rest["data-caption"] ?? "").replace(/\s+/g, " ").trim().slice(0, CAPTION_MAX);
+        delete rest["data-caption"];
         return {
           tagName: "img",
-          attribs: {
-            ...rest,
-            loading: "lazy",
-            ...(IMAGE_SHAPES.some((x) => x.value === shape) && { "data-shape": shape }),
-            ...(IMAGE_SIZES.some((x) => x.value === size) && { "data-size": size }),
-          },
+          attribs: { ...rest, loading: "lazy", ...look, ...(caption && { "data-caption": caption }) },
         };
       },
     },
