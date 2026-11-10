@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getSession } from "@/lib/auth";
 import { can } from "@/lib/permissions";
 import { adminExportMessages, type MessageView } from "@/lib/admin-data";
-import { messageCompany } from "@/lib/format";
+import { messageDetail } from "@/lib/format";
 import { cambodiaDay } from "@/lib/stats";
 
 /** CSV cell; prefixes formula-like values so Excel doesn't execute them. */
@@ -18,13 +18,13 @@ export async function GET(req: NextRequest) {
   const view = (["inbox", "unread", "archived", "all"].includes(sp.get("view") ?? "") ? sp.get("view") : "inbox") as MessageView;
   const rows = await adminExportMessages({ view, q: sp.get("q") ?? "", lang: sp.get("lang") ?? "" });
 
-  const header = ["Received (Cambodia time)", "Name", "Email", "Company", "Phone", "Language", "Message", "Status"];
+  const header = ["Received (Cambodia time)", "Name", "Email", "Company / Country", "Phone", "Language", "Message", "Status"];
   const lines = rows.map((m) =>
     [
       new Date(m.createdAt.getTime() + 7 * 3600000).toISOString().slice(0, 16).replace("T", " "),
       m.name,
       m.email,
-      messageCompany(m.subject),
+      messageDetail(m.subject)?.value ?? "",
       m.phone,
       m.lang.toUpperCase(),
       m.message,

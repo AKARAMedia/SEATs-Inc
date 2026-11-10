@@ -15,7 +15,17 @@ export function longDate(d: Date) {
   return d.toLocaleString("en-GB", { timeZone: TZ, dateStyle: "full", timeStyle: "short" });
 }
 
-/** The contact form stores the company as "Company: X" in the subject. */
+/**
+ * The contact form stores "Company: X" in the subject; the JP interview landing page
+ * stores "[JP Casual Interview] Country: X". Extracts the label/value pair for display.
+ */
+export function messageDetail(subject: string): { label: string; value: string } | null {
+  if (subject.startsWith("Company: ")) return { label: "Company", value: subject.slice(9) };
+  const i = subject.indexOf("Country: ");
+  if (i !== -1) return { label: "Country", value: subject.slice(i + 9) };
+  return null;
+}
+
 export function messageCompany(subject: string) {
-  return subject.startsWith("Company: ") ? subject.slice(9) : "";
+  return messageDetail(subject)?.value ?? "";
 }

@@ -4,7 +4,7 @@ import MarkRead from "@/components/admin/MarkRead";
 import { ConfirmForm } from "@/components/admin/ui/confirm";
 import { Icon } from "@/components/admin/ui/icons";
 import { adminGetMessage } from "@/lib/admin-data";
-import { longDate, messageCompany } from "@/lib/format";
+import { longDate, messageDetail } from "@/lib/format";
 import { deleteMessagesAction, setArchivedAction, setReadAction } from "@/app/admin/message-actions";
 
 export const metadata = { title: "Message" };
@@ -21,7 +21,7 @@ export default async function MessagePage({ params }: PageProps<"/admin/messages
   const { id } = await params;
   const m = await adminGetMessage(Number(id));
   if (!m) notFound();
-  const company = messageCompany(m.subject);
+  const detail = messageDetail(m.subject);
   const list = m.archivedAt ? "/admin/messages/?view=archived" : "/admin/messages/";
   const nav = "flex size-9 items-center justify-center rounded-md bg-white text-[18px] ring-1 ring-black/10 hover:bg-black/5";
   const off = "flex size-9 items-center justify-center rounded-md text-[18px] text-[#ccc] ring-1 ring-black/5";
@@ -64,10 +64,10 @@ export default async function MessagePage({ params }: PageProps<"/admin/messages
                   {m.email}
                 </a>
               </dd>
-              {company && (
+              {detail && (
                 <>
-                  <dt className="text-[#999]">Company</dt>
-                  <dd>{company}</dd>
+                  <dt className="text-[#999]">{detail.label}</dt>
+                  <dd>{detail.value}</dd>
                 </>
               )}
               {m.phone && (
