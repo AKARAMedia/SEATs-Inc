@@ -14,10 +14,13 @@ export type ContactNotification = {
  * Notify staff of a new contact message. Messages are always stored in the DB first;
  * this is the delivery hook. Every configured channel is used:
  *  - Settings → Contact form recipients (needs RESEND_API_KEY + EMAIL_FROM), plus the optional auto-reply
- *  - WEB3FORMS_ACCESS_KEY set → forward to Web3Forms (what the live WordPress form uses today)
+ *  - web3FormsAccessKey (param, falls back to WEB3FORMS_ACCESS_KEY) → forward to Web3Forms
  *  - CONTACT_WEBHOOK_URL set  → POST the message as JSON
  */
-export async function notifyContact(message: ContactNotification): Promise<void> {
+export async function notifyContact(
+  message: ContactNotification,
+  opts?: { web3FormsAccessKey?: string },
+): Promise<void> {
   const subject = `${message.name} — New Contact Form Submission - SEATS Website`;
   const tasks: Promise<unknown>[] = [];
   const { contact } = await getSettings();
@@ -54,12 +57,13 @@ export async function notifyContact(message: ContactNotification): Promise<void>
     );
   }
 
-  if (process.env.WEB3FORMS_ACCESS_KEY) {
+  const web3FormsAccessKey = opts?.web3FormsAccessKey ?? process.env.WEB3FORMS_ACCESS_KEY;
+  if (web3FormsAccessKey) {
     tasks.push(
       fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ access_key: process.env.WEB3FORMS_ACCESS_KEY, subject, ...message }),
+        body: JSON.stringify({ access_key: web3FormsAccessKey, subject, ...message }),
       }),
     );
   }

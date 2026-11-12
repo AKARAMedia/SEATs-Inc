@@ -49,6 +49,9 @@ export async function POST(req: Request) {
     return Response.json({ ok: false }, { status: 500 });
   }
 
-  await notifyContact({ name, email, company: subject, message, lang: "ja" });
+  await notifyContact(
+    { name, email, company: subject, message, lang: "ja" },
+    { web3FormsAccessKey: process.env.JP_WEB3FORMS_ACCESS_KEY },
+  );
   return Response.json({ ok: true });
 }
