@@ -54,6 +54,9 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
     console.error("[contact] failed to save message", e);
     return { status: "error", message: f.error[lang] };
   }
-  await notifyContact({ name, email, company, message, lang });
+  await notifyContact(
+    { name, email, company, message, lang },
+    { extraWeb3FormsAccessKeys: [process.env.HR_WEB3FORMS_ACCESS_KEY].filter((k): k is string => !!k) },
+  );
   redirect(href(lang, "/contact/thank-you/"));
 }

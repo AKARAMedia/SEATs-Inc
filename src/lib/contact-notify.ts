@@ -15,11 +15,12 @@ export type ContactNotification = {
  * this is the delivery hook. Every configured channel is used:
  *  - Settings → Contact form recipients (needs RESEND_API_KEY + EMAIL_FROM), plus the optional auto-reply
  *  - web3FormsAccessKey (param, falls back to WEB3FORMS_ACCESS_KEY) → forward to Web3Forms
+ *  - extraWeb3FormsAccessKeys (param) → forward to additional Web3Forms destinations alongside the above
  *  - CONTACT_WEBHOOK_URL set  → POST the message as JSON
  */
 export async function notifyContact(
   message: ContactNotification,
-  opts?: { web3FormsAccessKey?: string },
+  opts?: { web3FormsAccessKey?: string; extraWeb3FormsAccessKeys?: string[] },
 ): Promise<void> {
   const subject = `${message.name} — New Contact Form Submission - SEATS Website`;
   const tasks: Promise<unknown>[] = [];
@@ -58,12 +59,13 @@ export async function notifyContact(
   }
 
   const web3FormsAccessKey = opts?.web3FormsAccessKey ?? process.env.WEB3FORMS_ACCESS_KEY;
-  if (web3FormsAccessKey) {
+  const web3FormsKeys = new Set([web3FormsAccessKey, ...(opts?.extraWeb3FormsAccessKeys ?? [])].filter(Boolean));
+  for (const accessKey of web3FormsKeys) {
     tasks.push(
       fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ access_key: web3FormsAccessKey, subject, ...message }),
+        body: JSON.stringify({ access_key: accessKey, subject, ...message }),
       }),
     );
   }

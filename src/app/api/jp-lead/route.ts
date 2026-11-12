@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 
   await notifyContact(
     { name, email, company: subject, message, lang: "ja" },
-    { web3FormsAccessKey: process.env.JP_WEB3FORMS_ACCESS_KEY },
+    { web3FormsAccessKey: process.env.HR_WEB3FORMS_ACCESS_KEY },
   );
   return Response.json({ ok: true });
 }
