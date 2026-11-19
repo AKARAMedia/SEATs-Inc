@@ -1794,6 +1794,7 @@ textarea {
 }
 
 .form-field input,
+.form-field select,
 .form-field textarea {
   width: 100%;
 
@@ -1817,6 +1818,7 @@ textarea {
 }
 
 .form-field input:focus,
+.form-field select:focus,
 .form-field textarea:focus {
   outline: none;
 
@@ -1827,8 +1829,13 @@ textarea {
 }
 
 .form-field input.field-error,
+.form-field select.field-error,
 .form-field textarea.field-error {
   border-color: var(--red);
+}
+
+.form-field select {
+  cursor: pointer;
 }
 
 .form-field textarea {

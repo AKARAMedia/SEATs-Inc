@@ -1222,17 +1222,17 @@
               カジュアル面談の段階では履歴書なども必要ありません。
               <br>
               原則オンラインで実施予定なので、 世界中どこからでもご応募ください。
-              <br>
-              実際にオフィスを見たい方は、お越しいただくことも可能です。
             </p>
 
             <p>
-              ご応募いただいた方には、当社の人事担当者からご連絡いたします。
+              ご応募いただいた内容を確認のうえ、カジュアル面談をお願いしたい方に、担当者よりご連絡いたします。
               <br>
-              英語での返信になる場合もございますのでご了承ください。
+              応募状況や内容によっては、ご連絡を差し上げない場合もございますので、あらかじめご了承ください。
+              <br>
+              (応募フォームは日本語でご記入いただきますが、英語での返信になる場合もございます。)
             </p>
             <p>
-              (本ページよりカジュアル面談へ申し込み、その後本採用となった場合は入社応援金$1,000の支給対象となります。)
+              ※本ページよりカジュアル面談へ申し込み、その後本採用となった場合は入社応援金$1,000の支給対象となります。
             </p>
           </div>
 
@@ -1280,6 +1280,34 @@
 
                 <div class="form-field">
 
+                  <label for="age">
+                    年齢
+                    <span class="required">※必須</span>
+                  </label>
+
+                  <select
+                    id="age"
+                    name="age"
+                    required
+                  >
+                    <option value="" disabled selected hidden></option>
+                    <option value="10代">10代</option>
+                    <option value="20代">20代</option>
+                    <option value="30代">30代</option>
+                    <option value="40代">40代</option>
+                    <option value="50代">50代</option>
+                    <option value="60代以上">60代以上</option>
+                  </select>
+
+                </div>
+
+              </div>
+
+
+              <div class="form-row">
+
+                <div class="form-field">
+
                   <label for="email">
                     メールアドレス
                     <span class="required">※必須</span>
@@ -1291,6 +1319,21 @@
                     name="email"
                     required
                     autocomplete="email"
+                  >
+
+                </div>
+
+
+                <div class="form-field">
+
+                  <label for="position">
+                    電話番号
+                  </label>
+
+                  <input
+                    type="text"
+                    id="position"
+                    name="position"
                   >
 
                 </div>
@@ -1319,15 +1362,26 @@
 
                 <div class="form-field">
 
-                  <label for="position">
-                    電話番号
+                  <label for="reason">
+                    応募理由
+                    <span class="required">※必須</span>
                   </label>
 
-                  <input
-                    type="text"
-                    id="position"
-                    name="position"
+                  <select
+                    id="reason"
+                    name="reason"
+                    required
                   >
+                    <option value="" disabled selected hidden></option>
+                    <option value="東南アジアで働くことに興味がある">東南アジアで働くことに興味がある</option>
+                    <option value="事業内容に興味がある">事業内容に興味がある</option>
+                    <option value="今までの経験を活かしたい">今までの経験を活かしたい</option>
+                    <option value="新しいことをしてみたい">新しいことをしてみたい</option>
+                    <option value="移住をしたい">移住をしたい</option>
+                    <option value="カンボジアが好き">カンボジアが好き</option>
+                    <option value="若手に経験を還元したい">若手に経験を還元したい</option>
+                    <option value="その他">その他</option>
+                  </select>
 
                 </div>
 
@@ -1337,13 +1391,13 @@
               <div class="form-field">
 
                 <label for="message">
-                  当社へのメッセージ
+                  その他の理由やメッセージなど
                 </label>
 
                 <textarea
                   id="message"
                   name="message"
-                  rows="4"
+                  rows="7"
                 ></textarea>
 
               </div>
