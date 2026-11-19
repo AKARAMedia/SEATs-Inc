@@ -5,7 +5,9 @@
 # for about a minute (worker/index.mjs), so content edits show up on their own: this workflow is only
 # needed to deploy code changes. Triggers:
 #   - repository_dispatch "content-updated": no longer sent by the admin panel (kept for manual use)
-#   - schedule: a periodic redeploy, also refreshes the uploaded images exported at build time
+#   - schedule: a daily redeploy, also refreshes the uploaded images exported at build time
+#     (was every 6h; each run prerenders every public page from the database, which was a large
+#     share of the Neon free-tier egress quota for a database this size)
 #   - workflow_dispatch: the "Run workflow" button in the Actions tab
 name: Build and deploy
 
@@ -13,7 +15,7 @@ on:
   repository_dispatch:
     types: [content-updated]
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 19 * * *"
   workflow_dispatch:
 
 # One build at a time. If more edits arrive while one is running, a single follow-up run is queued
