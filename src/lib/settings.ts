@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { db, ready } from "@/db";
 import { siteSettings } from "@/db/schema";
+import { errorSummary } from "./safe";
 import { parseGroup, SETTINGS_GROUPS, type Settings } from "./settings-schema";
 
 export const SETTINGS_TAG = "settings";
@@ -23,7 +24,7 @@ export const getPublicSettings = cache(async function getPublicSettings(): Promi
   try {
     return await getSettings();
   } catch (err) {
-    console.error("[degraded] getSettings failed, using default settings:", err);
+    console.error(`[degraded] getSettings failed, using default settings: ${errorSummary(err)}`);
     return Object.fromEntries(SETTINGS_GROUPS.map((k) => [k, parseGroup(k, undefined)])) as Settings;
   }
 });
