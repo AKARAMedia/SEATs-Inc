@@ -2,6 +2,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { asc, desc, eq } from "drizzle-orm";
 import { db, ready } from "@/db";
 import { JOB_SITES, jobs, type JobSite } from "@/db/schema";
+import { errorSummary } from "@/lib/safe";
 
 // Public, read-only job feed for other websites (e.g. seatsinc-career.com).
 //   GET /api/jobs/                -> career-site jobs (open and closed — see `open` on each job)
@@ -69,7 +70,7 @@ export async function GET(req: Request) {
     await ready();
     rows = await db.select().from(jobs).where(eq(jobs.site, site)).orderBy(asc(jobs.sortOrder), desc(jobs.createdAt));
   } catch (err) {
-    console.error("[jobs] database query failed:", err);
+    console.error(`[jobs] database query failed: ${errorSummary(err)}`);
     // Database unreachable: serve the last good copy if there is one (short cache so recovery is picked up fast)
     if (cached) return json(cached.body, "public, s-maxage=60");
     return new Response(JSON.stringify({ error: "Job listings are temporarily unavailable. Please try again later." }), {
