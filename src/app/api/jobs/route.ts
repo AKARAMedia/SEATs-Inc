@@ -35,6 +35,12 @@ function jobsKv(): JobsKV | null {
   }
 }
 
+const FRESH_MS = 300 * 1000; // how long a cached feed is served without asking the database
+const STALE_TTL = 60 * 60 * 24 * 7; // how long KV keeps the last good copy, as the fallback when the database is down
+
+const json = (body: string, cacheControl: string) =>
+  new Response(body, { headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": cacheControl } });
+
 export function OPTIONS() {
   return new Response(null, { status: 204, headers: CORS });
 }
@@ -46,15 +52,31 @@ export async function GET(req: Request) {
   const cacheKey = `jobs:${site}:${ja ? "ja" : "en"}`;
 
   const kv = jobsKv();
-  const cached = await kv?.get(cacheKey);
-  if (cached) return new Response(cached, { headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } });
+  // The KV entry is {at, body}. It stays in KV for STALE_TTL but is only "fresh" for FRESH_MS: past that it
+  // is refreshed from the database, and if the database is down it is served as a stale fallback.
+  let cached: { at: number; body: string } | null = null;
+  try {
+    const raw = await kv?.get(cacheKey);
+    const parsed = raw ? JSON.parse(raw) : null;
+    if (parsed && typeof parsed.at === "number" && typeof parsed.body === "string") cached = parsed;
+  } catch (err) {
+    console.error("[jobs] KV read failed:", err); // a cache problem must never break the feed
+  }
+  if (cached && Date.now() - cached.at < FRESH_MS) return json(cached.body, "public, s-maxage=300, stale-while-revalidate=600");
 
-  await ready();
-  const rows = await db
-    .select()
-    .from(jobs)
-    .where(eq(jobs.site, site))
-    .orderBy(asc(jobs.sortOrder), desc(jobs.createdAt));
+  let rows;
+  try {
+    await ready();
+    rows = await db.select().from(jobs).where(eq(jobs.site, site)).orderBy(asc(jobs.sortOrder), desc(jobs.createdAt));
+  } catch (err) {
+    console.error("[jobs] database query failed:", err);
+    // Database unreachable: serve the last good copy if there is one (short cache so recovery is picked up fast)
+    if (cached) return json(cached.body, "public, s-maxage=60");
+    return new Response(JSON.stringify({ error: "Job listings are temporarily unavailable. Please try again later." }), {
+      status: 503,
+      headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "no-store", "Retry-After": "300" },
+    });
+  }
 
   const data = rows.map((j) => ({
     id: j.id,
@@ -72,7 +94,11 @@ export async function GET(req: Request) {
   }));
 
   const body = JSON.stringify({ count: data.length, jobs: data });
-  await kv?.put(cacheKey, body, { expirationTtl: 300 });
+  try {
+    await kv?.put(cacheKey, JSON.stringify({ at: Date.now(), body }), { expirationTtl: STALE_TTL });
+  } catch (err) {
+    console.error("[jobs] KV write failed:", err);
+  }
 
-  return new Response(body, { headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } });
+  return json(body, "public, s-maxage=300, stale-while-revalidate=600");
 }

@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import ContactForm from "@/components/sections/ContactForm";
 import { CONTACT } from "@/content/pages/contact";
 import { isLang } from "@/lib/i18n";
-import { getSettings } from "@/lib/settings";
+import { getPublicSettings } from "@/lib/settings";
 
 export const metadata: Metadata = { title: "Contact" };
 
@@ -39,7 +39,7 @@ export default async function Page({ params }: PageProps<"/[lang]/contact">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
   const c = CONTACT;
-  const { company } = await getSettings();
+  const { company } = await getPublicSettings();
   const text = "block text-[15px] leading-[1.45] text-[#222] tablet:text-[17px]";
 
   return (
