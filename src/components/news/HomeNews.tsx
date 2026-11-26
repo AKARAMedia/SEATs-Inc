@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { href, type Lang } from "@/lib/i18n";
 import { homeNews } from "@/lib/home";
+import { safely } from "@/lib/safe";
 import NewsCard from "./NewsCard";
 import HomeNewsSearch from "./HomeNewsSearch";
 
@@ -11,7 +12,7 @@ const T = {
 
 /** Home page "News & Events" block: header box with search + latest 3 posts + Read More button. */
 export default async function HomeNews({ lang, pinnedIds = [] }: { lang: Lang; pinnedIds?: number[] }) {
-  const items = await homeNews(lang, pinnedIds);
+  const items = await safely("home news", homeNews(lang, pinnedIds), []);
   return (
     <section className="mx-auto max-w-[1222px] px-[15px] pt-[50px]">
       <div className="mb-5 flex items-center justify-between gap-6 rounded-[5px] bg-white px-8 py-[22px] shadow-[0_5px_15px_rgba(0,0,0,0.08)] max-[767px]:flex-col max-[767px]:items-stretch max-[767px]:px-2.5 max-[767px]:py-2.5">

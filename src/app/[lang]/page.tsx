@@ -10,14 +10,21 @@ import SmartLink from "@/components/SmartLink";
 import { BRAND_TITLE, FACEBOOK_PAGE_URL, SOCIABLEKIT_FACEBOOK_FEED_EMBED_ID } from "@/content/pages/home";
 import { isLang } from "@/lib/i18n";
 import { getBrands, getHomeBanners, getHomeSlides } from "@/lib/home";
-import { getSettings } from "@/lib/settings";
+import { safely } from "@/lib/safe";
+import { getPublicSettings } from "@/lib/settings";
 
 export const metadata: Metadata = { title: { absolute: "Home - S.E.A.T.S Inc. (シーツインク)" } };
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
-  const [{ home }, slides, banners, brands] = await Promise.all([getSettings(), getHomeSlides(), getHomeBanners(), getBrands()]);
+  // Each block degrades on its own if the database is unreachable: the page still renders, minus that block
+  const [{ home }, slides, banners, brands] = await Promise.all([
+    getPublicSettings(),
+    safely("home slides", getHomeSlides(), []),
+    safely("home banners", getHomeBanners(), []),
+    safely("brands", getBrands(), []),
+  ]);
   // Managed in admin → Home page / Brands
   const slideUrls = slides.length ? slides.map((s) => s.imageUrl) : [home.mobileImage];
 

@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 import PageTracker from "@/components/PageTracker";
 import { isLang } from "@/lib/i18n";
-import { getSettings } from "@/lib/settings";
+import { getPublicSettings } from "@/lib/settings";
 import { SITE_ICONS } from "@/lib/site-icons";
 import "../globals.css";
 
@@ -21,7 +21,7 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
   const { lang } = await params;
-  const { seo, maintenance } = await getSettings();
+  const { seo, maintenance } = await getPublicSettings();
   const description = isLang(lang) ? seo.description[lang] : seo.description.en;
   return {
     metadataBase: new URL(process.env.SITE_URL ?? "https://seats-inc.com"),
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
 export default async function LangLayout({ children, params }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLang(lang)) notFound();
-  const { company, social, maintenance } = await getSettings();
+  const { company, social, maintenance } = await getPublicSettings();
   return (
     <html lang={lang} data-scroll-behavior="smooth" className={`${openSans.variable} ${roboto.variable} ${robotoSlab.variable}`}>
       <body className="flex min-h-screen flex-col antialiased">
