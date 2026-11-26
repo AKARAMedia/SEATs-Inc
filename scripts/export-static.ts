@@ -9,6 +9,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { loadEnvConfig } from "@next/env";
+import { databaseUnavailableReason, warnSkipped } from "./db-probe";
 
 loadEnvConfig(process.cwd());
 
@@ -25,6 +26,13 @@ async function exportUploads() {
   const url = process.env.DATABASE_URL;
   if (!url) {
     console.warn("export-static: DATABASE_URL not set, skipping /uploads export");
+    return;
+  }
+  const down = await databaseUnavailableReason();
+  if (down) {
+    // Not fatal: the Worker serves any /uploads image that isn't a static file from the database (and edge
+    // cache) once the database is back. Until then admin-uploaded images won't load.
+    warnSkipped("the /uploads image export", down);
     return;
   }
   const { neon } = await import("@neondatabase/serverless");
