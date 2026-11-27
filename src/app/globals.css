@@ -311,6 +311,36 @@
   .prose-seats iframe {
     max-width: 100%;
   }
+  /* Small screens: long words/URLs wrap instead of widening the page, tables scroll sideways, and video
+     embeds keep a 16:9 shape instead of a fixed height. Japanese text breaks at proper line-start/end rules. */
+  .prose-seats {
+    overflow-wrap: break-word;
+  }
+  .prose-seats:lang(ja) {
+    line-break: strict;
+  }
+  .prose-seats :is(p, li) {
+    text-wrap: pretty;
+  }
+  .prose-seats table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .prose-seats pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  @media (max-width: 767px) {
+    .prose-seats iframe[src*="youtube"] {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+    }
+    .prose-seats blockquote {
+      margin: 1.2em 0;
+    }
+  }
   .prose-seats blockquote {
     border-left: 4px solid var(--color-primary);
     padding-left: 1em;
