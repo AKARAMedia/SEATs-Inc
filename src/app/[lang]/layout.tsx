@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Open_Sans, Roboto, Roboto_Slab } from "next/font/google";
 import Header from "@/components/Header";
@@ -18,6 +18,9 @@ const robotoSlab = Roboto_Slab({ subsets: ["latin"], weight: ["400"], variable: 
 // admin edit shows up without a rebuild or redeploy. worker/index.mjs keeps each rendered page in the edge
 // cache for a short time (PAGE_TTL) so most visits don't render at all. Applies to every page below this layout.
 export const dynamic = "force-dynamic";
+
+// viewport-fit=cover lets the cookie banner's env(safe-area-inset-bottom) padding work on iPhones
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
   const { lang } = await params;
